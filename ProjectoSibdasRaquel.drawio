@@ -127,7 +127,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="HXvyHgPlPa-ep9v2176N-31" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;" value="EntradasEquipamentos" vertex="1">
-          <mxGeometry height="180" width="250" x="700" y="540" as="geometry">
+          <mxGeometry height="180" width="250" x="700" y="533" as="geometry">
             <mxRectangle height="30" width="110" x="370" y="290" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
