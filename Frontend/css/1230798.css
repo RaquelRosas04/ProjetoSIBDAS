@@ -1,7 +1,7 @@
 .upload-btn {
   display: inline-block;
   padding: 10px 16px;
-  background-color: #4CAF50;
+  background-color: #6a9eda;
   color: white;
   border-radius: 6px;
   cursor: pointer;
@@ -10,5 +10,205 @@
 }
 
 .upload-btn:hover {
-  background-color: #45a049;
+  background-color: #6a9eda;
+}
+
+/* ============================= */
+/* 🎨 VARIÁVEIS GLOBAIS */
+/* ============================= */
+:root {
+  --primary: #6a9eda;
+  --primary-dark: #5a8bc7;
+  --primary-soft: #eaf4ff;
+
+  --secondary: #b4d7ff;
+
+  --dark: #1f2937;
+  --gray: #6c757d;
+  --light-gray: #f8f9fa;
+
+  --success: #198754;
+  --danger: #dc3545;
+  --warning: #ffc107;
+}
+
+/* ============================= */
+/* 🧱 BASE */
+/* ============================= */
+body {
+  background-color: var(--light-gray);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Títulos */
+h2, h3, h4, h5 {
+  font-weight: 600;
+  color: #6a9eda;
+}
+
+/* ============================= */
+/* 📦 CARDS */
+/* ============================= */
+.card {
+  border: none;
+  border-radius: 12px;
+  background-color: #fff;
+  border-left: 5px solid var(--primary);
+}
+
+.card h5 {
+  font-weight: 600;
+}
+
+/* ============================= */
+/* 📋 TABELAS */
+/* ============================= */
+.table {
+  background-color: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+.table-custom {
+  background-color: var(--primary);
+  color: white;
+}
+
+.table td, .table th {
+  vertical-align: middle;
+}
+
+/* Hover nas linhas */
+.table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* ============================= */
+/* 🏷️ BADGES */
+/* ============================= */
+.badge {
+  font-size: 0.8rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* Estados */
+.badge-ativo {
+  background-color: var(--primary);
+}
+
+.badge-inativo {
+  background-color: var(--gray);
+}
+
+.badge-manutencao {
+  background-color: var(--warning);
+  color: #000;
+}
+
+.badge-abatido {
+  background-color: var(--danger);
+}
+
+/* Criticidade */
+.badge-baixa {
+  background-color: #6c757d;
+}
+
+.badge-media {
+  background-color: #ffc107;
+  color: #000;
+}
+
+.badge-alta {
+  background-color: #dc3545;
+}
+
+.badge-suporte {
+  background-color: #000;
+}
+
+/* ============================= */
+/* 🧾 FORMULÁRIOS */
+/* ============================= */
+.form-label {
+  font-weight: 500;
+}
+
+.form-control,
+.form-select {
+  border-radius: 8px;
+}
+
+/* Campos readonly */
+.bg-readonly {
+  background-color: #e9ecef !important;
+}
+
+/* ============================= */
+/* 🔘 BOTÕES */
+/* ============================= */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Botão principal */
+.btn-primary {
+  background-color: var(--primary);
+  border: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+/* Botões outline */
+.btn-outline-primary {
+  border-radius: 8px;
+}
+
+/* ============================= */
+/* 📂 LISTAS (documentos) */
+/* ============================= */
+.list-group-item {
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+/* ============================= */
+/* 📐 ESPAÇAMENTOS */
+/* ============================= */
+.section {
+  margin-bottom: 30px;
+}
+
+/* ============================= */
+/* 🧭 NAVBAR (se usares depois) */
+/* ============================= */
+.navbar {
+  background-color: var(--secondary) !important;
+}
+/* ============================= */
+/* 📊 DASHBOARD CARDS (futuro) */
+/* ============================= */
+.stat-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-card h3 {
+  margin: 0;
+  font-weight: bold;
+}
+
+.stat-card p {
+  color: var(--gray);
+  margin: 0;
 }
