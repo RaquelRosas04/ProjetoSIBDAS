@@ -29,20 +29,32 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mx-auto">
+
           <li class="nav-item">
-            <a class="nav-link active" href="lista_equipamentos.html">Detalhes equipamentos</a>
+            <a class="nav-link active" href="detalhes_equipamento.html">Detalhes equipamentos</a>
           </li>
 
           <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+            <a class="nav-link dropdown-toggle" href="lista_equipamentos.html" data-bs-toggle="dropdown">
               Lista de Equipamentos
             </a>
             <ul class="dropdown-menu">
               <li><a class="dropdown-item" href="#">Inserir equipamento</a></li>
               <li><a class="dropdown-item" href="editar_equipamento.html">Editar equipamento</a></li>
-              <li><a class="dropdown-item" href="#">Remover equipamento</a></li>
             </ul>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="fornecedores.html">Fornecedores</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link active" href="localizacaoes.html">Localizações</a>
+          </li>
+
+
+
+
         </ul>
       </div>
     </div>
@@ -132,6 +144,11 @@
           </div>
         </div>
 
+
+        <a href="editar_equipamento.html" class="btn btn-sm btn-outline-primary me-2">
+          <i class="bi bi-pencil"></i> Editar Dados
+        </a>
+
         <button id="btnEditarEquipamento" class="btn btn-primary mb-4">
           <i class="bi bi-pencil me-1"></i> Editar Dados
         </button>
@@ -172,6 +189,33 @@
   <script src="../js/1230798.js"></script>
 
   </div>
+
+
+  <div class="modal fade" id="modalErro" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Erro
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Equipamento não encontrado.
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 </body>
 </html>

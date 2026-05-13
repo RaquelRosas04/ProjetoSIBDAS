@@ -212,3 +212,15 @@ h2, h3, h4, h5 {
   color: var(--gray);
   margin: 0;
 }
+
+.modal-content {
+  border-radius: 12px;
+}
+
+.modal-header {
+  border-bottom: none;
+}
+
+.modal-footer {
+  border-top: none;
+}

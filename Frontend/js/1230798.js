@@ -38,6 +38,7 @@ document.getElementById("formPesquisaEquipamento")
       document.getElementById("resultadoEquipamento").style.display = "block";
 
     } else {
-      alert("Equipamento não encontrado");
+      const modal = new bootstrap.Modal(document.getElementById('modalErro'));
+      modal.show();
     }
 });
