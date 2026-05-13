@@ -13,9 +13,9 @@
   background-color: #6a9eda;
 }
 
-/* ============================= */
-/* 🎨 VARIÁVEIS GLOBAIS */
-/* ============================= */
+
+/* VARIÁVEIS GLOBAIS */
+
 :root {
   --primary: #6a9eda;
   --primary-dark: #5a8bc7;
@@ -32,9 +32,8 @@
   --warning: #ffc107;
 }
 
-/* ============================= */
-/* 🧱 BASE */
-/* ============================= */
+/* BASE */
+
 body {
   background-color: var(--light-gray);
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -46,9 +45,9 @@ h2, h3, h4, h5 {
   color: #6a9eda;
 }
 
-/* ============================= */
-/* 📦 CARDS */
-/* ============================= */
+
+/*  CARDS */
+
 .card {
   border: none;
   border-radius: 12px;
@@ -60,9 +59,8 @@ h2, h3, h4, h5 {
   font-weight: 600;
 }
 
-/* ============================= */
-/* 📋 TABELAS */
-/* ============================= */
+/* TABELAS */
+
 .table {
   background-color: #fff;
   border-radius: 10px;
@@ -87,9 +85,9 @@ h2, h3, h4, h5 {
   background-color: #f1f5f9;
 }
 
-/* ============================= */
-/* 🏷️ BADGES */
-/* ============================= */
+
+/*  BADGES */
+
 .badge {
   font-size: 0.8rem;
   padding: 6px 10px;
@@ -132,9 +130,9 @@ h2, h3, h4, h5 {
   background-color: #000;
 }
 
-/* ============================= */
-/* 🧾 FORMULÁRIOS */
-/* ============================= */
+
+/* FORMULÁRIOS */
+
 .form-label {
   font-weight: 500;
 }
@@ -149,9 +147,9 @@ h2, h3, h4, h5 {
   background-color: #e9ecef !important;
 }
 
-/* ============================= */
-/* 🔘 BOTÕES */
-/* ============================= */
+
+/*BOTÕES */
+
 .btn {
   border-radius: 8px;
   font-weight: 500;
@@ -165,37 +163,43 @@ h2, h3, h4, h5 {
 
 .btn-primary:hover {
   background-color: var(--primary-dark);
+
 }
 
-/* Botões outline */
 .btn-outline-primary {
+  color: var(--secondary);
+  border-color: var(--secondary);
   border-radius: 8px;
 }
 
-/* ============================= */
-/* 📂 LISTAS (documentos) */
-/* ============================= */
+.btn-outline-primary:hover {
+  background-color: var(--secondary);
+  color: white;
+}
+
+/*  LISTAS (documentos) */
+
 .list-group-item {
   border: none;
   border-bottom: 1px solid #eee;
 }
 
-/* ============================= */
-/* 📐 ESPAÇAMENTOS */
-/* ============================= */
+
+/* ESPAÇAMENTOS */
+
 .section {
   margin-bottom: 30px;
 }
 
-/* ============================= */
-/* 🧭 NAVBAR (se usares depois) */
-/* ============================= */
+
+/*  NAVBAR  */
+
 .navbar {
   background-color: var(--secondary) !important;
 }
-/* ============================= */
-/* 📊 DASHBOARD CARDS (futuro) */
-/* ============================= */
+
+/* DASHBOARD CARDS */
+
 .stat-card {
   background: white;
   border-radius: 12px;
@@ -223,4 +227,31 @@ h2, h3, h4, h5 {
 
 .modal-footer {
   border-top: none;
+}
+
+.bi {
+  color: var(--primary) !important;
+}
+
+
+/* abas */
+
+.nav-tabs .nav-link {
+  color: var(--secondary) !important;
+}
+
+.nav-tabs .nav-link.active {
+  color: var(--secondary)!important;
+  font-weight: 600;
+}
+
+
+
+/* para links (tipo ver) */
+a {
+  color: var(--secondary);
+}
+
+a:hover {
+  color: var(--primary);
 }

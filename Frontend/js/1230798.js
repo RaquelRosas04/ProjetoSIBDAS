@@ -1,13 +1,13 @@
-//DETALHES_EQUIPAMENTO-----------------------------------------------
+// DETALHES_EQUIPAMENTO-----------------------------------------------
+const form = document.getElementById("formPesquisaEquipamento");
 
-document.getElementById("formPesquisaEquipamento")
-  .addEventListener("submit", function (e) {
+if (form) {
+  form.addEventListener("submit", function (e) {
 
     e.preventDefault();
 
     const codigo = document.getElementById("inputBuscaCodigo").value.trim();
 
-    // Simulação de dados (depois ligas ao backend)
     const equipamentos = [
       {
         codigo: "AB0012",
@@ -25,7 +25,6 @@ document.getElementById("formPesquisaEquipamento")
 
     if (equipamento) {
 
-      // Preencher dados
       document.getElementById("txtNome").textContent = equipamento.nome;
       document.getElementById("txtMarca").textContent = equipamento.marca;
       document.getElementById("txtModelo").textContent = equipamento.modelo;
@@ -34,11 +33,87 @@ document.getElementById("formPesquisaEquipamento")
       document.getElementById("txtEstado").textContent = equipamento.estado;
       document.getElementById("txtCriticidade").textContent = equipamento.criticidade;
 
-      // Mostrar resultado
       document.getElementById("resultadoEquipamento").style.display = "block";
 
     } else {
       const modal = new bootstrap.Modal(document.getElementById('modalErro'));
       modal.show();
     }
+  });
+}
+
+
+// LISTA DE EQUIPAMENTOS -- BOTÃO VER
+document.querySelectorAll(".btn-ver").forEach(btn => {
+  btn.addEventListener("click", function () {
+
+    document.getElementById("mFornecedor").textContent = this.dataset.fornecedor;
+    document.getElementById("mAno").textContent = this.dataset.ano;
+    document.getElementById("mAquisicao").textContent = this.dataset.aquisicao;
+    document.getElementById("mGarantia").textContent = this.dataset.garantia;
+    document.getElementById("mTipo").textContent = this.dataset.tipo;
+    document.getElementById("mEntrada").textContent = this.dataset.entrada;
+
+    const modal = new bootstrap.Modal(document.getElementById("modalDetalhes"));
+    modal.show();
+  });
+});
+
+
+// Filtros-- lista_equipamentos
+
+function aplicarFiltros() {
+
+  const fCodigo = document.getElementById("fCodigo").value.toLowerCase();
+  const fNome = document.getElementById("fNome").value.toLowerCase();
+  const fMarca = document.getElementById("fMarca").value.toLowerCase();
+  const fModelo = document.getElementById("fModelo").value.toLowerCase();
+  const fSerie = document.getElementById("fSerie").value.toLowerCase();
+  const fLocal = document.getElementById("fLocal").value.toLowerCase();
+  const fEstado = document.getElementById("fEstado").value.toLowerCase();
+  const fCriticidade = document.getElementById("fCriticidade").value.toLowerCase();
+
+  document.querySelectorAll("table tbody tr").forEach(row => {
+
+    const td = row.querySelectorAll("td");
+
+    const match =
+      td[0].textContent.toLowerCase().includes(fCodigo) &&
+      td[1].textContent.toLowerCase().includes(fNome) &&
+      td[2].textContent.toLowerCase().includes(fMarca) &&
+      td[3].textContent.toLowerCase().includes(fModelo) &&
+      td[4].textContent.toLowerCase().includes(fSerie) &&
+      td[5].textContent.toLowerCase().includes(fLocal) &&
+      td[6].textContent.toLowerCase().includes(fEstado) &&
+      td[7].textContent.toLowerCase().includes(fCriticidade);
+
+    row.style.display = match ? "" : "none";
+  });
+}
+
+// botão filtrar
+document.getElementById("btnFiltrar")?.addEventListener("click", aplicarFiltros);
+
+// filtro automático ao escrever
+document.querySelectorAll("#fCodigo, #fNome, #fMarca, #fModelo, #fSerie, #fLocal")
+  .forEach(input => {
+    input.addEventListener("input", aplicarFiltros);
+  });
+
+// selects também
+document.querySelectorAll("#fEstado, #fCriticidade")
+  .forEach(select => {
+    select.addEventListener("change", aplicarFiltros);
+  });
+
+// botão limpar
+document.getElementById("btnLimpar")?.addEventListener("click", function () {
+
+  document.querySelectorAll("#fCodigo, #fNome, #fMarca, #fModelo, #fSerie, #fLocal")
+    .forEach(input => input.value = "");
+
+  document.getElementById("fEstado").value = "";
+  document.getElementById("fCriticidade").value = "";
+
+  aplicarFiltros(); // mostrar tudo outra vez
 });
