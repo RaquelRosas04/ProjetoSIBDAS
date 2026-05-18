@@ -255,3 +255,67 @@ a {
 a:hover {
   color: var(--primary);
 }
+
+
+/* pagina proncipal */
+/* HERO COM IMAGEM REAL */
+.hero {
+  height: 100vh;
+  background: url('../assets/hero.jpg') center/cover no-repeat;
+  position: relative;
+  color: white;
+}
+
+/* overlay escuro */
+.overlay {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.55);
+}
+
+/* conteúdo */
+.hero-content {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* tipografia */
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 700;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* feature boxes */
+.feature-box {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+  transition: 0.3s;
+}
+
+.feature-box:hover {
+  transform: translateY(-10px);
+}
+
+.feature-box i {
+  font-size: 2rem;
+  color: #6a9eda;
+  margin-bottom: 10px;
+}
+
+.sobre {
+  background-color: white;
+}
+
+.bg-light {
+  background-color: #f4f8ff !important;
+}

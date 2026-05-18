@@ -117,3 +117,4 @@ document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
   aplicarFiltros(); // mostrar tudo outra vez
 });
+
