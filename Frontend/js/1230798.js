@@ -1,4 +1,4 @@
-// DETALHES_EQUIPAMENTO-----------------------------------------------
+// -----------------------------DETALHES_EQUIPAMENTO------------------------------------------
 const form = document.getElementById("formPesquisaEquipamento");
 
 if (form) {
@@ -118,3 +118,42 @@ document.getElementById("btnLimpar")?.addEventListener("click", function () {
   aplicarFiltros(); // mostrar tudo outra vez
 });
 
+
+//----------------------------------------LOGIN-------------------------------------------
+
+
+document.getElementById("formLogin")?.addEventListener("submit", function (e) {
+
+  e.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  // validação simples
+  if (!email || !password) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  // SIMULAÇÃO (depois ligas ao backend)
+  if (email === "admin@medeint.pt" && password === "1234") {
+
+    // guardar sessão (simples)
+    localStorage.setItem("user", email);
+
+    // redirecionar
+    window.location.href = "../private/lista_equipamentos.html";
+
+  } else {
+const modalElement = document.getElementById('modalErroLogin');
+
+if (modalElement) {
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
+} else {
+  console.error("Modal não encontrado");
+}
+
+  }
+
+});

@@ -2,173 +2,87 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login - Global Labs</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    body {
-      background-color: #f8f9fa;
-      padding-top: 50px;
-    }
-    .login-card {
-      max-width: 400px;
-      margin: 0 auto;
-      border-radius: 10px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    .login-header {
-      background-color: #003366;
-      color: white;
-      padding: 15px;
-      text-align: center;
-      border-radius: 10px 10px 0 0;
-    }
-    .login-body {
-      padding: 20px;
-    }
-  </style>
+  <title>Login - MedInt</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../css/1230798.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/1230798.js"></script>
 </head>
-<body>
-  <div class="container">
-    <div class="card login-card">
-      <div class="login-header">
-        <h4 class="mb-0">
-          <i class="fas fa-lock me-2"></i>Acesso Reservado
-        </h4>
-      </div>
-      <div class="login-body">
-        <div class="text-center mb-4">
-          <img src="../assets/WhatsApp Image 2025-05-28 at 16.28.15.jpeg" alt="Global Labs" height="60" class="mb-3">
-          <p>Entre com suas credenciais para acessar a área reservada</p>
-        </div>
-        
-        <form id="loginForm">
-          <div class="mb-3">
-            <label for="username" class="form-label">Nome de Utilizador</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-user"></i></span>
-              <input type="text" class="form-control" id="username" required>
-            </div>
-          </div>
-          
-          <div class="mb-3">
-            <label for="password" class="form-label">Palavra-passe</label>
-            <div class="input-group">
-              <span class="input-group-text"><i class="fas fa-key"></i></span>
-              <input type="password" class="form-control" id="password" required>
-              <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                <i class="fas fa-eye" id="toggleIcon"></i>
-              </button>
-            </div>
-          </div>
-          
-          <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="rememberMe">
-            <label class="form-check-label" for="rememberMe">Lembrar-me neste dispositivo</label>
-          </div>
-          
-          <div class="d-grid gap-2">
-            <button type="submit" class="btn btn-warning btn-lg">
-              <i class="fas fa-sign-in-alt me-2"></i>Entrar
-            </button>
-          </div>
-          
-          <div class="text-center mt-3">
-            <a href="#" class="text-muted small">Esqueceu a palavra-passe?</a>
-          </div>
-          
-          <div class="text-center mt-4">
-            <a href="../index.html" class="text-muted">
-              <i class="fas fa-arrow-left me-1"></i>Voltar para a página inicial
-            </a>
-          </div>
-        </form>
-        
-        <div class="mt-4 p-3 border rounded bg-light">
-          <h6 class="text-center mb-3">Utilizadores de teste:</h6>
-          <div class="small">
-            <p class="mb-1"><strong>Administrador:</strong> admin / admin123</p>
-            <p class="mb-1"><strong>Médico:</strong> medico / medico123</p>
-            <p class="mb-0"><strong>Utilizador:</strong> user / user123</p>
-          </div>
-        </div>
-      </div>
+
+<body class="login-body">
+
+<div class="login-container">
+
+  <!-- ESQUERDA -->
+  <div class="login-left">
+    <div class="login-left-content">
+      <h4>MedInt</h4>
+      <p>Gestão inteligente de equipamentos médicos</p>
     </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/auth.js"></script>
-  
-  <script>
-    // Quando a página carregar
-    document.addEventListener('DOMContentLoaded', function() {
-      // Elementos do formulário
-      const loginForm = document.getElementById('loginForm');
-      const username = document.getElementById('username');
-      const password = document.getElementById('password');
-      const rememberMe = document.getElementById('rememberMe');
-      const togglePassword = document.getElementById('togglePassword');
-      const toggleIcon = document.getElementById('toggleIcon');
-      
-      // Mostrar/esconder senha
-      togglePassword.addEventListener('click', function() {
-        if (password.type === 'password') {
-          password.type = 'text';
-          toggleIcon.classList.remove('fa-eye');
-          toggleIcon.classList.add('fa-eye-slash');
-        } else {
-          password.type = 'password';
-          toggleIcon.classList.remove('fa-eye-slash');
-          toggleIcon.classList.add('fa-eye');
-        }
-      });
-      
-      // Verificar se há nome de usuário salvo
-      const savedUsername = localStorage.getItem('gl_username');
-      if (savedUsername) {
-        username.value = savedUsername;
-        rememberMe.checked = true;
-      }
-      
-      // Processar login
-      loginForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Validar campos
-        if (username.value === '') {
-          alert('Por favor, preencha o nome de utilizador');
-          username.focus();
-          return;
-        }
-        
-        if (password.value === '') {
-          alert('Por favor, preencha a palavra-passe');
-          password.focus();
-          return;
-        }
-        
-        // Salvar nome de usuário
-        if (rememberMe.checked) {
-          localStorage.setItem('gl_username', username.value);
-        } else {
-          localStorage.removeItem('gl_username');
-        }
-        
-        // Verificar credenciais
-        const user = GL_Auth.authenticate(username.value, password.value);
-        
-        if (user) {
-          alert('Bem-vindo(a), ' + user.name + '!');
-          window.location.href = '../private/dashboard.html';
-        } else {
-          alert('Credenciais inválidas. Tente novamente.');
-          password.value = '';
-          password.focus();
-        }
-      });
-    });
-  </script>
+  <!-- DIREITA -->
+  <div class="login-right">
+
+    <div class="logo">Login</div>
+
+<form id="formLogin">
+
+  <div class="mb-3">
+    <label class="form-label">Email</label>
+    <input type="email" id="email" class="form-control" placeholder="email@exemplo.com">
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input type="password" id="password" class="form-control" placeholder="********">
+  </div>
+
+  <button class="btn btn-primary w-100 mb-3">
+    Entrar
+  </button>
+
+  <div class="text-center">
+    <small class="text-muted">Esqueceu-se da palavra-passe?</small>
+  </div>
+
+</form>
+
+  </div>
+
+</div>
+
+  <!-- Script externo -->
+  <script src="../js/1230798.js"></script>
+
+<div class="modal fade" id="modalErroLogin" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle me-2"></i>
+          Erro de Login
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Credenciais inválidas!
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
 </body>
 </html>
