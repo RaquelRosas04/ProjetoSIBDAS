@@ -258,7 +258,10 @@ a:hover {
 }
 
 
-/* pagina proncipal */
+
+
+/* ------------------------------------------------------------------------------------------------ */
+/* -------------------------------------------pagina proncipal----------------------------------- */
 /* HERO COM IMAGEM REAL */
 .hero {
   position: relative;
@@ -341,7 +344,11 @@ section {
 
 
 
-/* -------------------NAV PRINCIPAL-------------------------- */
+
+
+/* --------------------------------------------------------------------------- */
+/* --------------------------------------NAV PRIVADO-------------------------- */
+/* --------------------------------------------------------------------------- */
 
 .custom-navbar {
   background-color: rgba(106, 158, 218, 0.95);
@@ -382,9 +389,11 @@ body {
   letter-spacing: 0.5px;
 }
 
-/* ============================= */
-/* NAV PREMIUM */
-/* ============================= */
+
+
+/* =============================---------------------------------------------- */
+/* ---------------------------------NAV pag principal------------------------- */
+/* =============================---------------------------------------------- */
 
 .nav-center .nav-item {
   margin: 0 25px;
@@ -431,11 +440,19 @@ body {
 }
 
 
+
+
+/* --------------------------------------------------------------------------- */
 /* -------------------------------- LOGIN------------------------------------- */
+/* --------------------------------------------------------------------------- */
 
 .login-body {
   height: 100vh;
-  background: linear-gradient(135deg, #b4d7ff, #6a9eda);
+
+  background:
+    radial-gradient(circle at center, rgba(106,158,218,0.25), transparent 60%),
+    linear-gradient(135deg, #1e3c72, #6a9eda);
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -448,6 +465,8 @@ body {
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0,0,0,0.2);
   display: flex;
+  backdrop-filter: blur(5px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
 }
 
 /* ESQUERDA */
@@ -503,4 +522,99 @@ body {
   font-weight: bold;
   font-size: 22px;
   margin-bottom: 20px;
+}
+
+
+/* ---------------------------------------------------------------------------------- */
+/*--------------------------- FOOTER------------------------------------------------------*/
+/* ------------------------------------------------------------------------------------- */
+
+.footer-main {
+  background-color: #212529;; /* azul mais escuro */
+  color: #ffffff;
+  padding: 20px 0;
+  font-size: 14px;
+}
+
+.footer-main a {
+  color: #cfd8e3;
+  text-decoration: none;
+  margin: 0 10px;
+  transition: 0.2s;
+}
+
+.footer-main a:hover {
+  color: #ffffff;
+}
+
+.footer-links {
+  text-align: center;
+}
+
+.footer-logo {
+  font-weight: 600;
+}
+
+/* -----------------------Fica em mobile------------------------- */
+@media (max-width: 768px) {
+  .footer-main .container {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+}
+
+.logo-footer {
+  border-radius: 8px; /* arredonda cantos */
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* ------------------------------TERMOS E CONDIÇÕES --------------------------*/
+/*--------------------------------------------------------------------------- */
+
+.termos-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+/* TÍTULO PRINCIPAL */
+.termos-container h1 {
+  color: var(--primary);
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* SUBTÍTULOS */
+.termos-container h4 {
+  margin-top: 30px;
+  margin-bottom: 10px;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+/* TEXTO */
+.termos-container p {
+  color: #555;
+  line-height: 1.6;
+}
+
+/* LISTAS */
+.termos-container ul {
+  margin-left: 20px;
+}
+
+.termos-container li {
+  margin-bottom: 5px;
+  color: #555;
+}
+
+/* DATA */
+.termos-container strong {
+  color: #333;
 }
