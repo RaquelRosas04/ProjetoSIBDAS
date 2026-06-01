@@ -11,45 +11,51 @@
   <!-- CSS -->
   <link rel="stylesheet" href="../css/1230798.css">
 
-  <style>
-    .nav-tabs .nav-link { font-weight: 500; }
-  </style>
+
 </head>
 
 <body>
 
-  <!-- Navbar -->
-<nav class="navbar navbar-expand-lg shadow-sm mb-4 custom-navbar">
-  <div class="container-fluid">
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+  <div class="container-fluid px-3">
 
-    <!-- LOGO -->
-    <a class="navbar-brand d-flex align-items-center" href="#">
-      <img src="../assets/images/logo.png" height="40" class="me-2 logo-nav">
-      <span class="fw-bold">MedEquip</span>
+    <!-- LOGO (ESQUERDA) -->
+    <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
+      <img src="../assets/images/logo.png" height="45" class="me-2 logo-nav">
     </a>
 
-    <!-- MOBILE -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <!-- BOTÃO MOBILE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- MENU -->
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <!-- CONTEÚDO -->
+    <div class="collapse navbar-collapse" id="navContent">
 
-      <ul class="navbar-nav mx-auto">
+      <!-- MENU CENTRADO -->
+      <ul class="navbar-nav mx-auto nav-center">
 
         <li class="nav-item">
-          <a class="nav-link active" href="detalhes_equipamento.html">Detalhes</a>
+          <a class="nav-link" href="dashboard.html">Dashboard</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="detalhes_equipamento.html">Detalhes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="ot.html">OT's</a>
         </li>
 
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+          <a class="nav-link dropdown-toggle" href="lista_equipamentos.html" data-bs-toggle="dropdown">
             Equipamentos
           </a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" href="lista_equipamentos.html">Lista</a></li>
             <li><a class="dropdown-item" href="inserir_equipamento.html">Inserir</a></li>
-            <li><a class="dropdown-item" href="editar_equipamento.html">Editar</a></li>
+            
           </ul>
         </li>
 
@@ -61,14 +67,12 @@
           <a class="nav-link" href="localizacaoes.html">Localizações</a>
         </li>
 
-        <li class="nav-item">
-          <a class="nav-link" href="dashboard.html">Dashboard</a>
-        </li>
-
       </ul>
 
-      <!-- LOGOUT -->
-      <button id="logoutBtn" class="btn btn-outline-danger">Logout</button>
+      <!-- DIREITA -->
+      <div>
+        <button class="btn btn-outline-light">Logout</button>
+      </div>
 
     </div>
   </div>

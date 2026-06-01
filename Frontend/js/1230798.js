@@ -157,3 +157,45 @@ if (modalElement) {
   }
 
 });
+
+
+//----------------------------------------FILTROS FORNECEDOSR------------------------------------------
+
+
+document.getElementById("btnFiltrar").addEventListener("click", function () {
+
+  let nome = document.getElementById("fNome").value.toLowerCase();
+  let nif = document.getElementById("fNIF").value.toLowerCase();
+  let email = document.getElementById("fEmail").value.toLowerCase();
+  let telefone = document.getElementById("fTelefone").value.toLowerCase();
+  let cod = document.getElementById("fCodPostal").value.toLowerCase();
+  let morada = document.getElementById("fMorada").value.toLowerCase();
+
+  let linhas = document.querySelectorAll("tbody tr");
+
+  linhas.forEach(linha => {
+
+    let col = linha.querySelectorAll("td");
+
+    let mostrar =
+      col[0].innerText.toLowerCase().includes(nome) &&
+      col[1].innerText.toLowerCase().includes(nif) &&
+      col[2].innerText.toLowerCase().includes(email) &&
+      col[3].innerText.toLowerCase().includes(telefone) &&
+      col[4].innerText.toLowerCase().includes(cod) &&
+      col[5].innerText.toLowerCase().includes(morada);
+
+    linha.style.display = mostrar ? "" : "none";
+  });
+
+});
+
+document.getElementById("btnLimpar").addEventListener("click", function () {
+
+  document.querySelectorAll("input").forEach(i => i.value = "");
+
+  document.querySelectorAll("tbody tr").forEach(linha => {
+    linha.style.display = "";
+  });
+
+});

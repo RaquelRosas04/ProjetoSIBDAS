@@ -9,16 +9,94 @@
 
 </head>
 
-<body class="container py-5">
 
-  <h2 class="mb-4">
-    <i class="bi bi-calendar2-week me-2"></i>Lista de Equipamentos
-  </h2>
+
+<body class="container py-5" >
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
+  <div class="container-fluid px-3">
+
+    <!-- LOGO (ESQUERDA) -->
+    <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
+      <img src="../assets/images/logo.png" height="45" class="me-2 logo-nav">
+    </a>
+
+    <!-- BOTÃO MOBILE -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- CONTEÚDO -->
+    <div class="collapse navbar-collapse" id="navContent">
+
+      <!-- MENU CENTRADO -->
+      <ul class="navbar-nav mx-auto nav-center">
+
+        <li class="nav-item">
+          <a class="nav-link" href="dashboard.html">Dashboard</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="detalhes_equipamento.html">Detalhes</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="ot.html">OT's</a>
+        </li>
+
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="lista_equipamentos.html" data-bs-toggle="dropdown">
+            Equipamentos
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="lista_equipamentos.html">Lista</a></li>
+            <li><a class="dropdown-item" href="inserir_equipamento.html">Inserir</a></li>
+            
+          </ul>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="fornecedores.html">Fornecedores</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="localizacaoes.html">Localizações</a>
+        </li>
+
+      </ul>
+
+      <!-- DIREITA -->
+      <div>
+        <button class="btn btn-outline-light">Logout</button>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+
+<!-- CONTEÚDO -->
+<div class="container py-5" style="padding-top: 100px;">
+
+  <!-- AQUI -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h2 class="mb-0">
+      <i class="bi bi-truck me-2 text-primary"></i>
+      Lista de Equipamentos
+    </h2>
+
+    <a href="inserir_equipamento.html" class="btn btn-primary">
+      <i class="bi bi-plus"></i> Inserir Equipamento
+    </a>
+
+  </div>
 
   <div class="card p-3 mb-4 shadow-sm">
   <div class="row g-2">
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <input type="text" id="fCodigo" class="form-control" placeholder="Código">
     </div>
 
@@ -26,11 +104,11 @@
       <input type="text" id="fNome" class="form-control" placeholder="Nome">
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <input type="text" id="fMarca" class="form-control" placeholder="Marca">
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <input type="text" id="fModelo" class="form-control" placeholder="Modelo">
     </div>
 
@@ -38,11 +116,11 @@
       <input type="text" id="fSerie" class="form-control" placeholder="Nº Série">
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <input type="text" id="fLocal" class="form-control" placeholder="Localização">
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <select id="fEstado" class="form-select">
         <option value="">Estado</option>
         <option>Ativo</option>
@@ -51,7 +129,7 @@
       </select>
     </div>
 
-    <div class="col-md-2">
+    <div class="col-md-1">
       <select id="fCriticidade" class="form-select">
         <option value="">Criticidade</option>
         <option>Baixo</option>
@@ -60,13 +138,13 @@
       </select>
     </div>
 
-    <div class="col-md-2 d-grid">
+    <div class="col-md-1 d-grid">
       <button class="btn btn-primary" id="btnFiltrar">
         <i class="bi bi-search"></i> Filtrar
       </button>
     </div>
 
-    <div class="col-md-2 d-grid">
+    <div class="col-md-1 d-grid">
       <button class="btn btn-outline-secondary" id="btnLimpar">
         Limpar
       </button>
@@ -100,7 +178,7 @@
           <td>1298748930WE</td>
           <td>Gabinete 3</td>
           <td>Ativo</td>
-          <td>2</td>
+          <td>Alto</td>
       
           <td>
             <a href="editar_equipamento.html" class="btn btn-sm btn-outline-primary me-2">
@@ -170,6 +248,8 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/1230798.js"></script>
+
+  </div>
 
 </body>
 </html>
