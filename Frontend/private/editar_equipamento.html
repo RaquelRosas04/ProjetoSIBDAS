@@ -119,26 +119,34 @@
     </div>
 
 
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputEntrada" class="form-label">Tipo de Entrada</label>
-        <input type="date" id="inputAquisicao" class="form-control" >
-      </div>
-      <div class="col-md-6">
-        <label for="file-upload" class="upload-btn">Anexar ficheiros</label>
-        <input id="file-upload" type="file" hidden>
-    </div>
+<div class="row g-3 align-items-end">
 
-    </div>
+  <div class="col-md-6">
+    <label class="form-label">Tipo de Entrada</label>
+    <input type="text" class="form-control">
+  </div>
+
+<div class="col-md-6 d-flex align-items-end">
+
+  <input type="file" id="ficheiro" hidden>
+
+  <label for="ficheiro" class="upload-btn">
+    Anexar ficheiros
+  </label>
+
+</div>
+
+</div>
 
 
 
-
-    <!-- Botão “Guardar Alterações” -->
-    <button type="submit" class="btn btn-primary">
-      <i class="bi bi-save me-1"></i> Guardar Alterações
-    </button>
-  </form>
+<!-- BOTÃO GUARDAR (SEPARADO E COM ESPAÇO) -->
+<div class="mt-4">
+  <button class="btn btn-primary">
+    <i class="bi bi-check2-square me-2"></i>
+    Guardar Alterações
+  </button>
+</div>
 
 
   <!-- Modal de Feedback ao salvar -->

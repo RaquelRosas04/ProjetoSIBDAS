@@ -190,6 +190,9 @@ document.getElementById("btnFiltrar").addEventListener("click", function () {
 
 });
 
+
+
+//----------------------------------------EDITAR EQUIPAMENTOS------------------------------------
 document.getElementById("btnLimpar").addEventListener("click", function () {
 
   document.querySelectorAll("input").forEach(i => i.value = "");
@@ -198,4 +201,156 @@ document.getElementById("btnLimpar").addEventListener("click", function () {
     linha.style.display = "";
   });
 
+});
+
+
+
+document.querySelector("form").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  // aqui depois ligas ao backend
+
+  let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+  modal.show();
+});
+
+
+modal.show();
+
+setTimeout(() => {
+  window.location.href = "lista_equipamentos.html";
+}, 1500);
+
+
+
+//----------------------------------------FILTROS FORNECEDORES------------------------------------
+
+
+function filtrarTabela() {
+
+  let nome = document.getElementById("fNome").value.toLowerCase();
+  let nif = document.getElementById("fNIF").value.toLowerCase();
+  let email = document.getElementById("fEmail").value.toLowerCase();
+  let telefone = document.getElementById("fTelefone").value.toLowerCase();
+  let cod = document.getElementById("fCodPostal").value.toLowerCase();
+  let morada = document.getElementById("fMorada").value.toLowerCase();
+
+  let linhas = document.querySelectorAll("tbody tr");
+
+  linhas.forEach(linha => {
+
+    let col = linha.querySelectorAll("td");
+
+    let mostrar =
+      col[0].innerText.toLowerCase().includes(nome) &&
+      col[1].innerText.toLowerCase().includes(nif) &&
+      col[2].innerText.toLowerCase().includes(email) &&
+      col[3].innerText.toLowerCase().includes(telefone) &&
+      col[4].innerText.toLowerCase().includes(cod) &&
+      col[5].innerText.toLowerCase().includes(morada);
+
+    linha.style.display = mostrar ? "" : "none";
+  });
+}
+
+ // 🔹 FILTRO AUTOMÁTICO
+  document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fCodPostal, #fMorada")
+    .forEach(input => {
+      input.addEventListener("input", filtrarTabela);
+    });
+
+  // 🔹 LIMPAR
+  let btnLimpar = document.getElementById("btnLimpar");
+  if (btnLimpar) {
+    btnLimpar.addEventListener("click", function () {
+
+      document.querySelectorAll("input").forEach(i => i.value = "");
+
+      document.querySelectorAll("tbody tr").forEach(linha => {
+        linha.style.display = "";
+      });
+
+    });
+  }
+
+  // 🗑️ APAGAR (EVENT DELEGATION)
+  document.addEventListener("click", function(e) {
+
+    if (e.target.closest(".btn-apagar")) {
+
+      let linha = e.target.closest("tr");
+
+      let modalEl = document.getElementById("modalApagar");
+      if (!modalEl) return;
+
+      let modal = new bootstrap.Modal(modalEl);
+      modal.show();
+
+      let btnConfirmar = document.getElementById("confirmarApagar");
+
+      if (btnConfirmar) {
+        btnConfirmar.onclick = function () {
+          linha.remove();
+          modal.hide();
+        };
+      }
+    }
+
+  });
+
+
+  //----------------------------------------editar:fornecedorrrrrrrr---------------------------------
+
+  // EDITAR FORNECEDOR
+document.addEventListener("click", function(e) {
+
+  if (e.target.closest(".btn-editar")) {
+
+    let linha = e.target.closest("tr");
+    let col = linha.querySelectorAll("td");
+
+    let fornecedor = {
+      nome: col[0].innerText,
+      nif: col[1].innerText,
+      email: col[2].innerText,
+      telefone: col[3].innerText,
+      codPostal: col[4].innerText,
+      morada: col[5].innerText,
+      obs: "" // podes melhorar depois
+    };
+
+    // guardar no browser
+    localStorage.setItem("fornecedorEditar", JSON.stringify(fornecedor));
+
+    // ir para página editar
+    window.location.href = "editar_fornecedor.html";
+  }
+
+});
+
+// CARREGAR DADOS
+document.addEventListener("DOMContentLoaded", function() {
+
+  let fornecedor = JSON.parse(localStorage.getItem("fornecedorEditar"));
+
+  if (fornecedor) {
+    document.getElementById("nome").value = fornecedor.nome;
+    document.getElementById("nif").value = fornecedor.nif;
+    document.getElementById("email").value = fornecedor.email;
+    document.getElementById("telefone").value = fornecedor.telefone;
+    document.getElementById("codPostal").value = fornecedor.codPostal;
+    document.getElementById("morada").value = fornecedor.morada;
+    document.getElementById("obs").value = fornecedor.obs;
+  }
+
+});
+
+
+document.getElementById("formEditarFornecedor").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  // aqui depois ligas ao backend
+
+  let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+  modal.show();
 });
