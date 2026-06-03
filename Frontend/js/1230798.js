@@ -320,21 +320,6 @@ document.getElementById("btnLimpar").addEventListener("click", function () {
 
 
 
-document.querySelector("form").addEventListener("submit", function(e) {
-  e.preventDefault();
-
-  // aqui depois ligas ao backend
-
-  let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
-  modal.show();
-});
-
-
-modal.show();
-
-setTimeout(() => {
-  window.location.href = "lista_equipamentos.html";
-}, 1500);
 
 
 
@@ -437,15 +422,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-document.getElementById("formEditarFornecedor").addEventListener("submit", function(e) {
-  e.preventDefault();
+let formFornecedor = document.getElementById("formEditarFornecedor");
 
-  // aqui depois ligas ao backend
+if (formFornecedor) {
+  formFornecedor.addEventListener("submit", function(e) {
+    e.preventDefault();
 
-  let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
-  modal.show();
-});
-
+    let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+    modal.show();
+  });
+}
 
 
 
