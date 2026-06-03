@@ -69,12 +69,21 @@ function aplicarFiltros() {
 
   const fCodigo = document.getElementById("fCodigo").value.toLowerCase();
   const fNome = document.getElementById("fNome").value.toLowerCase();
+  const fGrupo = document.getElementById("fGrupo").value.toLowerCase();
   const fMarca = document.getElementById("fMarca").value.toLowerCase();
   const fModelo = document.getElementById("fModelo").value.toLowerCase();
   const fSerie = document.getElementById("fSerie").value.toLowerCase();
-  const fLocal = document.getElementById("fLocal").value.toLowerCase();
-  const fEstado = document.getElementById("fEstado").value.toLowerCase();
   const fCriticidade = document.getElementById("fCriticidade").value.toLowerCase();
+  const fEdificio = document.getElementById("fEdificio").value.toLowerCase();
+  const fServico = document.getElementById("fServico").value.toLowerCase();
+  const fAndar = document.getElementById("fAndar").value.toLowerCase();
+  const fSala = document.getElementById("fSala").value.toLowerCase();
+  const fFabricante = document.getElementById("fFabricante").value.toLowerCase();
+  const fAno = document.getElementById("fAno").value.toLowerCase();
+  const fCusto = document.getElementById("fCusto").value.toLowerCase();
+  const fEstado = document.getElementById("fEstado").value.toLowerCase();
+  const fGarantia = document.getElementById("fGarantia").value.toLowerCase();
+
 
   document.querySelectorAll("table tbody tr").forEach(row => {
 
@@ -83,12 +92,21 @@ function aplicarFiltros() {
     const match =
       td[0].textContent.toLowerCase().includes(fCodigo) &&
       td[1].textContent.toLowerCase().includes(fNome) &&
-      td[2].textContent.toLowerCase().includes(fMarca) &&
-      td[3].textContent.toLowerCase().includes(fModelo) &&
-      td[4].textContent.toLowerCase().includes(fSerie) &&
-      td[5].textContent.toLowerCase().includes(fLocal) &&
-      td[6].textContent.toLowerCase().includes(fEstado) &&
-      td[7].textContent.toLowerCase().includes(fCriticidade);
+      td[2].textContent.toLowerCase().includes(fGrupo) &&
+      td[3].textContent.toLowerCase().includes(fMarca) &&
+      td[4].textContent.toLowerCase().includes(fModelo) &&
+      td[5].textContent.toLowerCase().includes(fSerie) &&
+      td[6].textContent.toLowerCase().includes(fCriticidade) &&
+      td[7].textContent.toLowerCase().includes(fEdificio) &&
+      td[8].textContent.toLowerCase().includes(fServico)&&
+      td[9].textContent.toLowerCase().includes(fAndar)&&
+      td[10].textContent.toLowerCase().includes(fSala)&&
+      td[11].textContent.toLowerCase().includes(fFabricante)&&
+      td[12].textContent.toLowerCase().includes(fAno)&&
+      td[13].textContent.toLowerCase().includes(fCusto)&&
+      td[14].textContent.toLowerCase().includes(fEstado)&&
+      td[15].textContent.toLowerCase().includes(fGarantia);
+      
 
     row.style.display = match ? "" : "none";
   });
@@ -98,7 +116,7 @@ function aplicarFiltros() {
 document.getElementById("btnFiltrar")?.addEventListener("click", aplicarFiltros);
 
 // filtro automático ao escrever
-document.querySelectorAll("#fCodigo, #fNome, #fMarca, #fModelo, #fSerie, #fLocal")
+document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fCusto, #fEstado, #fGarantia")
   .forEach(input => {
     input.addEventListener("input", aplicarFiltros);
   });
@@ -112,7 +130,7 @@ document.querySelectorAll("#fEstado, #fCriticidade")
 // botão limpar
 document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
-  document.querySelectorAll("#fCodigo, #fNome, #fMarca, #fModelo, #fSerie, #fLocal")
+  document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fLocal, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fCusto, #fEstado, #fGarantia")
     .forEach(input => input.value = "");
 
   document.getElementById("fEstado").value = "";
@@ -353,13 +371,13 @@ function filtrarTabela() {
   });
 }
 
- // 🔹 FILTRO AUTOMÁTICO
+ // FILTRO AUTOMÁTICO
   document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fCodPostal, #fMorada")
     .forEach(input => {
       input.addEventListener("input", filtrarTabela);
     });
 
-  // 🔹 LIMPAR
+  //  LIMPAR
   let btnLimpar = document.getElementById("btnLimpar");
   if (btnLimpar) {
     btnLimpar.addEventListener("click", function () {
@@ -496,3 +514,8 @@ document.addEventListener("click", function(e) {
   }
 
 });
+
+
+//-----------------------------------INSERIR EQUIPAMENTO----------------------------
+
+

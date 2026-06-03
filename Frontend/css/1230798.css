@@ -648,3 +648,15 @@ body {
 .toast-show {
   opacity: 1;
 }
+
+
+.table th, .table td {
+  white-space: nowrap;
+}
+
+td:first-child, th:first-child {
+  position: sticky;
+  left: 0;
+  background: white;
+  z-index: 2;
+}

@@ -131,7 +131,7 @@
 
           <div class="col-md-2">
             <input type="text" id="fMorada" class="form-control" placeholder="Contacto">
-          </div>
+          </div> 
 
           <!-- BOTÕES -->
           <div class="col-md-1">
@@ -171,7 +171,7 @@
             <tr>
               <td>Dräger</td>
               <td>123456789</td>
-              <td><span class="badge bg-primary">Fabricante</span></td>
+              <td>Fabricante</span></td>
               <td>info@drager.com</td>
               <td>912345678</td>
               <td>João Silva</td>
@@ -236,7 +236,7 @@
 
 
     <script>
-      // 🗑️ APAGAR FORNECEDOR
+
       let linhaFornecedor = null;
 
       document.addEventListener("click", function (e) {
@@ -246,8 +246,8 @@
 
           linhaFornecedor = e.target.closest("tr");
 
-          let modal = new bootstrap.Modal(document.getElementById("modalApagar"));
-          modal.show();
+
+          new bootstrap.Modal(document.getElementById("modalApagar")).show();
         }
 
         // confirmar apagar
@@ -257,8 +257,7 @@
             linhaFornecedor.remove();
           }
 
-          let modal = bootstrap.Modal.getInstance(document.getElementById("modalApagar"));
-          modal.hide();
+          bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
         }
 
       });
