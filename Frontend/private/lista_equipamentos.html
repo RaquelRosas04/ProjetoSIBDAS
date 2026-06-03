@@ -61,7 +61,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="localizacaoes.html">Localizações</a>
+          <a class="nav-link" href="localizacoes.html">Localizações</a>
         </li>
 
       </ul>
@@ -124,10 +124,13 @@
       <select id="fEstado" class="form-select">
         <option value="">Estado</option>
         <option>Ativo</option>
+        <option>Em manutençãp</option>
+        <option>Em calibração</option>
+        <option>Em Quarentena</option>
         <option>Inativo</option>
-        <option>Manutenção</option>
+        <option>Abatido</option>
       </select>
-    </div>
+    </div> 
 
     <div class="col-md-1">
       <select id="fCriticidade" class="form-select">
@@ -230,6 +233,8 @@
       </div>
 
       <div class="modal-body">
+
+  
         <p><strong>Fornecedor:</strong> <span id="mFornecedor"></span></p>
         <p><strong>Ano de Fabrico:</strong> <span id="mAno"></span></p>
         <p><strong>Data de Aquisição:</strong> <span id="mAquisicao"></span></p>

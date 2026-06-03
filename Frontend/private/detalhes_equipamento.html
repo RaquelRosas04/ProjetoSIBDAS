@@ -64,7 +64,7 @@
         </li>
 
         <li class="nav-item">
-          <a class="nav-link" href="localizacaoes.html">Localizações</a>
+          <a class="nav-link" href="localizacoes.html">Localizações</a>
         </li>
 
       </ul>
@@ -122,6 +122,12 @@
   </li>
 
   <li class="nav-item">
+  <button class="nav-link" data-bs-toggle="tab" data-bs-target="#fornecedores">
+    Fornecedor
+  </button>
+</li>
+
+  <li class="nav-item">
     <button class="nav-link" data-bs-toggle="tab" data-bs-target="#anexos">
       Anexos
     </button>
@@ -134,6 +140,21 @@
 
       <!-- TAB 1 -->
       <div class="tab-pane fade show active" id="dados">
+
+
+        <div class="row mb-4">
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Código Inventário:</label>
+    <p id="txtCodigo">EQ001</p>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Categoria:</label>
+    <p id="txtCategoria">Suporte de Vida</p>
+  </div>
+
+</div>
 
         <div class="row mb-4">
           <div class="col-md-6">
@@ -177,6 +198,34 @@
             <p id="txtCriticidade">–</p>
           </div>
         </div>
+
+        <div class="row mb-4">
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Fabricante:</label>
+    <p id="txtFabricante">Dräger</p>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Ano Fabrico:</label>
+    <p id="txtAno">2021</p>
+  </div>
+
+</div>
+
+<div class="row mb-4">
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Data Aquisição:</label>
+    <p id="txtData">2022-03-10</p>
+  </div>
+
+  <div class="col-md-6">
+    <label class="form-label fw-bold">Tipo de Entrada:</label>
+    <p id="txtEntrada">Compra</p>
+  </div>
+
+</div>
 
 
         <a href="editar_equipamento.html" class="btn btn-primary mb-4">
@@ -243,29 +292,122 @@
 
 </div>
 
-      <!-- TAB 4 -->
-      <div class="tab-pane fade" id="anexos">
 
-        <h5 class="mt-3">Documentos</h5>
+<div class="tab-pane fade" id="fornecedores">
 
-        <div class="table-responsive">
-          <table class="table table-bordered table-sm">
-            <thead class="table-custom">
-              <tr>
-                <th>Nome</th>
-                <th>Tipo</th>
-                <th>Ação</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>Manual Técnico</td>
-                <td>PDF</td>
-                <td><button class="btn btn-sm btn-outline-primary">Ver</button></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <h5 class="mt-3 mb-3">Fornecedores Associados</h5>
+
+  <div class="row g-3">
+
+    <!-- FORNECEDOR 1 -->
+    <div class="col-md-6">
+      <div class="card shadow-sm p-3">
+
+        <h6 class="fw-bold mb-2">Dräger</h6>
+
+        <p class="mb-1"><strong>Tipo:</strong> 
+          <span class="badge bg-primary">Fabricante</span>
+        </p>
+
+        <p class="mb-1"><strong>NIF:</strong> 123456789</p>
+        <p class="mb-1"><strong>Email:</strong> info@drager.com</p>
+        <p class="mb-1"><strong>Telefone:</strong> 912345678</p>
+
+        <p class="mb-1"><strong>Contacto:</strong> João Silva</p>
+        <p class="mb-1"><strong>Tel. Contacto:</strong> 912000000</p>
+
+        <p class="mb-0"><strong>Website:</strong> www.drager.com</p>
+
+      </div>
+    </div>
+
+
+  </div>
+
+</div>
+
+      <!-- TAB 5  ---------ANEXOSSSSSSS-->
+
+  <div class="tab-pane fade" id="anexos">
+
+  <h5 class="mt-3">Documentos</h5>
+
+  <!-- BOTÃO ANEXAR -->
+  <div class="mb-3">
+    <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalAnexo">
+      <i class="bi bi-paperclip"></i> Anexar ficheiro
+    </button>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-sm">
+      <thead class="table-custom">
+        <tr>
+          <th>Descrição</th> <!-- NOVO -->
+          <th>Nome</th>
+          <th>Tipo</th>
+          <th>Ação</th>
+        </tr>
+      </thead>
+
+      <tbody id="listaAnexos">
+        <tr>
+          <td>Manual Técnico</td>
+          <td>manual.pdf</td>
+          <td>PDF</td>
+          <td><button class="btn btn-sm btn-outline-primary">Ver</button></td>
+        </tr>
+
+        <tr>
+          <td>Garantia</td>
+          <td>garantia.pdf</td>
+          <td>PDF</td>
+          <td><button class="btn btn-sm btn-outline-primary">Ver</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+                <div class="col-md-6">
+    <label class="form-label fw-bold">Fim Garantia:</label>
+    <p>2025-03-10</p>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modalAnexo">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+
+      <div class="modal-header">
+        <h5>Novo Anexo</h5>
+      </div>
+
+      <div class="modal-body">
+        <input type="file" id="ficheiroAnexo" class="form-control mb-2">
+        <input type="text" id="descricaoAnexo" class="form-control" placeholder="Descrição">
+      </div>
+
+<div class="d-flex justify-content-center">
+  <div id="msgErro" class="alert alert-danger d-none px-3 py-2 text-center" role="alert" style="max-width: 300px;">
+    Preencha todos os campos
+  </div>
+</div>
+
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="btnGuardarAnexo">Upload</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+      
+
+
+
+
+</div>
 
       </div>
 
@@ -279,31 +421,65 @@
   </div>
 
 
-  <div class="modal fade" id="modalErro" tabindex="-1">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
+  
+<script>
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
 
-      <div class="modal-header">
-        <h5 class="modal-title text-danger">
-          <i class="bi bi-exclamation-triangle me-2"></i>
-          Erro
-        </h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
+if (id) {
+  document.getElementById("txtCodigo").innerText = id;
 
-      <div class="modal-body">
-        Equipamento não encontrado.
-      </div>
+  let equipamentos = {
+    "EQ001": { nome: "Ventilador", marca: "Dräger", modelo: "V500" },
+    "EQ002": { nome: "Monitor", marca: "Philips", modelo: "MX450" }
+  };
 
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-          OK
-        </button>
-      </div>
+  if (equipamentos[id]) {
+    document.getElementById("txtNome").innerText = equipamentos[id].nome;
+    document.getElementById("txtMarca").innerText = equipamentos[id].marca;
+    document.getElementById("txtModelo").innerText = equipamentos[id].modelo;
+  }
+}
 
-    </div>
-  </div>
-</div>
+let anexos = [];
+
+document.addEventListener("click", function(e){
+
+  if(e.target.id === "btnGuardarAnexo"){
+
+    let f = document.getElementById("ficheiroAnexo").files[0];
+    let d = document.getElementById("descricaoAnexo").value;
+
+    if(!f || d===""){
+      alert("Preenche tudo");
+      return;
+    }
+
+    anexos.push({
+      nome: f.name,
+      tipo: f.name.split('.').pop(),
+      desc: d
+    });
+
+    let tabela = document.getElementById("listaAnexos");
+    tabela.innerHTML = "";
+
+    anexos.forEach(a=>{
+      tabela.innerHTML += `
+        <tr>
+          <td>${a.desc}</td>
+          <td>${a.nome}</td>
+          <td>${a.tipo}</td>
+        </tr>
+      `;
+    });
+
+    bootstrap.Modal.getInstance(document.getElementById("modalAnexo")).hide();
+  }
+
+});
+</script>
+
 
 </body>
 </html>

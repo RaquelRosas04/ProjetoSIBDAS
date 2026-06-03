@@ -1,4 +1,7 @@
-// -----------------------------DETALHES_EQUIPAMENTO------------------------------------------
+// ----------------------------------------DETALHES_EQUIPAMENTO------------------------------------------
+//----------------------------------------DETALHES EQUIPAMENTOS---------------------------------
+
+
 const form = document.getElementById("formPesquisaEquipamento");
 
 if (form) {
@@ -117,6 +120,118 @@ document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
   aplicarFiltros(); // mostrar tudo outra vez
 });
+
+
+
+// =======================
+//  ANEXOS
+// =======================
+
+let anexos = [];
+
+// CLICK GLOBAL (EVITA ERROS DE NULL)
+document.addEventListener("click", function(e) {
+
+  // 👉 BOTÃO UPLOAD
+  if (e.target.id === "btnGuardarAnexo") {
+
+    let ficheiroInput = document.getElementById("ficheiroAnexo");
+    let descricaoInput = document.getElementById("descricaoAnexo");
+
+    if (!ficheiroInput || !descricaoInput) return;
+
+    let ficheiro = ficheiroInput.files[0];
+    let descricao = descricaoInput.value.trim();
+
+    // VALIDAÇÃO
+    if (!ficheiro || descricao === "") {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    // GUARDAR
+    anexos.push({
+      nome: ficheiro.name,
+      tipo: ficheiro.name.split('.').pop().toUpperCase(),
+      descricao: descricao
+    });
+
+    atualizarTabelaAnexos();
+
+    // LIMPAR CAMPOS
+    ficheiroInput.value = "";
+    descricaoInput.value = "";
+
+    // FECHAR MODAL
+    let modal = bootstrap.Modal.getInstance(document.getElementById("modalAnexo"));
+    if (modal) modal.hide();
+  }
+
+});
+
+
+// =======================
+// ATUALIZAR TABELA
+// =======================
+function atualizarTabelaAnexos() {
+
+  let tabela = document.getElementById("listaAnexos");
+  if (!tabela) return;
+
+  tabela.innerHTML = "";
+
+  anexos.forEach((a, index) => {
+
+    tabela.innerHTML += `
+      <tr>
+        <td>${a.descricao}</td>
+        <td>${a.nome}</td>
+        <td>${a.tipo}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary">Ver</button>
+          <button class="btn btn-sm btn-danger btn-remover-anexo" data-index="${index}">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+}
+
+
+// =======================
+// REMOVER ANEXO
+// =======================
+document.addEventListener("click", function(e) {
+
+  if (e.target.closest(".btn-remover-anexo")) {
+
+    let index = e.target.closest(".btn-remover-anexo").dataset.index;
+
+    anexos.splice(index, 1);
+    atualizarTabelaAnexos();
+  }
+
+});
+
+
+
+// =======================
+// Meter o numero na pesquisa
+// =======================
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+console.log("Equipamento:", id);
+
+if (id) {
+  document.getElementById("txtCodigo").innerText = id;
+}
+
+
+
+
 
 
 //----------------------------------------LOGIN-------------------------------------------
@@ -273,30 +388,6 @@ function filtrarTabela() {
     });
   }
 
-  // 🗑️ APAGAR (EVENT DELEGATION)
-  document.addEventListener("click", function(e) {
-
-    if (e.target.closest(".btn-apagar")) {
-
-      let linha = e.target.closest("tr");
-
-      let modalEl = document.getElementById("modalApagar");
-      if (!modalEl) return;
-
-      let modal = new bootstrap.Modal(modalEl);
-      modal.show();
-
-      let btnConfirmar = document.getElementById("confirmarApagar");
-
-      if (btnConfirmar) {
-        btnConfirmar.onclick = function () {
-          linha.remove();
-          modal.hide();
-        };
-      }
-    }
-
-  });
 
 
   //----------------------------------------editar:fornecedorrrrrrrr---------------------------------
@@ -353,4 +444,69 @@ document.getElementById("formEditarFornecedor").addEventListener("submit", funct
 
   let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
   modal.show();
+});
+
+
+
+
+//---------------------------LOCALIZAÇAO------------------------------------------
+
+let linhaParaApagar = null;
+
+document.addEventListener("click", function(e) {
+
+  // 👁️ VER EQUIPAMENTOS
+  if (e.target.closest(".btn-ver")) {
+
+    let linha = e.target.closest("tr");
+
+    let tabela = document.getElementById("listaEquipamentos");
+    tabela.innerHTML = "";
+
+    let equipamentos = [
+      { codigo: "EQ001", nome: "Ventilador", estado: "Ativo" },
+      { codigo: "EQ002", nome: "Monitor Cardíaco", estado: "Manutenção" }
+    ];
+
+    equipamentos.forEach(eq => {
+
+      let badge =
+        eq.estado === "Ativo"
+          ? '<span class="badge bg-success">Ativo</span>'
+          : '<span class="badge bg-warning text-dark">Manutenção</span>';
+
+      tabela.innerHTML += `
+        <tr>
+          <td>
+            <a href="detalhes_equipamento.html?id=${eq.codigo}">
+              ${eq.codigo}
+            </a>
+          </td>
+          <td>${eq.nome}</td>
+          <td>${badge}</td>
+        </tr>
+      `;
+    });
+
+    new bootstrap.Modal(document.getElementById("modalEquipamentos")).show();
+  }
+
+  // 🗑️ CLICK NO LIXO
+  if (e.target.closest(".btn-apagar")) {
+
+    linhaParaApagar = e.target.closest("tr");
+
+    new bootstrap.Modal(document.getElementById("modalApagar")).show();
+  }
+
+  // ✅ CONFIRMAR APAGAR
+  if (e.target.id === "confirmarApagar") {
+
+    if (linhaParaApagar) {
+      linhaParaApagar.remove();
+    }
+
+    bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
+  }
+
 });

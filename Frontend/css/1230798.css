@@ -29,7 +29,7 @@
 
   --success: #198754;
   --danger: #dc3545;
-  --warning: #ffc107;
+  --warning:#ff0707;
 }
 
 /* BASE */
@@ -119,7 +119,7 @@ h2, h3, h4, h5 {
 }
 
 .badge-media {
-  background-color: #ffc107;
+  background-color: #ff0707;
   color: #000;
 }
 
@@ -617,4 +617,34 @@ body {
 /* DATA */
 .termos-container strong {
   color: #333;
+}
+
+
+
+/* ----------------------------------Mensagem preecher os campos---------------- */
+.toast-custom {
+  position: fixed;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  background-color: #f8d7da;
+  color: #842029;
+
+  padding: 10px 20px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+
+  opacity: 0;
+  transition: opacity 0.3s ease;
+
+  z-index: 9999;
+}
+
+.toast-show {
+  opacity: 1;
 }
