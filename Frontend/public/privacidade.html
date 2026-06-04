@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -58,7 +59,7 @@
 </nav>
 
 <!-- CONTEÚDO -->
-<div class="termos-container">
+<div id="conteudoPrivacidade" class="termos-container">
 
   <h1>Política de Privacidade</h1>
 
@@ -167,6 +168,11 @@
   </div>
 
 </footer>
+
+<script>
+document.getElementById("conteudoPrivacidade").innerHTML =
+  localStorage.getItem("privacidade") || "Texto default privacidade...";
+</script>
 
 </body>
 </html>

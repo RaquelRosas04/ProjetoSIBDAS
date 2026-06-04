@@ -1,3 +1,4 @@
+<!-- termos.html -->
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -58,7 +59,7 @@
 </nav>
 
 <!-- CONTEÚDO -->
-<div class="termos-container mt-5">
+<div id="conteudoTermos" class="termos-container mt-5">
 
   <h1>Termos e Condições</h1>
 
@@ -190,6 +191,10 @@ Os presentes Termos e Condições são regidos pela legislação portuguesa.
   </div>
 
 </footer>
+<script>
+document.getElementById("conteudoTermos").innerHTML =
+  localStorage.getItem("termos") || "Texto default termos...";
+</script>
 
 </body>
 </html>

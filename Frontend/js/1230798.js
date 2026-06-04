@@ -1,6 +1,9 @@
-// ----------------------------------------DETALHES_EQUIPAMENTO------------------------------------------
-//----------------------------------------DETALHES EQUIPAMENTOS---------------------------------
+// ======================================== EQUIPAMENTOS=========================================
 
+
+// ---------------------------------------------------------------------------------------------
+// ----------------------------------------DETALHES_EQUIPAMENTO------------------------------------------
+// ---------------------------------------------------------------------------------------------
 
 const form = document.getElementById("formPesquisaEquipamento");
 
@@ -46,6 +49,118 @@ if (form) {
 }
 
 
+//  ANEXOS
+
+
+let anexos = [];
+
+// CLICK GLOBAL (EVITA ERROS DE NULL)
+document.addEventListener("click", function(e) {
+
+  // 👉 BOTÃO UPLOAD
+  if (e.target.id === "btnGuardarAnexo") {
+
+    let ficheiroInput = document.getElementById("ficheiroAnexo");
+    let descricaoInput = document.getElementById("descricaoAnexo");
+
+    if (!ficheiroInput || !descricaoInput) return;
+
+    let ficheiro = ficheiroInput.files[0];
+    let descricao = descricaoInput.value.trim();
+
+    // VALIDAÇÃO
+    if (!ficheiro || descricao === "") {
+      alert("Preencha todos os campos");
+      return;
+    }
+
+    // GUARDAR
+    anexos.push({
+      nome: ficheiro.name,
+      tipo: ficheiro.name.split('.').pop().toUpperCase(),
+      descricao: descricao
+    });
+
+    atualizarTabelaAnexos();
+
+    // LIMPAR CAMPOS
+    ficheiroInput.value = "";
+    descricaoInput.value = "";
+
+    // FECHAR MODAL
+    let modal = bootstrap.Modal.getInstance(document.getElementById("modalAnexo"));
+    if (modal) modal.hide();
+  }
+
+});
+
+
+
+
+///NAO SEI BEM O QUE FAZ --------------------------------------------------------------
+
+
+// ATUALIZAR TABELA
+function atualizarTabelaAnexos() {
+
+  let tabela = document.getElementById("listaAnexos");
+  if (!tabela) return;
+
+  tabela.innerHTML = "";
+
+  anexos.forEach((a, index) => {
+
+    tabela.innerHTML += `
+      <tr>
+        <td>${a.descricao}</td>
+        <td>${a.nome}</td>
+        <td>${a.tipo}</td>
+        <td>
+          <button class="btn btn-sm btn-outline-primary">Ver</button>
+          <button class="btn btn-sm btn-danger btn-remover-anexo" data-index="${index}">
+            <i class="bi bi-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+}
+
+
+
+// REMOVER ANEXO
+document.addEventListener("click", function(e) {
+
+  if (e.target.closest(".btn-remover-anexo")) {
+
+    let index = e.target.closest(".btn-remover-anexo").dataset.index;
+
+    anexos.splice(index, 1);
+    atualizarTabelaAnexos();
+  }
+
+});
+
+
+
+
+// Meter o numero na pesquisa
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+console.log("Equipamento:", id);
+
+if (id) {
+  document.getElementById("txtCodigo").innerText = id;
+}
+
+
+
+// ---------------------------------------------------------------------------------------------
+// ----------------------------------------LISTA_EQUIPAMENTOS-----------------------------------
+// ---------------------------------------------------------------------------------------------
+
 // LISTA DE EQUIPAMENTOS -- BOTÃO VER
 document.querySelectorAll(".btn-ver").forEach(btn => {
   btn.addEventListener("click", function () {
@@ -62,8 +177,7 @@ document.querySelectorAll(".btn-ver").forEach(btn => {
   });
 });
 
-
-// Filtros-- lista_equipamentos
+// Filtros
 
 function aplicarFiltros() {
 
@@ -139,119 +253,10 @@ document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
 
 
-// =======================
-//  ANEXOS
-// =======================
 
-let anexos = [];
-
-// CLICK GLOBAL (EVITA ERROS DE NULL)
-document.addEventListener("click", function(e) {
-
-  // 👉 BOTÃO UPLOAD
-  if (e.target.id === "btnGuardarAnexo") {
-
-    let ficheiroInput = document.getElementById("ficheiroAnexo");
-    let descricaoInput = document.getElementById("descricaoAnexo");
-
-    if (!ficheiroInput || !descricaoInput) return;
-
-    let ficheiro = ficheiroInput.files[0];
-    let descricao = descricaoInput.value.trim();
-
-    // VALIDAÇÃO
-    if (!ficheiro || descricao === "") {
-      alert("Preencha todos os campos");
-      return;
-    }
-
-    // GUARDAR
-    anexos.push({
-      nome: ficheiro.name,
-      tipo: ficheiro.name.split('.').pop().toUpperCase(),
-      descricao: descricao
-    });
-
-    atualizarTabelaAnexos();
-
-    // LIMPAR CAMPOS
-    ficheiroInput.value = "";
-    descricaoInput.value = "";
-
-    // FECHAR MODAL
-    let modal = bootstrap.Modal.getInstance(document.getElementById("modalAnexo"));
-    if (modal) modal.hide();
-  }
-
-});
-
-
-// =======================
-// ATUALIZAR TABELA
-// =======================
-function atualizarTabelaAnexos() {
-
-  let tabela = document.getElementById("listaAnexos");
-  if (!tabela) return;
-
-  tabela.innerHTML = "";
-
-  anexos.forEach((a, index) => {
-
-    tabela.innerHTML += `
-      <tr>
-        <td>${a.descricao}</td>
-        <td>${a.nome}</td>
-        <td>${a.tipo}</td>
-        <td>
-          <button class="btn btn-sm btn-outline-primary">Ver</button>
-          <button class="btn btn-sm btn-danger btn-remover-anexo" data-index="${index}">
-            <i class="bi bi-trash"></i>
-          </button>
-        </td>
-      </tr>
-    `;
-  });
-
-}
-
-
-// =======================
-// REMOVER ANEXO
-// =======================
-document.addEventListener("click", function(e) {
-
-  if (e.target.closest(".btn-remover-anexo")) {
-
-    let index = e.target.closest(".btn-remover-anexo").dataset.index;
-
-    anexos.splice(index, 1);
-    atualizarTabelaAnexos();
-  }
-
-});
-
-
-
-// =======================
-// Meter o numero na pesquisa
-// =======================
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id");
-
-console.log("Equipamento:", id);
-
-if (id) {
-  document.getElementById("txtCodigo").innerText = id;
-}
-
-
-
-
-
-
+//----------------------------------------------------------------------------------------
 //----------------------------------------LOGIN-------------------------------------------
-
+//----------------------------------------------------------------------------------------
 
 document.getElementById("formLogin")?.addEventListener("submit", function (e) {
 
@@ -291,8 +296,12 @@ if (modalElement) {
 
 
 
-//----------------------------------------FILTROS FORNECEDORES------------------------------------
 
+//------------------------------------------------------------------------------------------------
+//----------------------------------------FORNECEDORES------------------------------------
+//------------------------------------------------------------------------------------------------
+
+//FILTROS Tabela
 
 function filtrarTabela() {
 
@@ -341,11 +350,11 @@ function filtrarTabela() {
     });
   }
 
+//----------------------------------------------------------------------------------------------
+//----------------------------------------EDITAR_FORNECEDOR-------------------------------------
+//----------------------------------------------------------------------------------------------
 
-
-  //----------------------------------------editar:fornecedorrrrrrrr---------------------------------
-
-  // EDITAR FORNECEDOR
+// EDITAR FORNECEDOR
 document.addEventListener("click", function(e) {
 
   if (e.target.closest(".btn-editar")) {
@@ -402,14 +411,17 @@ if (formFornecedor) {
 }
 
 
+//-----------------------------------------------------------------------------------------
+//--------------------------------------LOCALIZAÇAO------------------------------------------
+//-----------------------------------------------------------------------------------------
 
-//---------------------------LOCALIZAÇAO------------------------------------------
+
 
 let linhaParaApagar = null;
 
 document.addEventListener("click", function(e) {
 
-  // 👁️ VER EQUIPAMENTOS
+  //  VER EQUIPAMENTOS
   if (e.target.closest(".btn-ver")) {
 
     let linha = e.target.closest("tr");
@@ -445,7 +457,7 @@ document.addEventListener("click", function(e) {
     new bootstrap.Modal(document.getElementById("modalEquipamentos")).show();
   }
 
-  // 🗑️ CLICK NO LIXO
+  //  CLICK NO LIXO
   if (e.target.closest(".btn-apagar")) {
 
     linhaParaApagar = e.target.closest("tr");
@@ -453,7 +465,7 @@ document.addEventListener("click", function(e) {
     new bootstrap.Modal(document.getElementById("modalApagar")).show();
   }
 
-  // ✅ CONFIRMAR APAGAR
+  // CONFIRMAR APAGAR
   if (e.target.id === "confirmarApagar") {
 
     if (linhaParaApagar) {
@@ -468,9 +480,8 @@ document.addEventListener("click", function(e) {
 
 //-----------------------------------Filtros Localizaçao----------------------------
 
-// =======================
 // FILTROS LOCALIZAÇÕES
-// =======================
+
 
 function aplicarFiltrosLocalizacoes() {
 
@@ -509,3 +520,5 @@ document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
 
   aplicarFiltrosLocalizacoes(); // mostra tudo outra vez
 });
+
+

@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -57,7 +59,7 @@
 </nav>
 
 <!-- CONTEÚDO -->
-<div class="termos-container">
+<div id="conteudoCookies" class="termos-container">
 
   <h1>Política de Cookies</h1>
 
@@ -151,6 +153,11 @@
   </div>
 
 </footer>
+
+<script>
+document.getElementById("conteudoCookies").innerHTML =
+  localStorage.getItem("cookies") || "Texto default cookies...";
+</script>
 
 </body>
 </html>

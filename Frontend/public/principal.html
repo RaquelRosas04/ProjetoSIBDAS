@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="pt">
 <head>
@@ -86,12 +88,12 @@
       <div class="col-md-6">
         <h3 class="mb-3">Sobre Nós</h3>
 
-        <p class="text-muted">
+        <p id="sobre1" class="text-muted">
           A MedInt é uma plataforma dedicada à gestão de equipamentos médicos,
           focada na eficiência operacional, segurança e controlo total dos ativos hospitalares.
         </p>
 
-        <p class="text-muted">
+        <p id="sobre2" class="text-muted">
           Desenvolvemos soluções modernas que permitem às instituições otimizar processos,
           reduzir custos e garantir a qualidade dos serviços prestados.
         </p>
@@ -211,8 +213,8 @@
   <div class="container text-center">
 
     <h4 class="mb-3">Contactos</h4>
-    <p>Email: geral@medint.pt</p>
-    <p>Telefone: +351 912 345 678</p>
+    <p id="txtEmail">Email: geral@medint.pt</p>
+    <p id="txtTelefone">Telefone: +351 912 345 678</p>
 
   </div>
 </section>
@@ -242,6 +244,20 @@
   </div>
 
 </footer>
+
+<script>
+document.getElementById("sobre1").innerHTML =
+  localStorage.getItem("sobre1") || "Texto default 1";
+
+document.getElementById("sobre2").innerHTML =
+  localStorage.getItem("sobre2") || "Texto default 2";
+
+document.getElementById("txtEmail").innerHTML =
+  "Email: " + (localStorage.getItem("email") || "geral@medint.pt");
+
+document.getElementById("txtTelefone").innerHTML =
+  "Telefone: " + (localStorage.getItem("telefone") || "+351 912 345 678");
+</script>
 
 </body>
 
