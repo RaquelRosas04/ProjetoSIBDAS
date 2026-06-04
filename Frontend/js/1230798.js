@@ -80,12 +80,11 @@ function aplicarFiltros() {
   const fSala = document.getElementById("fSala").value.toLowerCase();
   const fFabricante = document.getElementById("fFabricante").value.toLowerCase();
   const fAno = document.getElementById("fAno").value.toLowerCase();
-  const fCusto = document.getElementById("fCusto").value.toLowerCase();
   const fEstado = document.getElementById("fEstado").value.toLowerCase();
   const fGarantia = document.getElementById("fGarantia").value.toLowerCase();
 
 
-  document.querySelectorAll("table tbody tr").forEach(row => {
+  document.querySelectorAll(" tbody tr").forEach(row => {
 
     const td = row.querySelectorAll("td");
 
@@ -103,9 +102,8 @@ function aplicarFiltros() {
       td[10].textContent.toLowerCase().includes(fSala)&&
       td[11].textContent.toLowerCase().includes(fFabricante)&&
       td[12].textContent.toLowerCase().includes(fAno)&&
-      td[13].textContent.toLowerCase().includes(fCusto)&&
-      td[14].textContent.toLowerCase().includes(fEstado)&&
-      td[15].textContent.toLowerCase().includes(fGarantia);
+      td[13].textContent.toLowerCase().includes(fEstado)&&
+      td[14].textContent.toLowerCase().includes(fGarantia);
       
 
     row.style.display = match ? "" : "none";
@@ -116,7 +114,7 @@ function aplicarFiltros() {
 document.getElementById("btnFiltrar")?.addEventListener("click", aplicarFiltros);
 
 // filtro automático ao escrever
-document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fCusto, #fEstado, #fGarantia")
+document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fEstado, #fGarantia")
   .forEach(input => {
     input.addEventListener("input", aplicarFiltros);
   });
@@ -130,7 +128,7 @@ document.querySelectorAll("#fEstado, #fCriticidade")
 // botão limpar
 document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
-  document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fLocal, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fCusto, #fEstado, #fGarantia")
+  document.querySelectorAll("#fCodigo, #fNome, #fGrupo, #fMarca, #fModelo, #fSerie, #fLocal, #fEdificio, #fServico, #fAndar, #fSala, #fFabricante, #fAno, #fEstado, #fGarantia")
     .forEach(input => input.value = "");
 
   document.getElementById("fEstado").value = "";
@@ -290,54 +288,6 @@ if (modalElement) {
   }
 
 });
-
-
-//----------------------------------------FILTROS FORNECEDOSR------------------------------------------
-
-
-document.getElementById("btnFiltrar").addEventListener("click", function () {
-
-  let nome = document.getElementById("fNome").value.toLowerCase();
-  let nif = document.getElementById("fNIF").value.toLowerCase();
-  let email = document.getElementById("fEmail").value.toLowerCase();
-  let telefone = document.getElementById("fTelefone").value.toLowerCase();
-  let cod = document.getElementById("fCodPostal").value.toLowerCase();
-  let morada = document.getElementById("fMorada").value.toLowerCase();
-
-  let linhas = document.querySelectorAll("tbody tr");
-
-  linhas.forEach(linha => {
-
-    let col = linha.querySelectorAll("td");
-
-    let mostrar =
-      col[0].innerText.toLowerCase().includes(nome) &&
-      col[1].innerText.toLowerCase().includes(nif) &&
-      col[2].innerText.toLowerCase().includes(email) &&
-      col[3].innerText.toLowerCase().includes(telefone) &&
-      col[4].innerText.toLowerCase().includes(cod) &&
-      col[5].innerText.toLowerCase().includes(morada);
-
-    linha.style.display = mostrar ? "" : "none";
-  });
-
-});
-
-
-
-//----------------------------------------EDITAR EQUIPAMENTOS------------------------------------
-document.getElementById("btnLimpar").addEventListener("click", function () {
-
-  document.querySelectorAll("input").forEach(i => i.value = "");
-
-  document.querySelectorAll("tbody tr").forEach(linha => {
-    linha.style.display = "";
-  });
-
-});
-
-
-
 
 
 
@@ -516,6 +466,46 @@ document.addEventListener("click", function(e) {
 });
 
 
-//-----------------------------------INSERIR EQUIPAMENTO----------------------------
+//-----------------------------------Filtros Localizaçao----------------------------
 
+// =======================
+// FILTROS LOCALIZAÇÕES
+// =======================
 
+function aplicarFiltrosLocalizacoes() {
+
+  const fEdificio = document.getElementById("fNome").value.toLowerCase();
+  const fServico = document.getElementById("fNIF").value.toLowerCase();
+  const fAndar = document.getElementById("fEmail").value.toLowerCase();
+  const fSala = document.getElementById("fTelefone").value.toLowerCase();
+
+  document.querySelectorAll("table tbody tr").forEach(row => {
+
+    const td = row.querySelectorAll("td");
+
+    const match =
+      td[0].textContent.toLowerCase().includes(fEdificio) &&
+      td[1].textContent.toLowerCase().includes(fServico) &&
+      td[2].textContent.toLowerCase().includes(fAndar) &&
+      td[3].textContent.toLowerCase().includes(fSala);
+
+    row.style.display = match ? "" : "none";
+  });
+}
+
+// BOTÃO FILTRAR
+document.getElementById("btnFiltrar")?.addEventListener("click", aplicarFiltrosLocalizacoes);
+
+// FILTRO AUTOMÁTICO AO ESCREVER
+document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
+  .forEach(input => {
+    input.addEventListener("input", aplicarFiltrosLocalizacoes);
+  });
+
+  document.getElementById("btnLimpar")?.addEventListener("click", function () {
+
+  document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
+    .forEach(input => input.value = "");
+
+  aplicarFiltrosLocalizacoes(); // mostra tudo outra vez
+});

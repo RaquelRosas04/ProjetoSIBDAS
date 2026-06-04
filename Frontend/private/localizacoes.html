@@ -275,73 +275,9 @@
 </div>
 
 
-   <!-- JS -->
-  <script>
-    let linhaParaApagar = null;
-
-    document.addEventListener("click", function (e) {
-
-      // 👁️ VER
-      if (e.target.closest(".btn-ver")) {
-
-        let linha = e.target.closest("tr");
-
-        let tabela = document.getElementById("listaEquipamentos");
-        tabela.innerHTML = "";
-
-        let equipamentos = [
-          { codigo: "EQ001", nome: "Ventilador", estado: "Ativo" },
-          { codigo: "EQ002", nome: "Monitor Cardíaco", estado: "Manutenção" }
-        ];
-
-        equipamentos.forEach(eq => {
-
-          let badge =
-            eq.estado === "Ativo"
-              ? '<span class="badge bg-success">Ativo</span>'
-              : '<span class="badge bg-warning text-dark">Manutenção</span>';
-
-          tabela.innerHTML += `
-        <tr>
-          <td>
-            <a href="detalhes_equipamento.html?id=${eq.codigo}">
-              ${eq.codigo}
-            </a>
-          </td>
-          <td>${eq.nome}</td>
-          <td>${badge}</td>
-        </tr>
-      `;
-        });
-
-        new bootstrap.Modal(document.getElementById("modalEquipamentos")).show();
-      }
-
-      // 🗑️ CLICK NO LIXO
-      if (e.target.closest(".btn-apagar")) {
-
-        linhaParaApagar = e.target.closest("tr");
-
-        new bootstrap.Modal(document.getElementById("modalApagar")).show();
-      }
-
-      // ✅ CONFIRMAR APAGAR
-      if (e.target.id === "confirmarApagar") {
-
-        if (linhaParaApagar) {
-          linhaParaApagar.remove();
-        }
-
-        bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
-      }
-
-    });
-
-
-    
-  </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/1230798.js"></script>
 
 </body>
 

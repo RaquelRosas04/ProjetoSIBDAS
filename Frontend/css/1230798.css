@@ -650,13 +650,15 @@ body {
 }
 
 
-.table th, .table td {
-  white-space: nowrap;
+
+
+/* ------TABELA LISTA EUQIPAMENRSO*/
+table {
+  table-layout: fixed;
 }
 
-td:first-child, th:first-child {
-  position: sticky;
-  left: 0;
-  background: white;
-  z-index: 2;
-}
+
+
+
+
+
