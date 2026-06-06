@@ -15,7 +15,7 @@
   <!-- Navbar -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
     <div class="container-fluid px-3">
-      <a href="dashboard.html" class="navbar-brand">
+      <a href="dashboard.php" class="navbar-brand">
         <img src="../assets/images/logo.png" height="45">
       </a>
     </div>
@@ -87,7 +87,7 @@
         </div>
 
         <!-- BOTÕES -->
-        <div class="mt-4 d-flex justify-content-between"> <a href="fornecedores.html" class="btn btn-outline-secondary">
+        <div class="mt-4 d-flex justify-content-between"> <a href="fornecedores.php" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Voltar </a> <button type="submit" class="btn btn-primary"> <i
               class="bi bi-plus-circle me-1"></i> Inserir Fornecedor </button>
         </div>
@@ -178,7 +178,7 @@
       }, 3000);
 
       // REDIRECIONAR
-      window.location.href = "fornecedores.html";
+      window.location.href = "fornecedores.php";
     }
 
   </script>

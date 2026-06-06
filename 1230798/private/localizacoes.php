@@ -1,4 +1,7 @@
-<?php include '../common/header.html'; ?>
+
+<?php include 'includes/header_priv.php'; ?>
+<?require_once __DIR__ . '/../../includes/db_connect.php';?>
+
 
   <!-- CONTEÚDO -->
   <div class="container py-4" style="padding-top: 100px;">
@@ -9,7 +12,7 @@
         Localizações
       </h2>
 
-      <a href="inserir_localizacao.html" class="btn btn-primary">
+      <a href="inserir_localizacao.php" class="btn btn-primary">
         <i class="bi bi-plus"></i> Inserir Localização
       </a>
     </div>
@@ -77,7 +80,7 @@
 
             <td>
               <!-- EDITAR -->
-              <a href="editar_localizacao.html?id=1" class="btn btn-sm btn-outline-primary">
+              <a href="editar_localizacao.php?id=1" class="btn btn-sm btn-outline-primary">
                 <i class="bi bi-pencil"></i>
               </a>
 

@@ -17,7 +17,7 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
     <div class="container-fluid px-3">
-      <a href="dashboard.html" class="navbar-brand">
+      <a href="dashboard.php" class="navbar-brand">
         <img src="../assets/images/logo.png" height="45">
       </a>
     </div>
@@ -186,10 +186,10 @@
 
 
         <!-- BOTÕES -->
-        <div class="mt-4 d-flex justify-content-between"> <a href="lista_equipamentos.html"
+        <div class="mt-4 d-flex justify-content-between"> <a href="lista_equipamentos.php"
             class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Voltar </a> <button type="submit" class="btn btn-primary"> <i
-              class="bi bi-plus-circle me-1"></i> Inserir Fornecedor </button>
+              class="bi bi-plus-circle me-1"></i> Inserir Equipamento </button>
         </div>
 
 
@@ -198,6 +198,8 @@
     </div>
 
   </div>
+
+
 
   <div class="modal fade" id="modalSucesso" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -228,6 +230,41 @@
       </div>
     </div>
   </div>
+
+
+
+
+    <script>
+    document.getElementById("formLocalizacao").addEventListener("submit", function (e) {
+
+      e.preventDefault();
+
+      let edificio = document.getElementById("edificio").value.trim();
+      let servico = document.getElementById("servico").value.trim();
+      let andar = document.getElementById("andar").value.trim();
+      let sala = document.getElementById("sala").value.trim();
+
+      if (!edificio || !servico || !andar || !sala) {
+
+        let erro = document.getElementById("msgErro");
+        erro.classList.remove("d-none");
+
+        setTimeout(() => {
+          erro.classList.add("d-none");
+        }, 3000);
+
+        return;
+      }
+
+      // 🔥 SIMULAÇÃO (depois PHP)
+      console.log("Localização inserida");
+
+      // REDIRECIONAR
+      window.location.href = "localizacoes.php";
+
+    });
+  </script>
+  
 
 <script src="../js/1230798.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

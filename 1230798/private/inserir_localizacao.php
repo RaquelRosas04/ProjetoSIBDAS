@@ -15,7 +15,7 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
     <div class="container-fluid px-3">
-      <a href="dashboard.html" class="navbar-brand">
+      <a href="dashboard.php" class="navbar-brand">
         <img src="../assets/images/logo.png" height="45">
       </a>
     </div>
@@ -64,18 +64,22 @@
 
 
         <!-- BOTÕES -->
-        <div class="mt-4 d-flex justify-content-between"> <a href="localizacoes.html" class="btn btn-outline-secondary">
+        <div class="mt-4 d-flex justify-content-between"> <a href="localizacoes.php" class="btn btn-outline-secondary">
             <i class="bi bi-arrow-left"></i> Voltar </a> <button type="submit" class="btn btn-primary"> <i
-              class="bi bi-plus-circle me-1"></i> Inserir Fornecedor </button>
+              class="bi bi-plus-circle me-1"></i> Inserir Localização </button>
         </div>
 
       </form>
     </div>
   </div>
 
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
+
+
+
+<script>
     document.getElementById("formLocalizacao").addEventListener("submit", function (e) {
 
       e.preventDefault();
@@ -101,11 +105,10 @@
       console.log("Localização inserida");
 
       // REDIRECIONAR
-      window.location.href = "localizacoes.html";
+      window.location.href = "localizacoes.php";
 
     });
-  </script>
-
+</script>
 
 </body>
 

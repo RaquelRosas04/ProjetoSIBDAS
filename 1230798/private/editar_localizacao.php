@@ -85,7 +85,7 @@
                         <i class="bi bi-check-lg"></i> Guardar Alterações
                     </button>
 
-                    <a href="localizacoes.html" class="btn btn-secondary">
+                    <a href="localizacoes.php" class="btn btn-secondary">
                         Cancelar
                     </a>
                 </div>
@@ -161,7 +161,7 @@
 
             // BOTÃO OK
             document.getElementById("btnVoltarLista").addEventListener("click", function () {
-                window.location.href = "localizacoes.html";
+                window.location.href = "localizacoes.php";
             });
 
         });

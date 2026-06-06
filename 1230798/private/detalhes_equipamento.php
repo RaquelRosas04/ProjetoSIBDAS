@@ -1,87 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Detalhes do Equipamento</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- CSS -->
-  <link rel="stylesheet" href="../css/1230798.css">
-
-
-</head>
-
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
-    <div class="container-fluid px-3">
-
-      <!-- LOGO (ESQUERDA) -->
-      <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
-        <img src="../assets/images/logo.png" height="45" class="me-2 logo-nav">
-      </a>
-
-      <!-- BOTÃO MOBILE -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- CONTEÚDO -->
-      <div class="collapse navbar-collapse" id="navContent">
-
-        <!-- MENU CENTRADO -->
-        <ul class="navbar-nav mx-auto nav-center">
-
-          <li class="nav-item">
-            <a class="nav-link" href="dashboard.html">Dashboard</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link active" href="detalhes_equipamento.html">Detalhes</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="ot.html">OT's</a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="lista_equipamentos.html" data-bs-toggle="dropdown">
-              Equipamentos
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="lista_equipamentos.html">Lista</a></li>
-              <li><a class="dropdown-item" href="inserir_equipamento.html">Inserir</a></li>
-
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="fornecedores.html">Fornecedores</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="localizacoes.html">Localizações</a>
-          </li>
-
-        </ul>
-
-        <!-- DIREITA -->
-        <div>
-          <button class="btn btn-outline-light">Logout</button>
-        </div>
-
-        <li class="nav-item">
-          <a class="nav-link" href="admin_editar.html">Conteúdos</a>
-        </li>
-
-      </div>
-    </div>
-  </nav>
+<?php include 'includes/header_priv.php'; ?>
+<?require_once __DIR__ . '/../../includes/db_connect.php';?>
 
   <div class="container py-4">
     <!-- Título -->
@@ -145,7 +63,7 @@
 
       <div class="tab-content">
 
-        <!-- TAB 1 -->
+        <!-- Dados -->
         <div class="tab-pane fade show active" id="dados">
 
 
@@ -236,46 +154,18 @@
           </div>
 
 
-          <a href="editar_equipamento.html" class="btn btn-primary mb-4">
+          <a href="editar_equipamento.php" class="btn btn-primary mb-4">
             <i class="bi bi-pencil"></i> Editar Dados
           </a>
 
         </div>
 
-        <!-- TAB 2 -->
-
-        <div class="tab-pane fade" id="ot">
-
-          <h5 class="mt-3 mb-2">Ordens de Trabalho Ativas</h5>
-
-          <table class="table table-bordered table-sm">
-            <thead class="table-custom">
-              <tr>
-                <th>ID</th>
-                <th>Tipo</th>
-                <th>Data</th>
-                <th>Técnico</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>OT001</td>
-                <td>Manutenção</td>
-                <td>2025-06-01</td>
-                <td>João Silva</td>
-                <td><span class="badge bg-warning">Em curso</span></td>
-              </tr>
-            </tbody>
-          </table>
-
-        </div>
 
 
-        <!-- TAB 3 -->
-        <div class="tab-pane fade" id="historicoOT">
+        <!-- Historico do equipamento -->
+        <div class="tab-pane fade" id="historicoEquipamento">
 
-          <h5 class="mt-3 mb-2">Histórico de Ordens de Trabalho</h5>
+          <h5 class="mt-3 mb-2">Histórico do Equipamento</h5>
 
           <table class="table table-bordered table-sm">
             <thead class="table-custom">
@@ -300,6 +190,8 @@
 
         </div>
 
+
+<!-- Fornecedores -->
 
         <div class="tab-pane fade" id="fornecedores">
 
@@ -334,7 +226,7 @@
 
         </div>
 
-        <!-- TAB 5  ---------ANEXOSSSSSSS-->
+        <!------ANEXOS-->
 
         <div class="tab-pane fade" id="anexos">
 

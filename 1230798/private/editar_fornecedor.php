@@ -91,7 +91,7 @@
       <!-- BOTÕES -->
       <div class="mt-4 d-flex justify-content-between">
 
-        <a href="fornecedores.html" class="btn btn-outline-secondary">
+        <a href="fornecedores.php" class="btn btn-outline-secondary">
           <i class="bi bi-arrow-left"></i> Voltar
         </a>
 
@@ -183,7 +183,7 @@
 
       // BOTÃO OK
       document.getElementById("btnVoltarLista").addEventListener("click", function () {
-        window.location.href = "fornecedores.html";
+        window.location.href = "fornecedores.php";
       });
 
     });

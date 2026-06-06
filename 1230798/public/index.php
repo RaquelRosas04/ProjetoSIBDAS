@@ -1,80 +1,14 @@
+<?php include '../private/includes/header_pub.php'; ?>
 
 
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-  <meta charset="UTF-8">
-  <title>MedInt</title>
+<div class="hero-content text-center">
+  <h1>Gestão Inteligente de Equipamentos</h1>
+  <p>Controlo total, eficiência máxima e segurança hospitalar.</p>
 
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../css/1230798.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <link rel="icon" href="../assets/images/logo_.png" type="image/png">
-
-  <style>
-    html {
-      scroll-behavior: smooth;
-    }
-  </style>
-</head>
-
-<body>
-
-<!-- HERO -->
-<section class="hero" id="home">
-
-  <div class="overlay"></div>
-
-  <!-- NAVBAR -->
- <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
-  <div class="container-fluid px-3">
-
-    <!-- LOGO (ESQUERDA) -->
-    <a href="principal.html" class="navbar-brand">
-      <img src="../assets/images/logo.png" height="45">
-    </a>
-
-    <!-- BOTÃO MOBILE -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- CONTEÚDO -->
-    <div class="collapse navbar-collapse">
-
-      <!-- MENU CENTRADO -->
-<ul class="navbar-nav mx-auto nav-center">
-  <li class="nav-item">
-    <a href="#sobre" class="nav-link">Sobre</a>
-  </li>
-  <li class="nav-item">
-    <a href="#funcionalidades" class="nav-link">Funcionalidades</a>
-  </li>
-  <li class="nav-item">
-    <a href="#como" class="nav-link">Como Funciona</a>
-  </li>
-  <li class="nav-item">
-    <a href="#contactos" class="nav-link">Contactos</a>
-  </li>
-</ul>
-
-      <!-- LOGIN (DIREITA) -->
-      <div>
-        <a href="../login/login.html" class="btn btn-primary">Login</a>
-      </div>
-
-    </div>
-  </div>
-</nav>
-
-  <div class="hero-content text-center">
-    <h1>Gestão Inteligente de Equipamentos</h1>
-    <p>Controlo total, eficiência máxima e segurança hospitalar.</p>
-
-    <a href="../login/login.html" class="btn btn-primary btn-lg mt-3">
-      Entrar no Sistema
-    </a>
-  </div>
+  <a href="../login/login.php" class="btn btn-primary btn-lg mt-3">
+    Entrar no Sistema
+  </a>
+</div>
 
 </section>
 
@@ -219,44 +153,20 @@
   </div>
 </section>
 
-<footer class="footer-main">
-  <div class="container-fluid d-flex justify-content-between align-items-center flex-wrap">
-
-    <!-- LEFT -->
-      <div>
-        © 2026 MedInt. Todos os direitos reservados
-      </div>
-
-      <!-- CENTER -->
-      <div class="footer-links">
-        <a href="termos.html">Termos e Condições</a>
-        <a href="cookies.html">Política de Cookies</a>
-        <a href="privacidade.html">Política de Privacidade</a>
-        <a href="https://www.livroreclamacoes.pt/INICIO/">Livro de Reclamações <i class="bi bi-box-arrow-up-right"></i></a>
-      </div>
-
-      <!-- RIGHT -->
-      <div>
-        <img src="../assets/images/logo.png" height="35" class="logo-footer">
-      </div>
-
-    </div>
-  </div>
-
-</footer>
+<?php include '../private/includes/footer_pub.php'; ?>
 
 <script>
-document.getElementById("sobre1").innerHTML =
-  localStorage.getItem("sobre1") || "Texto default 1";
+  document.getElementById("sobre1").innerHTML =
+    localStorage.getItem("sobre1") || "Texto default 1";
 
-document.getElementById("sobre2").innerHTML =
-  localStorage.getItem("sobre2") || "Texto default 2";
+  document.getElementById("sobre2").innerHTML =
+    localStorage.getItem("sobre2") || "Texto default 2";
 
-document.getElementById("txtEmail").innerHTML =
-  "Email: " + (localStorage.getItem("email") || "geral@medint.pt");
+  document.getElementById("txtEmail").innerHTML =
+    "Email: " + (localStorage.getItem("email") || "geral@medint.pt");
 
-document.getElementById("txtTelefone").innerHTML =
-  "Telefone: " + (localStorage.getItem("telefone") || "+351 912 345 678");
+  document.getElementById("txtTelefone").innerHTML =
+    "Telefone: " + (localStorage.getItem("telefone") || "+351 912 345 678");
 </script>
 
 </body>

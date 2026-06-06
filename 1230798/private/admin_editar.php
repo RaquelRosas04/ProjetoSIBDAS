@@ -1,9 +1,8 @@
 <!-- Navbar -->
-<?php include '../../includes/nav/nav_1230798_assistente.php'; ?>
-
+<?php include 'includes/header_priv.php'; ?>
+<?require_once __DIR__ . '/../../includes/db_connect.php';?>
 
     <body>
-
         <div class="container py-4">
 
             <div class="admin-header">
@@ -61,7 +60,7 @@
             //  PROTEÇÃO ADMIN
             /* const tipo = localStorage.getItem("tipoUser");
             if (tipo !== "admin") {
-              window.location.href = "sem_acesso.html";
+              window.location.href = "sem_acesso.php";
             } */
 
             // 🔄 CARREGAR DADOS

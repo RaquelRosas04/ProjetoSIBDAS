@@ -278,7 +278,7 @@ document.getElementById("formLogin")?.addEventListener("submit", function (e) {
     localStorage.setItem("user", email);
 
     // redirecionar
-    window.location.href = "../private/lista_equipamentos.html";
+    window.location.href = "../private/lista_equipamentos.php";
 
   } else {
 const modalElement = document.getElementById('modalErroLogin');
@@ -376,7 +376,7 @@ document.addEventListener("click", function(e) {
     localStorage.setItem("fornecedorEditar", JSON.stringify(fornecedor));
 
     // ir para página editar
-    window.location.href = "editar_fornecedor.html";
+    window.location.href = "editar_fornecedor.php";
   }
 
 });
@@ -444,7 +444,7 @@ document.addEventListener("click", function(e) {
       tabela.innerHTML += `
         <tr>
           <td>
-            <a href="detalhes_equipamento.html?id=${eq.codigo}">
+            <a href="detalhes_equipamento.php?id=${eq.codigo}">
               ${eq.codigo}
             </a>
           </td>
@@ -520,5 +520,11 @@ document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
 
   aplicarFiltrosLocalizacoes(); // mostra tudo outra vez
 });
+
+
+
+
+
+    
 
 

@@ -1,89 +1,5 @@
-<!DOCTYPE html>
-<html lang="pt">
-
-<head>
-  <meta charset="UTF-8">
-  <title>Fornecedores</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- CSS -->
-  <link rel="stylesheet" href="../css/1230798.css">
-
-
-
-</head>
-
-<body>
-
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark fixed-top custom-navbar">
-    <div class="container-fluid px-3">
-
-      <!-- LOGO (ESQUERDA) -->
-      <a href="dashboard.html" class="navbar-brand d-flex align-items-center">
-        <img src="../assets/images/logo.png" height="45" class="me-2 logo-nav">
-      </a>
-
-      <!-- BOTÃO MOBILE -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- CONTEÚDO -->
-      <div class="collapse navbar-collapse" id="navContent">
-
-        <!-- MENU CENTRADO -->
-        <ul class="navbar-nav mx-auto nav-center">
-
-          <li class="nav-item">
-            <a class="nav-link" href="dashboard.html">Dashboard</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="detalhes_equipamento.html">Detalhes</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="ot.html">OT's</a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="lista_equipamentos.html" data-bs-toggle="dropdown">
-              Equipamentos
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="lista_equipamentos.html">Lista</a></li>
-              <li><a class="dropdown-item" href="inserir_equipamento.html">Inserir</a></li>
-
-            </ul>
-          </li>
-
-          <li class="nav-item ">
-            <a class="nav-link active" href="fornecedores.html">Fornecedores</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="localizacoes.html">Localizações</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link" href="admin_editar.html">Conteúdos</a>
-          </li>
-
-        </ul>
-
-        <!-- DIREITA -->
-        <div>
-          <button class="btn btn-outline-light">Logout</button>
-        </div>
-
-      </div>
-    </div>
-  </nav>
-
+<?php include 'includes/header_priv.php'; ?>
+<?require_once __DIR__ . '/../../includes/db_connect.php';?>
 
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -102,7 +18,7 @@
           Fornecedores
         </h2>
 
-        <a href="inserir_fornecedor.html" class="btn btn-primary">
+        <a href="inserir_fornecedor.php" class="btn btn-primary">
           <i class="bi bi-plus"></i> Inserir Fornecedor
         </a>
 
@@ -182,7 +98,7 @@
               <td>
 
                 <!-- EDITAR -->
-                <a href="editar_fornecedor.html" class="btn btn-sm btn-outline-primary">
+                <a href="editar_fornecedor.php" class="btn btn-sm btn-outline-primary">
                   <i class="bi bi-pencil"></i>
                 </a>
 

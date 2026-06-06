@@ -1,5 +1,5 @@
-<!-- Navbar -->
-<?php include '../common/header.html'; ?>
+<?php include 'includes/header_priv.php'; ?>
+<?require_once __DIR__ . '/../../includes/db_connect.php';?>
 
 
   <!-- CONTEÚDO -->
@@ -13,7 +13,7 @@
         Lista de Equipamentos
       </h2>
 
-      <a href="inserir_equipamento.html" class="btn btn-primary">
+      <a href="inserir_equipamento.php" class="btn btn-primary">
         <i class="bi bi-plus"></i> Inserir Equipamento
       </a>
 
@@ -165,7 +165,7 @@
             <td>2023</td>
 
             <td>
-              <a href="editar_equipamento.html" class="btn btn-sm btn-outline-primary me-2">
+              <a href="editar_equipamento.php" class="btn btn-sm btn-outline-primary me-2">
                 <i class="bi bi-pencil"></i> Editar
               </a>
 
