@@ -1,26 +1,3 @@
-
-
-
-<?php
-
-session_start();
-
-require_once __DIR__ . '/../config/config.php';
-
-//echo MYSQL_HOST . '<br>';
-//echo MYSQL_DATABASE . '<br>';
-//echo MYSQL_USERNAME . '<br>';
-//exit;
-
-$validation_errors = $_SESSION['validation_errors'] ?? [];
-unset($_SESSION['validation_errors']);
-
-$server_error = $_SESSION['server_error'] ?? '';
-unset($_SESSION['server_error']);
-
-?>
-
-
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -52,36 +29,17 @@ unset($_SESSION['server_error']);
 
       <div class="logo">Login</div>
 
-      <!--comentado alteraçao Login -->
       <!--<form id="formLogin"> --> 
-<!-- Valida dados errrados no login e aparece a mensagem de login novamente-->
-          <?php if (!empty($validation_errors)): ?>
-            <div class="alert alert-danger p-2 text-center">
-              <?php foreach ($validation_errors as $erro): ?>
-                <div><?= htmlspecialchars($erro) ?></div>
-              <?php endforeach; ?>
-            </div>
-          <?php endif; ?>
-
-          <?php if (!empty($server_error)): ?>
-            <div class="alert alert-danger p-2 text-center">
-              <?= htmlspecialchars($server_error) ?>
-            </div>
-          <?php endif; ?>
-
-
-
-
-      <form id="formLogin" action="../private/processa_login.php" method="post">
+        <form id="formLogin" action="../private/processa_login.php" method="post">
 
         <div class="mb-3">
           <label class="form-label">Email</label>
-         <input type="email" id="email" name="text_username" class="form-control" placeholder="email@exemplo.com">
+          <input type="email" id="email" class="form-control" placeholder="email@exemplo.com">
         </div>
 
         <div class="mb-3">
           <label class="form-label">Password</label>
-          <input type="password" id="password" name="text_password" class="form-control" placeholder="********">
+          <input type="password" id="password" class="form-control" placeholder="********">
         </div>
 
         <button class="btn btn-primary w-100 mb-3">

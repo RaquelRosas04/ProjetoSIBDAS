@@ -727,3 +727,10 @@ textarea.admin-textarea {
   min-height: 180px !important;
   height: 180px;
 }
+
+
+#dados p {
+  margin-bottom: 6px;
+}
+
+

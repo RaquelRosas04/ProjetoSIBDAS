@@ -20,7 +20,7 @@ session_destroy();
 // --------------------------------------------------------------------  
 
 // Após terminar a sessão, redireciona o utilizador para a página de login 
-header('Location: ../login/login.php');
+header('Location: index.php');
 
 // Encerra a execução do script 
 exit;

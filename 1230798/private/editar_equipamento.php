@@ -1,3 +1,7 @@
+<?php require_once __DIR__ . '/includes/funcoes.php';
+redirect_if_not_logged();
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -16,7 +20,10 @@
     .bg-readonly {
       background-color: #e9ecef !important;
     }
-    .form-label { font-weight: 500; }
+
+    .form-label {
+      font-weight: 500;
+    }
   </style>
 </head>
 
@@ -29,7 +36,7 @@
   </h2>
 
 
-  <form id="formEditar" >
+  <form id="formEditar">
     <!-- 1ª linha: Código, nº de série -->
     <div class="row mb-4">
       <div class="col-md-6">
@@ -43,7 +50,7 @@
     </div>
 
     <!-- 2ª linha: Nome,  Marca -->
-         <div class="row mb-4">
+    <div class="row mb-4">
       <div class="col-md-6">
         <label for="inputNome" class="form-label">Nome</label>
         <input type="text" id="inputNome" class="form-control bg-readonly" readonly>
@@ -98,11 +105,11 @@
     <div class="row mb-4">
       <div class="col-md-6">
         <label for="inputFornecedor" class="form-label">Fornecedor</label>
-        <input type="text" id="inputFornecedor" class="form-control" >
+        <input type="text" id="inputFornecedor" class="form-control">
       </div>
       <div class="col-md-6">
         <label for="inputAnoFabrico" class="form-label">Ano de Fabrico</label>
-        <input type="text" id="inputAnoFabrico" class="form-control" >
+        <input type="text" id="inputAnoFabrico" class="form-control">
       </div>
     </div>
 
@@ -110,77 +117,78 @@
     <div class="row mb-4">
       <div class="col-md-6">
         <label for="inputAquisicao" class="form-label">Data de Aquisição</label>
-        <input type="date" id="inputAquisicao" class="form-control" >
+        <input type="date" id="inputAquisicao" class="form-control">
       </div>
       <div class="col-md-6">
         <label for="inputGarantia" class="form-label">Data de Garantia</label>
-        <input type="date" id="inputGarantia" class="form-control" >
+        <input type="date" id="inputGarantia" class="form-control">
       </div>
     </div>
 
 
-<div class="row g-3 align-items-end">
+    <div class="row g-3 align-items-end">
 
-  <div class="col-md-6">
-    <label class="form-label">Tipo de Entrada</label>
-    <input type="text" class="form-control">
-  </div>
+      <div class="col-md-6">
+        <label class="form-label">Tipo de Entrada</label>
+        <input type="text" class="form-control">
+      </div>
 
-<div class="col-md-6 d-flex align-items-end">
+      <div class="col-md-6 d-flex align-items-end">
 
-  <input type="file" id="ficheiro" hidden>
+        <input type="file" id="ficheiro" hidden>
 
-  <label for="ficheiro" class="upload-btn">
-    Anexar ficheiros
-  </label>
+        <label for="ficheiro" class="upload-btn">
+          Anexar ficheiros
+        </label>
 
-</div>
+      </div>
 
-</div>
-
-
-
-<!-- BOTÃO GUARDAR (SEPARADO E COM ESPAÇO) -->
-<div class="mt-4">
-  <button class="btn btn-primary">
-    <i class="bi bi-check2-square me-2"></i>
-    Guardar Alterações
-  </button>
-</div>
+    </div>
 
 
-  <!-- Modal de Feedback ao salvar -->
-  <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content border-0">
-        <div class="modal-body text-center">
-          <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
-          <h5 class="modal-title mb-2" id="feedbackModalLabel">Alterações Guardadas!</h5>
-          <p class="mb-0">O seu agendamento foi atualizado com sucesso.</p>
-        </div>
-        <div class="modal-footer justify-content-center">
-          <!-- Botão OK que redireciona -->
-          <button type="button"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  id="btnFecharFeedback">
-            OK
-          </button>
+
+    <!-- BOTÃO GUARDAR (SEPARADO E COM ESPAÇO) -->
+    <div class="mt-4">
+      <button class="btn btn-primary">
+        <i class="bi bi-check2-square me-2"></i>
+        Guardar Alterações
+      </button>
+    </div>
+
+
+    <!-- Modal de Feedback ao salvar -->
+    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0">
+          <div class="modal-body text-center">
+            <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
+            <h5 class="modal-title mb-2" id="feedbackModalLabel">Alterações Guardadas!</h5>
+            <p class="mb-0">O seu agendamento foi atualizado com sucesso.</p>
+          </div>
+          <div class="modal-footer justify-content-center">
+            <!-- Botão OK que redireciona -->
+            <button type="button"
+              class="btn btn-primary"
+              data-bs-dismiss="modal"
+              id="btnFecharFeedback">
+              OK
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
 
 
 
-  <!-- Bootstrap JS + Day.js -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+    <!-- Bootstrap JS + Day.js -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
 
 
 
-  <!-- Script externo -->
-  <script src="../js/1230798.js"></script>
+    <!-- Script externo -->
+    <script src="../js/1230798.js"></script>
 </body>
+
 </html>

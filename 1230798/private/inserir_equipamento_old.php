@@ -5,9 +5,33 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$erro = '';
-$sucesso = '';
+try {
+    $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
 
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $sql = "
+        SELECT e.id, e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
+        localizacao.idServico localizacao, euni.estado, e.criticidade
+        FROM equipamentos e
+        INNER JOIN equipamentounidade euni
+            ON e.id= euni.idequipamento
+        INNER JOIN marca on e.idMarca=marca.id
+        INNER JOIN localizacao ON euni.idlocalizacao=localizacao.id
+    ";
+
+    $stmt = $ligacao->query($sql);
+    $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
+    $erro = '';
+
+} catch (PDOException $e) {
+    $erro = 'Erro ao carregar equipamentos.';
+    $equipamentos = [];
+}
 
 ?>
 

@@ -1,7 +1,9 @@
 
 <?php include 'includes/header_priv.php'; ?>
 <?require_once __DIR__ . '/../../includes/db_connect.php';?>
-
+<?php require_once __DIR__ . '/includes/funcoes.php';
+      redirect_if_not_logged();
+?>
 
   <!-- CONTEÚDO -->
   <div class="container py-4" style="padding-top: 100px;">
@@ -84,10 +86,6 @@
                 <i class="bi bi-pencil"></i>
               </a>
 
-              <!-- VER -->
-              <button class="btn btn-sm btn-outline-primary btn-ver">
-                <i class="bi bi-eye"></i>
-              </button>
 
               <!-- APAGAR -->
               <button class="btn btn-sm btn-outline-danger btn-apagar">
@@ -103,37 +101,8 @@
 
   </div>
 
-  <!-- MODAL EQUIPAMENTOS -->
-  <div class="modal fade" id="modalEquipamentos" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
 
-        <div class="modal-header">
-          <h5 class="modal-title">Equipamentos da Sala</h5>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-
-        <div class="modal-body">
-
-          <table class="table table-bordered table-sm">
-            <thead class="table-custom">
-              <tr>
-                <th>Código</th>
-                <th>Nome</th>
-                <th>Estado</th>
-              </tr>
-            </thead>
-
-            <tbody id="listaEquipamentos"></tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-    </div>
-  </div>
-
+   <!-- BOTAO APAGAR-->
 
   <div class="modal fade" id="modalApagar" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
@@ -202,6 +171,36 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/1230798.js"></script>
+
+
+      <script>
+
+      let linhaLocalizacao = null;
+
+      document.addEventListener("click", function (e) {
+
+        // clicar no botão apagar
+        if (e.target.closest(".btn-apagar")) {
+
+          linhaLocalizacao = e.target.closest("tr");
+
+
+          new bootstrap.Modal(document.getElementById("modalApagar")).show();
+        }
+
+        // confirmar apagar
+        if (e.target.id === "confirmarApagar") {
+
+          if (linhaLocalizacao) {
+            linhaLocalizacao.remove();
+          }
+
+          bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
+        }
+
+      });
+
+    </script>
 
 </body>
 

@@ -1,41 +1,8 @@
-<?php
-
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/includes/funcoes.php';
-
-redirect_if_not_logged();
-
-try {
-    $ligacao = new PDO(
-        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
-
-    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    $sql = "
-        SELECT e.id, e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
-        localizacao.idServico localizacao, euni.estado, e.criticidade
-        FROM equipamentos e
-        INNER JOIN equipamentounidade euni
-            ON e.id= euni.idequipamento
-        INNER JOIN marca on e.idMarca=marca.id
-        INNER JOIN localizacao ON euni.idlocalizacao=localizacao.id
-    ";
-
-    $stmt = $ligacao->query($sql);
-    $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $erro = '';
-
-} catch (PDOException $e) {
-    $erro = 'Erro ao carregar equipamentos.';
-    $equipamentos = [];
-}
-
-?>
-
 <?php include 'includes/header_priv.php'; ?>
+<? require_once __DIR__ . '/../../includes/db_connect.php'; ?>
+<?php require_once __DIR__ . '/includes/funcoes.php';
+      redirect_if_not_logged();
+?>
 
 
 
@@ -140,47 +107,30 @@ try {
       </thead>
       <tbody>
 
-<?php if (!empty($erro)): ?>
+        <!-- EQUIPAMENTO-->
+        <tr>
+          <td>CD0034</td>
+          <td>Aparelho de Sinais Vitais</td>
+          <td>GE</td>
+          <td>TSV</td>
+          <td>1298748930WE</td>
+          <td>Gabinete 3</td>
+          <td>Ativo</td>
+          <td>Alto</td>
 
-  <tr>
-    <td colspan="9" class="text-center text-danger">
-      <?= htmlspecialchars($erro) ?>
-    </td>
-  </tr>
+          <td>
 
-<?php elseif (count($equipamentos) == 0): ?>
+            <a href="detalhes_equipamento.php" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-eye"></i>
+            </a>
 
-  <tr>
-    <td colspan="9" class="text-center text-muted">
-      Não existem equipamentos registados.
-    </td>
-  </tr>
 
-<?php else: ?>
+          </td>
+        </tr>
 
-  <?php foreach ($equipamentos as $equipamento): ?>
-    <tr>
-      <td><?= htmlspecialchars($equipamento->id) ?></td>
-      <td><?= htmlspecialchars($equipamento->descricao) ?></td>
-      <td><?= htmlspecialchars($equipamento->marca) ?></td>
-      <td><?= htmlspecialchars($equipamento->modelo) ?></td>
-      <td><?= htmlspecialchars($equipamento->numSerie) ?></td>
-      <td><?= htmlspecialchars($equipamento->localizacao) ?></td>
-      <td><?= htmlspecialchars($equipamento->estado) ?></td>
-      <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
 
-      <td>
-        <a href="detalhes_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
-           class="btn btn-sm btn-outline-primary">
-          <i class="bi bi-eye"></i>
-        </a>
-      </td>
-    </tr>
-  <?php endforeach; ?>
 
-<?php endif; ?>
-
-</tbody>
+      </tbody>
     </table>
   </div>
 

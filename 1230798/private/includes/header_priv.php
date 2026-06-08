@@ -60,6 +60,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="lista_equipamentos.php">Lista</a></li>
                             <li><a class="dropdown-item" href="inserir_equipamento.php">Inserir</a></li>
+                            
 
                         </ul>
                     </li>
@@ -80,7 +81,13 @@ $currentPage = basename($_SERVER['PHP_SELF']);
 
                 <!-- DIREITA -->
                 <div>
-                    <button class="btn btn-outline-light">Logout</button>
+                   <!-- <button class="btn btn-outline-light">Logout</button> -->
+                    <button
+                        class="btn btn-outline-light"
+                        onclick="window.location.href='/1230798/public/logout.php'">
+                        Logout
+                    </button>
+
                 </div>
 
             </div>

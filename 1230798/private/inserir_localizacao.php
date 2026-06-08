@@ -1,3 +1,7 @@
+<?php require_once __DIR__ . '/includes/funcoes.php';
+      redirect_if_not_logged();
+?>
+
 <!DOCTYPE html>
 <html lang="pt">
 
@@ -74,13 +78,17 @@
   </div>
 
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/1230798.js"></script>
 
 
 
-<script>
-    document.getElementById("formLocalizacao").addEventListener("submit", function (e) {
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../js/1230798.js"></script>
+
+
+
+  <script>
+    document.getElementById("formLocalizacao").addEventListener("submit", function(e) {
 
       e.preventDefault();
 
@@ -108,7 +116,7 @@
       window.location.href = "localizacoes.php";
 
     });
-</script>
+  </script>
 
 </body>
 
