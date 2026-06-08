@@ -14,6 +14,8 @@ redirect_if_not_logged();
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <!-- Estilos comuns -->
 
+  <link rel="icon" href="../assets/images/aba.png" type="image/png">
+
   <link rel="stylesheet" href="../css/1230798.css">
   <style>
     /* Para destacar o campo NIF como não editável */

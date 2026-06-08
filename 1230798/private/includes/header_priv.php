@@ -17,7 +17,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/1230798.css">
-    <link rel="icon" href="/assets/images/logo_.png" type="image/png">
+    <link rel="icon" href="../assets/images/aba.png" type="image/png">
 
 
 </head>

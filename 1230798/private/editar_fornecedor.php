@@ -17,6 +17,8 @@
   <!-- CSS -->
   <link rel="stylesheet" href="../css/1230798.css">
 
+  <link rel="icon" href="../assets/images/aba.png" type="image/png">
+
   <style>
     .toast-custom {
       position: fixed;
