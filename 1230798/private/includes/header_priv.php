@@ -15,9 +15,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- para dropdow pesquisavel no inserir_equipamento-->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <!-- CSS -->
     <link rel="stylesheet" href="../css/1230798.css">
     <link rel="icon" href="../assets/images/aba.png" type="image/png">
+
 
 
 </head>

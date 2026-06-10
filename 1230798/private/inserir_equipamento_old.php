@@ -6,11 +6,12 @@ require_once __DIR__ . '/includes/funcoes.php';
 redirect_if_not_logged();
 
 try {
-    $ligacao = new PDO(
-        "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
-        MYSQL_USERNAME,
-        MYSQL_PASSWORD
-    );
+$ligacao = new PDO(
+    "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+    MYSQL_USERNAME,
+    MYSQL_PASSWORD
+);
+  
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 

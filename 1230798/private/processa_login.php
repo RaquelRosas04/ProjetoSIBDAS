@@ -2,8 +2,8 @@
 
 session_start();
 
-
 require_once __DIR__ . '/../config/config.php';
+
 
 
 if ($_SERVER['REQUEST_METHOD'] != 'POST') {
@@ -31,11 +31,12 @@ if (!empty($validation_errors)) {
 }
 
 try {
- $ligacao = new PDO(
-   "mysql:host=" . MYSQL_HOST . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+$ligacao = new PDO(
+    "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
     MYSQL_USERNAME,
     MYSQL_PASSWORD
-    );
+);
+
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -50,15 +51,24 @@ $stmt->execute([$username]);
 
 $user = $stmt->fetch(PDO::FETCH_OBJ);
 
+//echo '<pre>';
 //var_dump($user);
+//echo '</pre>';
+//exit;
 
 
-
-} catch (PDOException $e) {
-    $_SESSION['server_error'] = 'Erro na ligação à base de dados.';
+}
+catch (PDOException $e) {
+  $_SESSION['server_error'] = 'Erro na ligação à base de dados.';
     header('Location: ../public/login.php');
     exit;
-}
+     }
+
+
+// catch de teste para ver erro
+//catch (PDOException $e) {
+  //  die("Erro PDO: " . $e->getMessage());
+//}
 
 if (!$user) {
     $_SESSION['server_error'] = 'Login inválido.';
@@ -67,7 +77,7 @@ if (!$user) {
 }
 
 
-if ($user->pass != $password) {
+if ($user->password != $password) {
     $_SESSION['server_error'] = 'Login inválido.';
     header('Location: ../public/login.php');
     exit;
@@ -76,7 +86,7 @@ if ($user->pass != $password) {
 $ligacao = null;
 
 $_SESSION['utilizador'] = $user->email;
-$_SESSION['perfil'] = $user->perfil;
+//$_SESSION['perfil'] = $user->perfil;
 
 header('Location: lista_equipamentos.php');
 exit;
