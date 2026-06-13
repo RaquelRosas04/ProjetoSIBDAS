@@ -63,11 +63,23 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="lista_equipamentos.php">Lista</a></li>
                             <li><a class="dropdown-item" href="inserir_equipamento.php">Inserir Equipamento</a></li>
+                            
+
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link <?= ($currentPage == 'lista_equipamentos.php') ? 'active' : '' ?>"href="lista_equipamentos.php" data-bs-toggle="dropdown">
+                            Inventário
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="lista_equipamentos_unidade.php">Lista</a></li>
                             <li><a class="dropdown-item" href="inserir_equipamento_unidade.php">Inserir Equipamento Série</a></li>
                             
 
                         </ul>
                     </li>
+
 
                     <li class="nav-item">
                         <a class="nav-link <?= ($currentPage == 'fornecedores.php') ? 'active' : '' ?>" href="fornecedores.php">Fornecedores</a>

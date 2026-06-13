@@ -246,6 +246,45 @@ document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
 
 
+//----------------------------------------------------------------------------------------
+//----------------------------------------LOGIN-------------------------------------------
+//----------------------------------------------------------------------------------------
+
+document.getElementById("formLogin")?.addEventListener("submit", function (e) {
+
+  e.preventDefault();
+
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  // validação simples
+  if (!email || !password) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  // SIMULAÇÃO (depois ligas ao backend)
+  if (email === "admin@medeint.pt" && password === "1234") {
+
+    // guardar sessão (simples)
+    localStorage.setItem("user", email);
+
+    // redirecionar
+    window.location.href = "../private/lista_equipamentos.php";
+
+  } else {
+const modalElement = document.getElementById('modalErroLogin');
+
+if (modalElement) {
+  const modal = new bootstrap.Modal(modalElement);
+  modal.show();
+} else {
+  console.error("Modal não encontrado");
+}
+
+  }
+
+});
 
 
 
@@ -303,6 +342,79 @@ function filtrarTabela() {
     });
   }
 
+//----------------------------------------------------------------------------------------------
+//----------------------------------------EDITAR_FORNECEDOR-------------------------------------
+//----------------------------------------------------------------------------------------------
+
+// EDITAR FORNECEDOR
+document.addEventListener("click", function(e) {
+
+  if (e.target.closest(".btn-editar")) {
+
+    let linha = e.target.closest("tr");
+    let col = linha.querySelectorAll("td");
+
+    let fornecedor = {
+      nome: col[0].innerText,
+      nif: col[1].innerText,
+      email: col[2].innerText,
+      telefone: col[3].innerText,
+      codPostal: col[4].innerText,
+      morada: col[5].innerText,
+      obs: "" // podes melhorar depois
+    };
+
+    // guardar no browser
+    localStorage.setItem("fornecedorEditar", JSON.stringify(fornecedor));
+
+    // ir para página editar
+    window.location.href = "editar_fornecedor.php";
+  }
+
+});
+
+
+// // CARREGAR DADOS - editar fornecedor
+// document.addEventListener("DOMContentLoaded", function () {
+
+//     const nome = document.getElementById("nome");
+
+//     // Só executa na página Editar Fornecedor
+//     if (!nome) {
+//         return;
+//     }
+
+//     let fornecedor = JSON.parse(localStorage.getItem("fornecedorEditar"));
+
+//     if (!fornecedor) {
+//         return;
+//     }
+
+//     document.getElementById("nome").value = fornecedor.nome || "";
+//     document.getElementById("nif").value = fornecedor.nif || "";
+//     document.getElementById("email").value = fornecedor.email || "";
+//     document.getElementById("telefone").value = fornecedor.telefone || "";
+//     document.getElementById("codPostal").value = fornecedor.codPostal || "";
+//     document.getElementById("morada").value = fornecedor.morada || "";
+
+//     const obs = document.getElementById("obs");
+//     if (obs) {
+//         obs.value = fornecedor.obs || "";
+//     }
+
+// });
+
+
+let formFornecedor = document.getElementById("formEditarFornecedor");
+
+if (formFornecedor) {
+  formFornecedor.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let modal = new bootstrap.Modal(document.getElementById('modalSucesso'));
+    modal.show();
+  });
+}
 
 
 //-----------------------------------------------------------------------------------------
@@ -424,25 +536,25 @@ document.addEventListener("DOMContentLoaded", function () {
 // });
 
 
-// document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () {
 
-//     console.log("JS carregado");
+    console.log("JS carregado");
 
-//     const btnMostrarComponentes = document.getElementById("btnMostrarComponentes");
-//     const areaComponentes = document.getElementById("areaComponentes");
+    const btnMostrarComponentes = document.getElementById("btnMostrarComponentes");
+    const areaComponentes = document.getElementById("areaComponentes");
 
-//     console.log(btnMostrarComponentes);
-//     console.log(areaComponentes);
+    console.log(btnMostrarComponentes);
+    console.log(areaComponentes);
 
-//     if (btnMostrarComponentes && areaComponentes) {
+    if (btnMostrarComponentes && areaComponentes) {
 
-//         btnMostrarComponentes.addEventListener("click", function () {
+        btnMostrarComponentes.addEventListener("click", function () {
 
-//             console.log("Clique!");
+            console.log("Clique!");
 
-//             areaComponentes.classList.toggle("d-none");
-//         });
+            areaComponentes.classList.toggle("d-none");
+        });
 
-//     }
+    }
 
-// });
+});

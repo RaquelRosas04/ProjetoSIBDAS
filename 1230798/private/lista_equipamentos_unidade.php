@@ -5,14 +5,6 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$server_error = $_SESSION['server_error'] ?? '';
-unset($_SESSION['server_error']);
-
-$server_success = $_SESSION['server_success'] ?? '';
-unset($_SESSION['server_success']);
-
-
-
 try {
 $ligacao = new PDO(
     "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
@@ -24,16 +16,13 @@ $ligacao = new PDO(
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $sql = "
-    SELECT 
-        e.id,
-        e.descricao,
-        marca.descricao AS marca,
-        e.modelo,
-        e.criticidade
-    FROM equipamentos e
-    INNER JOIN marca 
-        ON e.idMarca = marca.id
-    ORDER BY e.id DESC
+        SELECT e.id, e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
+        localizacao.idServico localizacao, euni.estado, e.criticidade
+        FROM equipamentos e
+        INNER JOIN equipamentounidade euni
+            ON e.id= euni.idequipamento
+        INNER JOIN marca on e.idMarca=marca.id
+        INNER JOIN localizacao ON euni.idlocalizacao=localizacao.id
     ";
 
     $stmt = $ligacao->query($sql);
@@ -92,8 +81,22 @@ $ligacao = new PDO(
         <input type="text" id="fModelo" class="form-control" placeholder="Modelo">
       </div>
 
+      <div class="col-md-2">
+        <input type="text" id="fSerie" class="form-control" placeholder="Nº Série">
+      </div>
 
+      <div class="col-md-1">
+        <input type="text" id="fLocal" class="form-control" placeholder="Localização">
+      </div>
 
+      <div class="col-md-1">
+        <select id="fEstado" class="form-select">
+          <option value="">Estado</option>
+          <option>Ativo</option>
+          <option>Inativo</option>
+          <option>Manutenção</option>
+        </select>
+      </div>
 
       <div class="col-md-1">
         <select id="fCriticidade" class="form-select">
@@ -121,8 +124,6 @@ $ligacao = new PDO(
     </div>
   </div>
 
-
-
   <div class="table-responsive">
     <table class="table table-bordered align-middle">
       <thead class="table-custom">
@@ -131,6 +132,9 @@ $ligacao = new PDO(
           <th>Nome</th>
           <th>Marca</th>
           <th>Modelo</th>
+          <th>Nº Série</th>
+          <th>Localização</th>
+          <th>Estado</th>
           <th>Criticidade</th>
           <th>Ações</th>
         </tr>
@@ -161,21 +165,17 @@ $ligacao = new PDO(
       <td><?= htmlspecialchars($equipamento->descricao) ?></td>
       <td><?= htmlspecialchars($equipamento->marca) ?></td>
       <td><?= htmlspecialchars($equipamento->modelo) ?></td>
+      <td><?= htmlspecialchars($equipamento->numSerie) ?></td>
+      <td><?= htmlspecialchars($equipamento->localizacao) ?></td>
+      <td><?= htmlspecialchars($equipamento->estado) ?></td>
       <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
 
-                <td>
-                  <a href="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
-                    class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil"></i>
-                  </a>
-
-                  <a href="apagar_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
-                    class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm('Tem a certeza que deseja eliminar este equipamento?');">
-                    <i class="bi bi-trash"></i>
-                  </a>
-                </td>
-
+      <td>
+        <a href="detalhes_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
+           class="btn btn-sm btn-outline-primary">
+          <i class="bi bi-eye"></i>
+        </a>
+      </td>
     </tr>
   <?php endforeach; ?>
 
@@ -199,7 +199,6 @@ $ligacao = new PDO(
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
 
-<?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
 </div>
 
 </body>

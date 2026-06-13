@@ -37,3 +37,14 @@ function logout_and_redirect($redirect_to = '/public/index.php')
         header("Location: " . BASE_URL . $redirect_to); 
             exit; 
 } 
+
+
+function definir_mensagem($tipo, $texto)
+{
+    start_session();
+
+    $_SESSION['mensagem_modal'] = [
+        'tipo' => $tipo,
+        'texto' => $texto
+    ];
+}

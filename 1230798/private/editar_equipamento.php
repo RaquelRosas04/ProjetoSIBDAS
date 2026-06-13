@@ -1,196 +1,551 @@
-<?php require_once __DIR__ . '/includes/funcoes.php';
+<?php
+
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/includes/funcoes.php';
+
 redirect_if_not_logged();
+
+$erros = [];
+
+try {
+    $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
+
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+        $id = $_POST['id'] ?? '';
+
+        $descricao = trim($_POST['descricao'] ?? '');
+        $idTipo = $_POST['idTipo'] ?? '';
+        $idMarca = $_POST['idMarca'] ?? '';
+        $modelo = trim($_POST['modelo'] ?? '');
+        $anosGarantia = $_POST['anosGarantia'] ?? '';
+        $criticidade = $_POST['criticidade'] ?? '';
+        $componente = $_POST['componente'] ?? 0;
+        $componentes = $_POST['componentes'] ?? [];
+
+        $componente = ($componente == 1 || $componente === 'Sim') ? 1 : 0;
+
+        if ($id === '') {
+            $erros[] = 'Equipamento inválido.';
+        }
+
+        if ($descricao === '') {
+            $erros[] = 'Preencha a designação do equipamento.';
+        }
+
+        if ($idTipo === '') {
+            $erros[] = 'Selecione o tipo/categoria.';
+        }
+
+        if ($idMarca === '') {
+            $erros[] = 'Selecione a marca.';
+        }
+
+        if ($modelo === '') {
+            $erros[] = 'Preencha o modelo.';
+        }
+
+        if ($anosGarantia === '') {
+            $erros[] = 'Preencha os anos de garantia.';
+        }
+
+        if ($criticidade === '') {
+            $erros[] = 'Selecione a criticidade.';
+        }
+
+        if (!empty($erros)) {
+            $_SESSION['validation_errors'] = $erros;
+            header('Location: editar_equipamento.php?id=' . urlencode($id));
+            exit;
+        }
+
+        $ligacao->beginTransaction();
+
+        $sqlEquipamento = "
+            UPDATE equipamentos
+            SET descricao = ?,
+                idTipo = ?,
+                idMarca = ?,
+                modelo = ?,
+                anosGarantia = ?,
+                criticidade = ?,
+                componente = ?
+            WHERE id = ?
+        ";
+
+        $stmtEquipamento = $ligacao->prepare($sqlEquipamento);
+
+        $stmtEquipamento->execute([
+            $descricao,
+            $idTipo,
+            $idMarca,
+            $modelo,
+            $anosGarantia,
+            $criticidade,
+            ($componente ? "\x01" : "\x00"),
+            $id
+        ]);
+
+        $stmtDelete = $ligacao->prepare("
+            DELETE FROM equipamentocomponentes
+            WHERE idEquiPai = ?
+        ");
+        $stmtDelete->execute([$id]);
+
+        $componentes = array_unique($componentes);
+
+        foreach ($componentes as $idComponente) {
+            if (!empty($idComponente) && $idComponente != $id) {
+
+                $stmtComponente = $ligacao->prepare("
+                    INSERT INTO equipamentocomponentes
+                    (
+                        idEquiPai,
+                        idEquiComp
+                    )
+                    VALUES (?, ?)
+                ");
+
+                $stmtComponente->execute([
+                    $id,
+                    $idComponente
+                ]);
+            }
+        }
+
+        $ligacao->commit();
+
+        if (function_exists('definir_mensagem')) {
+            definir_mensagem('success', 'Equipamento alterado com sucesso.');
+        }
+
+        header('Location: lista_equipamentos.php');
+        exit;
+    }
+
+    $id = $_GET['id'] ?? '';
+
+    if ($id === '') {
+        header('Location: lista_equipamentos.php');
+        exit;
+    }
+
+    $stmtEquipamento = $ligacao->prepare("
+        SELECT id,
+               descricao,
+               idTipo,
+               idMarca,
+               modelo,
+               anosGarantia,
+               criticidade,
+               componente + 0 AS componente
+        FROM equipamentos
+        WHERE id = ?
+    ");
+    $stmtEquipamento->execute([$id]);
+    $equipamento = $stmtEquipamento->fetch(PDO::FETCH_OBJ);
+
+    if (!$equipamento) {
+        header('Location: lista_equipamentos.php');
+        exit;
+    }
+
+    $tipos = $ligacao->query("
+        SELECT id, descricao
+        FROM tipoequipamento
+        ORDER BY descricao
+    ")->fetchAll(PDO::FETCH_OBJ);
+
+    $marcas = $ligacao->query("
+        SELECT id, descricao
+        FROM marca
+        ORDER BY descricao
+    ")->fetchAll(PDO::FETCH_OBJ);
+
+    $stmtComponentes = $ligacao->prepare("
+        SELECT id, descricao, modelo
+        FROM equipamentos
+        WHERE componente = 1
+          AND id <> ?
+        ORDER BY descricao
+    ");
+    $stmtComponentes->execute([$id]);
+    $componentes = $stmtComponentes->fetchAll(PDO::FETCH_OBJ);
+
+    $stmtAssociados = $ligacao->prepare("
+        SELECT ec.idEquiComp,
+               e.descricao,
+               e.modelo
+        FROM equipamentocomponentes ec
+        INNER JOIN equipamentos e ON ec.idEquiComp = e.id
+        WHERE ec.idEquiPai = ?
+        ORDER BY e.descricao
+    ");
+    $stmtAssociados->execute([$id]);
+    $componentesAssociados = $stmtAssociados->fetchAll(PDO::FETCH_OBJ);
+
+    $idsComponentesAssociados = [];
+
+    foreach ($componentesAssociados as $compAssoc) {
+        $idsComponentesAssociados[] = (string) $compAssoc->idEquiComp;
+    }
+
+    $validation_errors = $_SESSION['validation_errors'] ?? [];
+    unset($_SESSION['validation_errors']);
+
+} catch (PDOException $e) {
+    die("Erro ao carregar dados: " . $e->getMessage());
+}
+
+include __DIR__ . '/includes/header_priv.php';
+
 ?>
 
-<!DOCTYPE html>
-<html lang="pt">
+<div class="container py-5" style="padding-top: 100px;">
 
-<head>
-  <meta charset="UTF-8">
-  <title>Editar Equipamento</title>
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Bootstrap Icons -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-  <!-- Estilos comuns -->
+    <h2 class="mb-4">
+        <i class="bi bi-pencil-square me-2 text-primary"></i>
+        Editar Equipamento
+    </h2>
 
-  <link rel="icon" href="../assets/images/aba.png" type="image/png">
+    <div class="card p-4 shadow-sm">
 
-  <link rel="stylesheet" href="../css/1230798.css">
-  <style>
-    /* Para destacar o campo NIF como não editável */
-    .bg-readonly {
-      background-color: #e9ecef !important;
+        <?php if (!empty($validation_errors)): ?>
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    <?php foreach ($validation_errors as $erro): ?>
+                        <li><?= htmlspecialchars($erro) ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <form method="post" action="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>">
+
+            <input type="hidden" name="id" value="<?= htmlspecialchars($equipamento->id) ?>">
+
+            <h5 class="mb-3 text-primary">Dados do Equipamento</h5>
+
+            <div class="row g-3">
+
+                <div class="col-md-5">
+                    <label class="form-label">Designação</label>
+                    <input type="text"
+                           name="descricao"
+                           class="form-control"
+                           value="<?= htmlspecialchars($equipamento->descricao) ?>"
+                           required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Tipo / Categoria</label>
+                    <select name="idTipo" class="form-select" required>
+                        <option value="">Selecione</option>
+
+                        <?php foreach ($tipos as $tipo): ?>
+                            <option value="<?= $tipo->id ?>"
+                                <?= $equipamento->idTipo == $tipo->id ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($tipo->descricao) ?>
+                            </option>
+                        <?php endforeach; ?>
+
+                    </select>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Marca</label>
+                    <select name="idMarca" class="form-select" required>
+                        <option value="">Selecione</option>
+
+                        <?php foreach ($marcas as $marca): ?>
+                            <option value="<?= $marca->id ?>"
+                                <?= $equipamento->idMarca == $marca->id ? 'selected' : '' ?>>
+                                <?= htmlspecialchars($marca->descricao) ?>
+                            </option>
+                        <?php endforeach; ?>
+
+                    </select>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Modelo</label>
+                    <input type="text"
+                           name="modelo"
+                           class="form-control"
+                           value="<?= htmlspecialchars($equipamento->modelo) ?>"
+                           required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Anos de Garantia</label>
+                    <input type="number"
+                           name="anosGarantia"
+                           class="form-control"
+                           min="0"
+                           value="<?= htmlspecialchars($equipamento->anosGarantia) ?>"
+                           required>
+                </div>
+
+                <div class="col-md-3">
+                    <label class="form-label">Criticidade</label>
+                    <select name="criticidade" class="form-select" required>
+                        <option value="">Selecione</option>
+
+                        <option value="Baixa" <?= $equipamento->criticidade === 'Baixa' ? 'selected' : '' ?>>
+                            Baixa
+                        </option>
+
+                        <option value="Média" <?= $equipamento->criticidade === 'Média' ? 'selected' : '' ?>>
+                            Média
+                        </option>
+
+                        <option value="Alta" <?= $equipamento->criticidade === 'Alta' ? 'selected' : '' ?>>
+                            Alta
+                        </option>
+
+                        <option value="Suporte de vida" <?= $equipamento->criticidade === 'Suporte de vida' ? 'selected' : '' ?>>
+                            Suporte de vida
+                        </option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">É componente?</label>
+                    <select name="componente" class="form-select" required>
+                        <option value="0" <?= $equipamento->componente == 0 ? 'selected' : '' ?>>
+                            Não
+                        </option>
+
+                        <option value="1" <?= $equipamento->componente == 1 ? 'selected' : '' ?>>
+                            Sim
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="mt-4 d-flex justify-content-between">
+                <a href="lista_equipamentos.php" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i>
+                    Voltar
+                </a>
+
+                <div>
+                    <button type="button"
+                            id="btnMostrarComponentes"
+                            class="btn btn-outline-primary me-2">
+                        <i class="bi bi-diagram-3"></i>
+                        Associar Componentes
+                    </button>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>
+                        Guardar Alterações
+                    </button>
+                </div>
+            </div>
+
+            <div id="areaComponentes" class="<?= !empty($componentesAssociados) ? '' : 'd-none' ?>">
+
+                <hr class="my-4">
+
+                <h5 class="mb-3 text-primary">Componentes associados</h5>
+
+                <div class="row g-2 mb-3 align-items-end">
+
+                    <div class="col-md-8">
+                        <label class="form-label">Componente</label>
+
+                        <select id="selectComponente" class="form-select">
+                            <option value="">Selecione um componente</option>
+
+                            <?php foreach ($componentes as $comp): ?>
+                                <option value="<?= $comp->id ?>"
+                                        data-descricao="<?= htmlspecialchars($comp->descricao, ENT_QUOTES) ?>"
+                                        data-modelo="<?= htmlspecialchars($comp->modelo ?? '', ENT_QUOTES) ?>">
+                                    <?= htmlspecialchars($comp->descricao) ?>
+                                    <?= !empty($comp->modelo) ? ' - ' . htmlspecialchars($comp->modelo) : '' ?>
+                                </option>
+                            <?php endforeach; ?>
+
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button type="button"
+                                id="btnAdicionarComponente"
+                                class="btn btn-outline-primary w-100">
+                            <i class="bi bi-plus-circle"></i>
+                            Adicionar
+                        </button>
+                    </div>
+
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle mb-0" id="tabelaComponentes">
+                        <thead class="table-custom">
+                            <tr>
+                                <th>Componente</th>
+                                <th>Modelo</th>
+                                <th style="width: 120px;">Ações</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr id="linhaSemComponentes"
+                                <?= !empty($componentesAssociados) ? 'style="display:none;"' : '' ?>>
+                                <td colspan="3" class="text-center text-muted">
+                                    Nenhum componente associado.
+                                </td>
+                            </tr>
+
+                            <?php foreach ($componentesAssociados as $compAssoc): ?>
+                                <tr data-id="<?= htmlspecialchars($compAssoc->idEquiComp) ?>">
+                                    <td>
+                                        <?= htmlspecialchars($compAssoc->descricao) ?>
+
+                                        <input type="hidden"
+                                               name="componentes[]"
+                                               value="<?= htmlspecialchars($compAssoc->idEquiComp) ?>">
+                                    </td>
+
+                                    <td>
+                                        <?= htmlspecialchars($compAssoc->modelo ?? 'Sem modelo') ?>
+                                    </td>
+
+                                    <td>
+                                        <button type="button"
+                                                class="btn btn-sm btn-outline-danger btn-remover-componente">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="mt-4 d-flex justify-content-between">
+                    <a href="lista_equipamentos.php" class="btn btn-outline-secondary">
+                        <i class="bi bi-arrow-left"></i>
+                        Voltar
+                    </a>
+
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>
+                        Guardar Alterações
+                    </button>
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const btnMostrarComponentes = document.getElementById('btnMostrarComponentes');
+    const areaComponentes = document.getElementById('areaComponentes');
+
+    if (btnMostrarComponentes && areaComponentes) {
+        btnMostrarComponentes.addEventListener('click', function () {
+            areaComponentes.classList.toggle('d-none');
+        });
     }
 
-    .form-label {
-      font-weight: 500;
+    const selectComponente = document.getElementById('selectComponente');
+    const btnAdicionar = document.getElementById('btnAdicionarComponente');
+    const tabelaBody = document.querySelector('#tabelaComponentes tbody');
+    const linhaSemComponentes = document.getElementById('linhaSemComponentes');
+
+    if (!selectComponente || !btnAdicionar || !tabelaBody || !linhaSemComponentes) {
+        return;
     }
-  </style>
-</head>
 
+    let componentesSelecionados = <?= json_encode($idsComponentesAssociados) ?>;
 
-<body class="container py-5">
+    btnAdicionar.addEventListener('click', function () {
 
-  <h2 class="mb-4">
-    <i class="bi bi-pencil-square me-2"></i>
-    Editar Detalhes do Equipamento
-  </h2>
+        const option = selectComponente.options[selectComponente.selectedIndex];
 
+        if (!option.value) {
+            alert('Selecione um componente.');
+            return;
+        }
 
-  <form id="formEditar">
-    <!-- 1ª linha: Código, nº de série -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputCodigo" class="form-label">Código de Inventário</label>
-        <input type="text" id="inputCodigo" class="form-control bg-readonly" readonly>
-      </div>
-      <div class="col-md-6">
-        <label for="inputNSerie" class="form-label">Nº Série</label>
-        <input type="text" id="inputNSerie" class="form-control bg-readonly" readonly>
-      </div>
-    </div>
+        const id = option.value;
+        const descricao = option.dataset.descricao;
+        const modelo = option.dataset.modelo || 'Sem modelo';
 
-    <!-- 2ª linha: Nome,  Marca -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputNome" class="form-label">Nome</label>
-        <input type="text" id="inputNome" class="form-control bg-readonly" readonly>
-      </div>
-      <div class="col-md-6">
-        <label for="inputMarca" class="form-label">Marca</label>
-        <input type="text" id="inputMarca" class="form-control bg-readonly" readonly>
-      </div>
-    </div>
+        if (componentesSelecionados.includes(id)) {
+            alert('Este componente já foi adicionado.');
+            return;
+        }
 
+        componentesSelecionados.push(id);
 
-    <!-- 3ª linha: Localizaçao | Modelo -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputLocalizacao" class="form-label">Localização</label>
-        <input type="tel" id="inputLocalicao" class="form-control" placeholder="Ex: Gabinete Cardiologia">
-      </div>
-      <div class="col-md-6">
-        <label for="inputModelo" class="form-label">Modelo</label>
-        <input type="text" id="inputModelo" class="form-control" placeholder="VST">
-      </div>
-    </div>
+        linhaSemComponentes.style.display = 'none';
 
-    <!-- 4ª linha: estado, criticidade -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="selectEstado" class="form-label">Estado</label>
-        <select id="selectEstado" class="form-select" required>
-          <option value="">-- Selecionar --</option>
-          <option value="Ativo">Ativo</option>
-          <option value="Manutencao">Em Manutenção</option>
-          <option value="Calibracao">Em Calibração</option>
-          <option value="Quarentena">Em Quarentena</option>
-          <option value="Inativo">Inativo</option>
-          <option value="Abatido">Abatido</option>
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="inputCriticidade" class="form-label">Criticidade</label>
-        <select id="selectCriticidade" class="form-select" required>
-          <option value="">-- Selecionar --</option>
-          <option value="Baixo">Baixo</option>
-          <option value="Médio">Médio</option>
-          <option value="Alto">Alto</option>
-          <option value="SuporteVida">Suporte de Vida</option>
-        </select>
-      </div>
-    </div>
+        const tr = document.createElement('tr');
+        tr.setAttribute('data-id', id);
 
+        tr.innerHTML = `
+            <td>
+                ${descricao}
+                <input type="hidden" name="componentes[]" value="${id}">
+            </td>
+            <td>${modelo}</td>
+            <td>
+                <button type="button"
+                        class="btn btn-sm btn-outline-danger btn-remover-componente">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </td>
+        `;
 
-    <!-- 5ª linha: Fornecedor | AnoF Fabrico -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputFornecedor" class="form-label">Fornecedor</label>
-        <input type="text" id="inputFornecedor" class="form-control">
-      </div>
-      <div class="col-md-6">
-        <label for="inputAnoFabrico" class="form-label">Ano de Fabrico</label>
-        <input type="text" id="inputAnoFabrico" class="form-control">
-      </div>
-    </div>
+        tabelaBody.appendChild(tr);
+        selectComponente.value = '';
+    });
 
-    <!-- 6ª linha: Data de aquisiçao | Data de garantia -->
-    <div class="row mb-4">
-      <div class="col-md-6">
-        <label for="inputAquisicao" class="form-label">Data de Aquisição</label>
-        <input type="date" id="inputAquisicao" class="form-control">
-      </div>
-      <div class="col-md-6">
-        <label for="inputGarantia" class="form-label">Data de Garantia</label>
-        <input type="date" id="inputGarantia" class="form-control">
-      </div>
-    </div>
+    tabelaBody.addEventListener('click', function (e) {
 
+        const botao = e.target.closest('.btn-remover-componente');
 
-    <div class="row g-3 align-items-end">
+        if (!botao) {
+            return;
+        }
 
-      <div class="col-md-6">
-        <label class="form-label">Tipo de Entrada</label>
-        <input type="text" class="form-control">
-      </div>
+        const tr = botao.closest('tr');
+        const id = tr.getAttribute('data-id');
 
-      <div class="col-md-6 d-flex align-items-end">
+        componentesSelecionados = componentesSelecionados.filter(item => item !== id);
 
-        <input type="file" id="ficheiro" hidden>
+        tr.remove();
 
-        <label for="ficheiro" class="upload-btn">
-          Anexar ficheiros
-        </label>
+        if (componentesSelecionados.length === 0) {
+            linhaSemComponentes.style.display = '';
+        }
+    });
 
-      </div>
+});
+</script>
 
-    </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/1230798.js"></script>
 
+<?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
 
-
-    <!-- BOTÃO GUARDAR (SEPARADO E COM ESPAÇO) -->
-    <div class="mt-4">
-      <button class="btn btn-primary">
-        <i class="bi bi-check2-square me-2"></i>
-        Guardar Alterações
-      </button>
-    </div>
-
-
-    <!-- Modal de Feedback ao salvar -->
-    <div class="modal fade" id="feedbackModal" tabindex="-1" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content border-0">
-          <div class="modal-body text-center">
-            <i class="bi bi-check-circle-fill text-success fs-1 mb-3"></i>
-            <h5 class="modal-title mb-2" id="feedbackModalLabel">Alterações Guardadas!</h5>
-            <p class="mb-0">O seu agendamento foi atualizado com sucesso.</p>
-          </div>
-          <div class="modal-footer justify-content-center">
-            <!-- Botão OK que redireciona -->
-            <button type="button"
-              class="btn btn-primary"
-              data-bs-dismiss="modal"
-              id="btnFecharFeedback">
-              OK
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-
-
-
-    <!-- Bootstrap JS + Day.js -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
-
-
-
-    <!-- Script externo -->
-    <script src="../js/1230798.js"></script>
 </body>
-
 </html>

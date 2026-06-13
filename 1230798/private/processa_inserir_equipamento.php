@@ -87,7 +87,7 @@ try {
     $stmtEquipamento = $ligacao->prepare($sqlEquipamento);
 
     $stmtEquipamento->execute([
-        $descricao,6
+        $descricao,
         $idTipo,
         $idMarca,
         $modelo,
@@ -98,33 +98,12 @@ try {
 
     $idEquipamento = $ligacao->lastInsertId();
 
-    foreach ($fornecedores as $index => $idFornecedor) {
-        $tipoFornecedor = $tiposFornecedor[$index] ?? '';
 
-        if (!empty($idFornecedor) && !empty($tipoFornecedor)) {
-            $sqlFornecedor = "
-                INSERT INTO equipamentofornecedor
-                (
-                    idEquipamento,
-                    idFornecedor,
-                    TipoFornecedor
-                )
-                VALUES (?, ?, ?)
-            ";
-
-            $stmtFornecedor = $ligacao->prepare($sqlFornecedor);
-            $stmtFornecedor->execute([
-                $idEquipamento,
-                $idFornecedor,
-                $tipoFornecedor
-            ]);
-        }
-    }
 
     foreach ($componentes as $idComponente) {
         if (!empty($idComponente)) {
             $sqlComponente = "
-                INSERT INTO equipamentocomponente
+                INSERT INTO equipamentocomponentes
                 (
                     idEquiPai,
                     idEquiComp
