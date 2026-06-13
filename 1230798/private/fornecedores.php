@@ -1,7 +1,34 @@
-<?php include 'includes/header_priv.php'; ?>
-<?require_once __DIR__ . '/../../includes/db_connect.php';?>
-<?php require_once __DIR__ . '/includes/funcoes.php';
-      redirect_if_not_logged();
+<?php
+
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/includes/funcoes.php';
+
+redirect_if_not_logged();
+
+try {
+    $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
+
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $fornecedores = $ligacao->query("
+        SELECT id, nome, nif, email, telefone, localidade
+        FROM fornecedores
+        ORDER BY nome
+    ")->fetchAll(PDO::FETCH_OBJ);
+
+    $erro = '';
+
+} catch (PDOException $e) {
+    $erro = 'Erro ao carregar fornecedores.';
+    $fornecedores = [];
+}
+
+include __DIR__ . '/includes/header_priv.php';
+
 ?>
 
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
@@ -39,10 +66,6 @@
             <input type="text" id="fNIF" class="form-control" placeholder="NIF">
           </div>
 
-          <div class="col-md-1">
-            <input type="text" id="fEmail" class="form-control" placeholder="Tipo">
-          </div>
-
           <div class="col-md-2">
             <input type="text" id="fTelefone" class="form-control" placeholder="Email">
           </div>
@@ -52,7 +75,7 @@
           </div>
 
           <div class="col-md-2">
-            <input type="text" id="fMorada" class="form-control" placeholder="Contacto">
+            <input type="text" id="fLocalidade" class="form-control" placeholder="Localidade">
           </div>
 
           <!-- BOTÕES -->
@@ -80,43 +103,59 @@
             <tr>
               <th>Nome</th>
               <th>NIF</th>
-              <th>Tipo</th>
               <th>Email</th>
               <th>Telefone</th>
-              <th>Contacto</th>
-              <th>Ações</th>
+              <th>Localidade</th>
             </tr>
           </thead>
 
-          <tbody>
+              <tbody>
+
+          <?php if (!empty($erro)): ?>
 
             <tr>
-              <td>Dräger</td>
-              <td>123456789</td>
-              <td>Fabricante</span></td>
-              <td>info@drager.com</td>
-              <td>912345678</td>
-              <td>João Silva</td>
-              <td>
-
-                <!-- EDITAR -->
-                <a href="editar_fornecedor.php" class="btn btn-sm btn-outline-primary">
-                  <i class="bi bi-pencil"></i>
-                </a>
-
-                </button>
-                <button class="btn btn-sm btn-outline-danger btn-apagar">
-                  <i class="bi bi-trash"></i>
-                </button>
-
-              </td>
-
-
+              <td colspan="7" class="text-center text-danger">
+                <?= htmlspecialchars($erro) ?>
               </td>
             </tr>
 
-          </tbody>
+          <?php elseif (count($fornecedores) == 0): ?>
 
+            <tr>
+              <td colspan="7" class="text-center text-muted">
+                Não existem fornecedores registados.
+              </td>
+            </tr>
+
+          <?php else: ?>
+
+            <?php foreach ($fornecedores as $fornecedor): ?>
+              <tr>
+                <td><?= htmlspecialchars($fornecedor->nome) ?></td>
+                <td><?= htmlspecialchars($fornecedor->nif) ?></td>
+                <td><?= htmlspecialchars($fornecedor->email ?? '') ?></td>
+                <td><?= htmlspecialchars($fornecedor->telefone) ?></td>
+                <td><?= htmlspecialchars($fornecedor->localidade) ?></td>
+
+
+                <td>
+                  <a href="editar_fornecedor.php?id=<?= urlencode($fornecedor->id) ?>"
+                    class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+
+                  <a href="apagar_fornecedor.php?id=<?= urlencode($fornecedor->id) ?>"
+                    class="btn btn-sm btn-outline-danger"
+                    onclick="return confirm('Tem a certeza que deseja eliminar este fornecedor?');">
+                    <i class="bi bi-trash"></i>
+                  </a>
+                </td>
+              </tr>
+            <?php endforeach; ?>
+
+          <?php endif; ?>
+
+          </tbody>
         </table>
       </div>
 

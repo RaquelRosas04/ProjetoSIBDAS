@@ -5,8 +5,6 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$erro = '';
-
 try {
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
@@ -16,16 +14,16 @@ try {
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $equipamentos = $ligacao->query("
-        SELECT id, descricao, modelo
-        FROM equipamentos
+    $tipos = $ligacao->query("
+        SELECT id, descricao
+        FROM tipoequipamento
         ORDER BY descricao
     ")->fetchAll(PDO::FETCH_OBJ);
 
-    $localizacoes = $ligacao->query("
-        SELECT id, idEdificio, idServico, andar, sala
-        FROM localizacao
-        ORDER BY idEdificio, idServico, andar, sala
+    $marcas = $ligacao->query("
+        SELECT id, descricao
+        FROM marca
+        ORDER BY descricao
     ")->fetchAll(PDO::FETCH_OBJ);
 
     $fornecedores = $ligacao->query("
@@ -34,11 +32,15 @@ try {
         ORDER BY nome
     ")->fetchAll(PDO::FETCH_OBJ);
 
+    $componentes = $ligacao->query("
+        SELECT id, descricao, modelo
+        FROM equipamentos
+        WHERE componente = 1
+        ORDER BY descricao
+    ")->fetchAll(PDO::FETCH_OBJ);
+
 } catch (PDOException $e) {
-    $erro = "Erro ao carregar dados: " . $e->getMessage();
-    $equipamentos = [];
-    $localizacoes = [];
-    $fornecedores = [];
+    die("Erro ao carregar dados: " . $e->getMessage());
 }
 
 include __DIR__ . '/includes/header_priv.php';
@@ -49,160 +51,231 @@ include __DIR__ . '/includes/header_priv.php';
 
     <h2 class="mb-4">
         <i class="bi bi-plus-circle me-2 text-primary"></i>
-        Inserir Unidade de Equipamento
+        Inserir Equipamento
     </h2>
-
-    <?php if (!empty($erro)): ?>
-        <div class="alert alert-danger">
-            <?= htmlspecialchars($erro) ?>
-        </div>
-    <?php endif; ?>
 
     <div class="card p-4 shadow-sm">
 
-        <form method="post" action="processa_inserir_equipamento_unidade.php">
+        <form method="post" action="processa_inserir_equipamento.php">
 
-            <h5 class="mt-3 mb-3">Dados da Unidade</h5>
+            <ul class="nav nav-tabs mb-4" id="tabsEquipamento" role="tablist">
 
-            <div class="row g-3 mb-4">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active"
+                            data-bs-toggle="tab"
+                            data-bs-target="#dados"
+                            type="button">
+                        Dados do Equipamento
+                    </button>
+                </li>
 
-                <div class="col-md-6">
-                    <label class="form-label">Equipamento</label>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#fornecedores"
+                            type="button">
+                        Fornecedores
+                    </button>
+                </li>
 
-                    <select id="idEquipamento"
-                            name="idEquipamento"
-                            class="form-select"
-                            required>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link"
+                            data-bs-toggle="tab"
+                            data-bs-target="#componentes"
+                            type="button">
+                        Componentes
+                    </button>
+                </li>
 
-                        <option value="">Selecione o equipamento</option>
+            </ul>
 
-                        <?php foreach ($equipamentos as $eq): ?>
-                            <option value="<?= $eq->id ?>">
-                                <?= htmlspecialchars($eq->descricao) ?>
-                                <?= !empty($eq->modelo) ? ' - ' . htmlspecialchars($eq->modelo) : '' ?>
-                            </option>
+            <div class="tab-content">
+
+                <!-- TAB 1: DADOS -->
+                <div class="tab-pane fade show active" id="dados">
+
+                    <div class="row g-3">
+
+                        <div class="col-md-5">
+                            <label class="form-label">Designação</label>
+                            <input type="text"
+                                   name="descricao"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Tipo / Categoria</label>
+                            <select name="idTipo" class="form-select" required>
+                                <option value="">Selecione</option>
+
+                                <?php foreach ($tipos as $tipo): ?>
+                                    <option value="<?= $tipo->id ?>">
+                                        <?= htmlspecialchars($tipo->descricao) ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Marca</label>
+                            <select name="idMarca" class="form-select" required>
+                                <option value="">Selecione</option>
+
+                                <?php foreach ($marcas as $marca): ?>
+                                    <option value="<?= $marca->id ?>">
+                                        <?= htmlspecialchars($marca->descricao) ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Modelo</label>
+                            <input type="text"
+                                   name="modelo"
+                                   class="form-control"
+                                   required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Anos de Garantia</label>
+                            <input type="number"
+                                   name="anosGarantia"
+                                   class="form-control"
+                                   min="0"
+                                   required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Criticidade</label>
+                            <select name="criticidade" class="form-select" required>
+                                <option value="">Selecione</option>
+                                <option value="Baixa">Baixa</option>
+                                <option value="Média">Média</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Suporte de vida">Suporte de vida</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2">
+                            <label class="form-label">É componente?</label>
+                            <select name="componente" class="form-select" required>
+                                <option value="0">Não</option>
+                                <option value="1">Sim</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TAB 2: FORNECEDORES -->
+                <div class="tab-pane fade" id="fornecedores">
+
+                    <div class="alert alert-info">
+                        Pode associar vários fornecedores ao equipamento, distinguindo fabricante, distribuidor ou assistência técnica.
+                    </div>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="form-label">Fornecedor 1</label>
+                            <select name="fornecedores[]" class="form-select">
+                                <option value="">Selecione</option>
+
+                                <?php foreach ($fornecedores as $fornecedor): ?>
+                                    <option value="<?= $fornecedor->id ?>">
+                                        <?= htmlspecialchars($fornecedor->nome) ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo de Fornecedor</label>
+                            <select name="tiposFornecedor[]" class="form-select">
+                                <option value="">Selecione</option>
+                                <option value="Fabricante">Fabricante</option>
+                                <option value="Distribuidor">Distribuidor</option>
+                                <option value="Assistência técnica">Assistência técnica</option>
+                                <option value="Consumíveis">Consumíveis</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Fornecedor 2</label>
+                            <select name="fornecedores[]" class="form-select">
+                                <option value="">Selecione</option>
+
+                                <?php foreach ($fornecedores as $fornecedor): ?>
+                                    <option value="<?= $fornecedor->id ?>">
+                                        <?= htmlspecialchars($fornecedor->nome) ?>
+                                    </option>
+                                <?php endforeach; ?>
+
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label class="form-label">Tipo de Fornecedor</label>
+                            <select name="tiposFornecedor[]" class="form-select">
+                                <option value="">Selecione</option>
+                                <option value="Fabricante">Fabricante</option>
+                                <option value="Distribuidor">Distribuidor</option>
+                                <option value="Assistência técnica">Assistência técnica</option>
+                                <option value="Consumíveis">Consumíveis</option>
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- TAB 3: COMPONENTES -->
+                <div class="tab-pane fade" id="componentes">
+
+                    <div class="alert alert-info">
+                        Se este equipamento tiver componentes associados, selecione-os aqui.
+                    </div>
+
+                    <div class="row g-3">
+
+                        <?php foreach ($componentes as $comp): ?>
+                            <div class="col-md-6">
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="componentes[]"
+                                           value="<?= $comp->id ?>"
+                                           id="comp<?= $comp->id ?>">
+
+                                    <label class="form-check-label" for="comp<?= $comp->id ?>">
+                                        <?= htmlspecialchars($comp->descricao) ?>
+                                        <?= !empty($comp->modelo) ? ' - ' . htmlspecialchars($comp->modelo) : '' ?>
+                                    </label>
+                                </div>
+                            </div>
                         <?php endforeach; ?>
 
-                    </select>
+                    </div>
+
                 </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Código</label>
-                    <input type="text" name="Codigo" class="form-control" maxlength="20" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Nº Série</label>
-                    <input type="text" name="numSerie" class="form-control" maxlength="50" required>
-                </div>
-
-            </div>
-
-            <h5 class="mt-3 mb-3">Localização e Fornecedor</h5>
-
-            <div class="row g-3 mb-4">
-
-                <div class="col-md-6">
-                    <label class="form-label">Localização</label>
-                    <select name="idLocalizacao" class="form-select" required>
-                        <option value="">Selecione a localização</option>
-
-                        <?php foreach ($localizacoes as $loc): ?>
-                            <option value="<?= $loc->id ?>">
-                                Edifício <?= htmlspecialchars($loc->idEdificio) ?> -
-                                Serviço <?= htmlspecialchars($loc->idServico) ?> -
-                                Andar <?= htmlspecialchars($loc->andar) ?> -
-                                Sala <?= htmlspecialchars($loc->sala) ?>
-                            </option>
-                        <?php endforeach; ?>
-
-                    </select>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label">Fornecedor</label>
-                    <select name="idFornecedor" class="form-select" required>
-                        <option value="">Selecione o fornecedor</option>
-
-                        <?php foreach ($fornecedores as $fornecedor): ?>
-                            <option value="<?= $fornecedor->id ?>">
-                                <?= htmlspecialchars($fornecedor->nome) ?>
-                            </option>
-                        <?php endforeach; ?>
-
-                    </select>
-                </div>
-
-            </div>
-
-            <h5 class="mt-3 mb-3">Dados Complementares</h5>
-
-            <div class="row g-3">
-
-                <div class="col-md-3">
-                    <label class="form-label">Estado</label>
-                    <select name="estado" class="form-select" required>
-                        <option value="">Selecione</option>
-                        <option value="Ativo">Ativo</option>
-                        <option value="Inativo">Inativo</option>
-                        <option value="Em manutenção">Em manutenção</option>
-                        <option value="Em calibração">Em calibração</option>
-                        <option value="Em Quarentena">Em Quarentena</option>
-                        <option value="Abatido">Abatido</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Ano de Fabrico</label>
-                    <input type="number" name="anoFabrico" class="form-control" min="1900" max="2100" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Data de Aquisição</label>
-                    <input type="date" name="dataAquisicao" class="form-control" required>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Data Fim Garantia</label>
-                    <input type="date" name="dataFimGarantia" class="form-control" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label">Tipo de Entrada</label>
-                    <select name="tipoEntrada" class="form-select" required>
-                        <option value="">Selecione</option>
-                        <option value="Compra">Compra</option>
-                        <option value="Doação">Doação</option>
-                        <option value="Aluguer">Aluguer</option>
-                        <option value="Empréstimo">Empréstimo</option>
-                    </select>
-                </div>
-
-                <div class="col-md-3">
-                    <label class="form-label">Observações?</label>
-                    <select name="obs" class="form-select" required>
-                        <option value="0">Não</option>
-                        <option value="1">Sim</option>
-                    </select>
-                </div>
-
-
-                <div class="col-12">
-                  <label class="form-label">Observações</label>
-                    <textarea name="obs"
-                      class="form-control"
-                      rows="3"></textarea>
-                  </div>
             </div>
 
             <div class="mt-4 d-flex justify-content-between">
                 <a href="lista_equipamentos.php" class="btn btn-outline-secondary">
-                    <i class="bi bi-arrow-left"></i> Voltar
+                    <i class="bi bi-arrow-left"></i>
+                    Voltar
                 </a>
 
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i>
-                    Inserir Unidade
+                    Inserir Equipamento
                 </button>
             </div>
 
@@ -212,15 +285,8 @@ include __DIR__ . '/includes/header_priv.php';
 
 </div>
 
-<!-- para dropdow pesquisavel no inserir_equipamento-->
-<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
-
-
-<script>
-    new TomSelect("#idEquipamento");
-</script>
 
 </body>
 </html>

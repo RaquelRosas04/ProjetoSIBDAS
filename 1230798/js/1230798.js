@@ -456,9 +456,45 @@ document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
 });
 
 
+//-----------------------------------------------------------------------------------------
+//--------------------------------Equipamentos Unidade------------------------------------------
+//-----------------------------------------------------------------------------------------
 
 
+
+function calcularGarantia() {
+    const equipamento = document.getElementById("idEquipamento");
+    const dataAquisicao = document.getElementById("dataAquisicao");
+    const dataGarantia = document.getElementById("dataFimGarantia");
+
+    if (!equipamento || !dataAquisicao || !dataGarantia) {
+        return;
+    }
+
+    if (!equipamento.value || !dataAquisicao.value) {
+        return;
+    }
+
+    const anosGarantia =
+        equipamento.options[equipamento.selectedIndex].dataset.garantia;
+
+    if (!anosGarantia) {
+        return;
+    }
+
+    let data = new Date(dataAquisicao.value);
+
+    data.setFullYear(data.getFullYear() + parseInt(anosGarantia));
+
+    dataGarantia.value = data.toISOString().split("T")[0];
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const dataAquisicao = document.getElementById("dataAquisicao");
+
+    if (dataAquisicao) {
+        dataAquisicao.addEventListener("change", calcularGarantia);
+    }
+});
 
     
-
-
