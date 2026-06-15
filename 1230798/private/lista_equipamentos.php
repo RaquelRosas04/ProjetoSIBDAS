@@ -31,8 +31,8 @@ $ligacao = new PDO(
         e.modelo,
         e.criticidade
     FROM equipamentos e
-    INNER JOIN marca 
-        ON e.idMarca = marca.id
+    INNER JOIN marca  ON e.idMarca = marca.id
+         left JOIN fabricante f ON e.idFabricante = f.id
     ORDER BY e.id DESC
     ";
 
@@ -129,6 +129,7 @@ $ligacao = new PDO(
         <tr>
           <th>Código</th>
           <th>Nome</th>
+          <th>Fabricante</th>
           <th>Marca</th>
           <th>Modelo</th>
           <th>Criticidade</th>
@@ -159,6 +160,7 @@ $ligacao = new PDO(
     <tr>
       <td><?= htmlspecialchars($equipamento->id) ?></td>
       <td><?= htmlspecialchars($equipamento->descricao) ?></td>
+      <td><?= htmlspecialchars($equipamento->fabricante ?? '') ?></td>
       <td><?= htmlspecialchars($equipamento->marca) ?></td>
       <td><?= htmlspecialchars($equipamento->modelo) ?></td>
       <td><?= htmlspecialchars($equipamento->criticidade) ?></td>

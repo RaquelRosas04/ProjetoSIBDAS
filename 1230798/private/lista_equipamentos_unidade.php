@@ -16,7 +16,7 @@ $ligacao = new PDO(
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
     $sql = "
-        SELECT e.id, e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
+        SELECT euni.id, euni.codigo , e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
         localizacao.idServico localizacao, euni.estado, e.criticidade
         FROM equipamentos e
         INNER JOIN equipamentounidade euni
@@ -161,7 +161,7 @@ $ligacao = new PDO(
 
   <?php foreach ($equipamentos as $equipamento): ?>
     <tr>
-      <td><?= htmlspecialchars($equipamento->id) ?></td>
+      <td><?= htmlspecialchars($equipamento->codigo) ?></td>
       <td><?= htmlspecialchars($equipamento->descricao) ?></td>
       <td><?= htmlspecialchars($equipamento->marca) ?></td>
       <td><?= htmlspecialchars($equipamento->modelo) ?></td>
@@ -175,6 +175,17 @@ $ligacao = new PDO(
            class="btn btn-sm btn-outline-primary">
           <i class="bi bi-eye"></i>
         </a>
+        
+        <a href="editar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
+                    class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-pencil"></i>
+                  </a>
+
+                  <a href="apagar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
+                    class="btn btn-sm btn-outline-danger"
+                    onclick="return confirm('Tem a certeza que deseja eliminar este equipamento?');">
+                    <i class="bi bi-trash"></i>
+                  </a>
       </td>
     </tr>
   <?php endforeach; ?>

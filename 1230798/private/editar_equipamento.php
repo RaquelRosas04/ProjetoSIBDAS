@@ -22,6 +22,12 @@ try {
 
         $descricao = trim($_POST['descricao'] ?? '');
         $idTipo = $_POST['idTipo'] ?? '';
+        $idfabricante = $_POST['idfabricante'] ?? null;
+
+        if ($idfabricante === '') {
+            $idfabricante = null;
+        }
+
         $idMarca = $_POST['idMarca'] ?? '';
         $modelo = trim($_POST['modelo'] ?? '');
         $anosGarantia = $_POST['anosGarantia'] ?? '';
@@ -71,6 +77,7 @@ try {
             UPDATE equipamentos
             SET descricao = ?,
                 idTipo = ?,
+                idfabricante = ?,
                 idMarca = ?,
                 modelo = ?,
                 anosGarantia = ?,
@@ -84,6 +91,7 @@ try {
         $stmtEquipamento->execute([
             $descricao,
             $idTipo,
+            $idfabricante,
             $idMarca,
             $modelo,
             $anosGarantia,
@@ -140,6 +148,7 @@ try {
         SELECT id,
                descricao,
                idTipo,
+               idfabricante,
                idMarca,
                modelo,
                anosGarantia,
@@ -175,6 +184,14 @@ try {
           AND id <> ?
         ORDER BY descricao
     ");
+
+       //fabricantes
+    $fabricantes = $ligacao->query("
+    SELECT id, nome
+    FROM fabricante
+    ORDER BY nome
+")->fetchAll(PDO::FETCH_OBJ);
+
     $stmtComponentes->execute([$id]);
     $componentes = $stmtComponentes->fetchAll(PDO::FETCH_OBJ);
 
@@ -257,6 +274,24 @@ include __DIR__ . '/includes/header_priv.php';
 
                     </select>
                 </div>
+
+                <div class="col-md-3">
+
+                        <label class="form-label">Fabricante</label>
+
+                        <select name="idfabricante" class="form-select" >
+                            <option value="">Selecione</option>
+                            <option value="">Sem fabricante / Não aplicável</option>
+                            <?php foreach ($fabricantes as $fabricante): ?>
+                                <option value="<?= $fabricante->id ?>">
+                                    <?= htmlspecialchars($fabricante->nome) ?>
+                                </option>
+                            <?php endforeach; ?>
+
+                        </select>
+                    </div>
+
+
 
                 <div class="col-md-3">
                     <label class="form-label">Marca</label>

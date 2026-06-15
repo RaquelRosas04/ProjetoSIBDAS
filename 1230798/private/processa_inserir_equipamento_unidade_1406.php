@@ -19,7 +19,7 @@ $modelo = trim($_POST['modelo'] ?? '');
 $anosGarantia = $_POST['anosGarantia'] ?? null;
 $criticidade = $_POST['criticidade'] ?? '';
 $componente = $_POST['componente'] ?? 0;
-
+$Codigo = trim($_POST['Codigo'] ?? '');
 $idLocalizacao = $_POST['idLocalizacao'] ?? '';
 $numSerie = trim($_POST['numSerie'] ?? '');
 $estado = $_POST['estado'] ?? '';
@@ -52,6 +52,10 @@ if (empty($idEquipamento)) {
     }
 }
 
+if (empty($Codigo)) {
+    $erros[] = 'Preencha o código da unidade.';
+}
+
 if (empty($numSerie)) {
     $erros[] = 'Preencha o número de série.';
 }
@@ -59,6 +63,7 @@ if (empty($numSerie)) {
 if (empty($idLocalizacao)) {
     $erros[] = 'Selecione a localização.';
 }
+
 
 if (empty($estado)) {
     $erros[] = 'Selecione o estado.';
@@ -92,8 +97,8 @@ if (!empty($anoFabrico)) {
     }
 }
 
-
 if (!empty($erros)) {
+    session_start();
     $_SESSION['validation_errors'] = $erros;
     header('Location: inserir_equipamento_unidade.php');
     exit;
@@ -110,13 +115,7 @@ try {
 
     $ligacao->beginTransaction();
 
-    /*
-     * Se algum dia permitires criar equipamento novo nesta página,
-     * este bloco continua preparado para isso.
-     */
     if (empty($idEquipamento)) {
-        $componente = ($componente == 1 || $componente === 'Sim') ? 1 : 0;
-
         $sqlEquipamento = "
             INSERT INTO equipamentos
             (
@@ -140,93 +139,33 @@ try {
             $modelo,
             $anosGarantia,
             $criticidade,
-            ($componente ? "\x01" : "\x00")
+            $componente
         ]);
 
         $idEquipamento = $ligacao->lastInsertId();
+        $idEquipamentoUni = $ligacao->lastInsertId();
     }
 
-    /*
-     * Gerar código automático:
-     * identcod + número sequencial com 5 dígitos
-     * Exemplo: SP00001, SP00102
-     */
-    $stmtCodigo = $ligacao->prepare("
-        SELECT te.identcod
-        FROM equipamentos e
-        INNER JOIN tipoequipamento te ON e.idTipo = te.id
-        WHERE e.id = ?
-    ");
-
-    $stmtCodigo->execute([$idEquipamento]);
-    $dadosCodigo = $stmtCodigo->fetch(PDO::FETCH_OBJ);
-
-    if (!$dadosCodigo || empty($dadosCodigo->identcod)) {
-        throw new Exception('O tipo de equipamento não tem código identificador definido.');
-    }
-
-    $prefixo = strtoupper($dadosCodigo->identcod);
-
-    $stmtUltimoCodigo = $ligacao->prepare("
-        SELECT Codigo
+    $sqlVerifica = "
+        SELECT id
         FROM equipamentounidade
-        WHERE Codigo LIKE ?
-        ORDER BY Codigo DESC
+        WHERE Codigo = ? OR numSerie = ?
         LIMIT 1
-    ");
+    ";
 
-    $stmtUltimoCodigo->execute([$prefixo . '%']);
-    $ultimoCodigo = $stmtUltimoCodigo->fetch(PDO::FETCH_OBJ);
+    $stmtVerifica = $ligacao->prepare($sqlVerifica);
+    $stmtVerifica->execute([$Codigo, $numSerie]);
 
-    $numero = 1;
+    if ($stmtVerifica->fetch(PDO::FETCH_OBJ)) {
+        $ligacao->rollBack();
 
-    if ($ultimoCodigo) {
-        $numero = intval(substr($ultimoCodigo->Codigo, strlen($prefixo))) + 1;
+        session_start();
+        $_SESSION['validation_errors'] = ['Já existe uma unidade com esse código ou número de série.'];
+        header('Location: inserir_equipamento_unidade.php');
+        exit;
     }
 
-    $Codigo = $prefixo . str_pad($numero, 5, '0', STR_PAD_LEFT);
 
-    /*
-     * Verificar número de série duplicado.
-     * O Código já é gerado automaticamente.
-     */
-        $sqlVerifica = "
-            SELECT eu.id
-            FROM equipamentounidade eu
-            INNER JOIN equipamentos eExistente ON eu.idEquipamento = eExistente.id
-            INNER JOIN equipamentos eNovo ON eNovo.id = ?
-            WHERE eu.numSerie = ?
-            AND eExistente.modelo = eNovo.modelo
-            AND (
-                    eExistente.idfabricante = eNovo.idfabricante
-                    OR (
-                        eExistente.idfabricante IS NULL
-                        AND eNovo.idfabricante IS NULL
-                    )
-                )
-            LIMIT 1
-        ";
-
-        $stmtVerifica = $ligacao->prepare($sqlVerifica);
-        $stmtVerifica->execute([
-            $idEquipamento,
-            $numSerie
-        ]);
-
-        if ($stmtVerifica->fetch(PDO::FETCH_OBJ)) {
-            $ligacao->rollBack();
-
-            $_SESSION['validation_errors'] = [
-                'Já existe uma unidade com esse número de série para o mesmo fabricante e modelo.'
-            ];
-
-            header('Location: inserir_equipamento_unidade.php');
-            exit;
-        }
-
-    /*
-     * Inserir unidade.
-     */
     $sqlUnidade = "
         INSERT INTO equipamentounidade
         (
@@ -243,9 +182,9 @@ try {
         )
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ";
+  
 
     $stmtUnidade = $ligacao->prepare($sqlUnidade);
-
     $stmtUnidade->execute([
         $idEquipamento,
         $Codigo,
@@ -261,60 +200,50 @@ try {
 
     $idEquipamentoUni = $ligacao->lastInsertId();
 
-    $stmtCadastro = $ligacao->prepare("
-    INSERT INTO equipamentocadastro
-    (
-        idequipamento,
-        idlocalizacao,
-        estado,
-        data
-    )
-    VALUES (?, ?, ?, ?)
-");
 
-$stmtCadastro->execute([
-    $idEquipamento,
-    $idLocalizacao,
-    $estado,
-    $dataAquisicao
-]);
+// echo '<pre>';
+// echo 'ID unidade criada: ';
+// var_dump($idEquipamentoUni);
 
-    /*
-     * Inserir fornecedores associados à unidade.
-     */
+// echo 'POST completo:';
+// print_r($_POST);
+
+// echo 'Fornecedores associados:';
+// print_r($fornecedoresAssociados);
+
+// echo 'Tipos fornecedores associados:';
+// print_r($tiposFornecedoresAssociados);
+// echo '</pre>';
+// exit;
+
     foreach ($fornecedoresAssociados as $index => $idFornecedorAssociado) {
-        $tipoFornecedor = $tiposFornecedoresAssociados[$index] ?? '';
 
-        if (!empty($idFornecedorAssociado) && !empty($tipoFornecedor)) {
-            $stmtFornecedor = $ligacao->prepare("
-                INSERT INTO equipamentofornecedores
-                (
-                    idEquipamentoUni,
-                    idFornecedor,
-                    TipoFornecedor
-                )
-                VALUES (?, ?, ?)
-            ");
+    $tipoFornecedor = $tiposFornecedoresAssociados[$index] ?? '';
 
-            $stmtFornecedor->execute([
-                $idEquipamentoUni,
-                $idFornecedorAssociado,
-                $tipoFornecedor
-            ]);
-        }
+    if (!empty($idFornecedorAssociado) && !empty($tipoFornecedor)) {
+
+        $stmtFornecedor = $ligacao->prepare("
+            INSERT INTO equipamentofornecedores
+            (
+                idEquipamentoUni,
+                idFornecedor,
+                TipoFornecedor
+            )
+            VALUES (?, ?, ?)
+        ");
+
+        $stmtFornecedor->execute([
+            $idEquipamentoUni,
+            $idFornecedorAssociado,
+            $tipoFornecedor
+        ]);
     }
-
+}
     $ligacao->commit();
-
-    definir_mensagem(
-    'success',
-    'Unidade inserida com sucesso. Código: ' . $Codigo
-);
-
     header('Location: lista_equipamentos.php');
     exit;
 
-} catch (Exception $e) {
+} catch (PDOException $e) {
     if (isset($ligacao) && $ligacao->inTransaction()) {
         $ligacao->rollBack();
     }

@@ -498,7 +498,7 @@ body {
 }
 
 .login-right h3 {
-4  font-weight: 600;
+  font-weight: 600;
   margin-bottom: 30px;
 }
 
@@ -739,3 +739,24 @@ textarea.admin-textarea {
 ========================= */
 
 
+
+
+
+/*equipamento campo CÓDIGO bloqueado*/
+.campo-bloqueado {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    font-weight: 600;
+    cursor: not-allowed;
+}
+
+/*equipamento anos de garantia */
+.garantia-info {
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    line-height: 1.2;
+}

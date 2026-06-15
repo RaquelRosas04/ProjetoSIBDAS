@@ -14,24 +14,34 @@ try {
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    // Tipo de equipamentp
     $tipos = $ligacao->query("
         SELECT id, descricao
         FROM tipoequipamento
         ORDER BY descricao
     ")->fetchAll(PDO::FETCH_OBJ);
 
+   //marcas
     $marcas = $ligacao->query("
         SELECT id, descricao
         FROM marca
         ORDER BY descricao
     ")->fetchAll(PDO::FETCH_OBJ);
 
+   //componentes
     $componentes = $ligacao->query("
         SELECT id, descricao, modelo
         FROM equipamentos
         WHERE componente = 1
         ORDER BY descricao
     ")->fetchAll(PDO::FETCH_OBJ);
+
+    //fabricantes
+    $fabricantes = $ligacao->query("
+    SELECT id, nome
+    FROM fabricante
+    ORDER BY nome
+")->fetchAll(PDO::FETCH_OBJ);
 
 } catch (PDOException $e) {
     die("Erro ao carregar dados: " . $e->getMessage());
@@ -79,6 +89,21 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
+
+                        <label class="form-label">Fabricante</label>
+
+                        <select name="idFabricante" class="form-select" >
+                            <option value="">Selecione</option>
+
+                            <?php foreach ($fabricantes as $fabricante): ?>
+                                <option value="<?= $fabricante->id ?>">
+                                    <?= htmlspecialchars($fabricante->nome) ?>
+                                </option>
+                            <?php endforeach; ?>
+
+                        </select>
+                    </div>
+                                    <div class="col-md-3">
                     <label class="form-label">Marca</label>
                     <select name="idMarca" class="form-select" required>
                         <option value="">Selecione</option>

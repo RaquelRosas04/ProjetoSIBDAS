@@ -17,7 +17,7 @@ $modelo = trim($_POST['modelo'] ?? '');
 $anosGarantia = $_POST['anosGarantia'] ?? '';
 $criticidade = $_POST['criticidade'] ?? '';
 $componente = $_POST['componente'] ?? 0;
-
+$idFabricante = $_POST['idFabricante'] ?? '';
 $fornecedores = $_POST['fornecedores'] ?? [];
 $tiposFornecedor = $_POST['tiposFornecedor'] ?? [];
 $componentes = $_POST['componentes'] ?? [];
@@ -26,6 +26,11 @@ $erros = [];
 
 if ($descricao === '') {
     $erros[] = 'Preencha a designação do equipamento.';
+}
+
+
+if ($idFabricante === '') {
+    $erros[] = 'Selecione o fabricante.';
 }
 
 if ($idTipo === '') {
@@ -75,13 +80,14 @@ try {
         (
             descricao,
             idTipo,
+            idfabricante,
             idMarca,
             modelo,
             anosGarantia,
             criticidade,
             componente
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?, ?,?)
     ";
 
     $stmtEquipamento = $ligacao->prepare($sqlEquipamento);
@@ -90,6 +96,7 @@ try {
         $descricao,
         $idTipo,
         $idMarca,
+        $idFabricante,
         $modelo,
         $anosGarantia,
         $criticidade,

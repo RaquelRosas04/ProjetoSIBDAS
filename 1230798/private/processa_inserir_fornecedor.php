@@ -30,7 +30,7 @@ if ($nif === '') {
     $erros[] = 'Preencha o NIF.';
 }
 
-if ($email === '') {6
+if ($email === '') {
     $erros[] = 'Preencha o email.';
 } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $erros[] = 'Email inválido.';

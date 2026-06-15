@@ -399,6 +399,76 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+
+
+function atualizarTextoGarantia(valorSelecionado = null) {
+    const selectEquipamento = document.getElementById("idEquipamento");
+    const textoGarantia = document.getElementById("textoGarantia");
+
+    if (!selectEquipamento || !textoGarantia) return;
+
+    const valor = valorSelecionado || selectEquipamento.value;
+
+    if (!valor) {
+        textoGarantia.textContent = "Não definida";
+        return;
+    }
+
+    const option = Array.from(selectEquipamento.options).find(opt => opt.value == valor);
+
+    if (!option) {
+        textoGarantia.textContent = "Não definida";
+        return;
+    }
+
+    const anosGarantia = option.dataset.garantia;
+
+    if (!anosGarantia || anosGarantia == 0) {
+        textoGarantia.textContent = "Sem garantia definida";
+        return;
+    }
+
+    textoGarantia.textContent =
+        anosGarantia == 1
+            ? "1 ano de garantia"
+            : anosGarantia + " anos de garantia";
+}
+
+
+
+
+function mostrarCodigoPrevisto(valorSelecionado = null) {
+    const select = document.getElementById("idEquipamento");
+    const inputCodigo = document.getElementById("codigoPrevisto");
+
+    if (!select || !inputCodigo) return;
+
+    const valor = valorSelecionado || select.value;
+
+    if (!valor) {
+        inputCodigo.value = "Gerado automaticamente";
+        return;
+    }
+
+    const option = Array.from(select.options).find(opt => opt.value == valor);
+
+    if (!option) {
+        inputCodigo.value = "Gerado automaticamente";
+        return;
+    }
+
+    inputCodigo.value = option.dataset.codigo || "Sem código definido";
+}
+
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     const equipamento = document.getElementById("idEquipamento");
+
+//     if (equipamento) {
+//         equipamento.addEventListener("change", mostrarCodigoPrevisto);
+//     }
+// });
+
 //-----------------------------------------------------------------------------------------
 //--------------------------------Equipamentos ------------------------------------------
 //-----------------------------------------------------------------------------------------
