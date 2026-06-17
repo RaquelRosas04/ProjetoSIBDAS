@@ -95,15 +95,19 @@ $ligacao = new PDO(
           <option>Ativo</option>
           <option>Inativo</option>
           <option>Manutenção</option>
+          <option>Calibração</option>
+          <option>Quarentena</option>
+          <option>Abatido</option>
         </select>
       </div>
 
       <div class="col-md-1">
         <select id="fCriticidade" class="form-select">
           <option value="">Criticidade</option>
-          <option>Baixo</option>
-          <option>Médio</option>
-          <option>Alto</option>
+          <option>Baixa</option>
+          <option>Média</option>
+          <option>Alta</option>
+          <option>Suporte de Vida</option>
         </select>
       </div>
 

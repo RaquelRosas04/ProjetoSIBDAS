@@ -204,9 +204,9 @@ $ligacao = new PDO(
             <label class="form-label">Estado</label>
             <select id="estado" class="form-select">
               <option>Ativo</option>
-              <option>Em manutenção</option>
-              <option>Em calibração</option>
-              <option>Em Quarentena</option>
+              <option>Manutenção</option>
+              <option>Calibração</option>
+              <option>Quarentena</option>
               <option>Inativo</option>
               <option>Abatido</option>
             </select>

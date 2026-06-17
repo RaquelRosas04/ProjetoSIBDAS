@@ -15,27 +15,6 @@
 
     <link rel="icon" href="../assets/images/aba.png" type="image/png">
 
-    <style>
-        .toast-custom {
-            position: fixed;
-            top: 90px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: #f8d7da;
-            color: #842029;
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            opacity: 0;
-            transition: opacity 0.3s;
-            z-index: 9999;
-        }
-
-        .toast-show {
-            opacity: 1;
-        }
-    </style>
 </head>
 
 <body>

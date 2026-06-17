@@ -507,17 +507,6 @@ body {
   border-radius: 8px;
 }
 
-/* BOTÃO */
-.btn-primary {
-  background-color: var(--primary);
-  border: none;
-  height: 45px;
-}
-
-.btn-primary:hover {
-  background-color: var(--primary-dark);
-}
-
 .logo {
   font-weight: bold;
   font-size: 22px;

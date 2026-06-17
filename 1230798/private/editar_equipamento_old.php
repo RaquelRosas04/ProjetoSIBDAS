@@ -83,9 +83,9 @@ redirect_if_not_logged();
         <select id="selectEstado" class="form-select" required>
           <option value="">-- Selecionar --</option>
           <option value="Ativo">Ativo</option>
-          <option value="Manutencao">Em Manutenção</option>
-          <option value="Calibracao">Em Calibração</option>
-          <option value="Quarentena">Em Quarentena</option>
+          <option value="Manutencao">Manutenção</option>
+          <option value="Calibracao">Calibração</option>
+          <option value="Quarentena">Quarentena</option>
           <option value="Inativo">Inativo</option>
           <option value="Abatido">Abatido</option>
         </select>

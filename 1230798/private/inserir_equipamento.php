@@ -62,12 +62,12 @@ include __DIR__ . '/includes/header_priv.php';
 
         <form method="post" action="processa_inserir_equipamento.php">
 
-            <h5 class="mb-3 text-primary">Dados do Equipamento</h5>
+            <h5 class="mt-3 mb-3">Dados do Equipamento</h5>
 
             <div class="row g-3">
 
                 <div class="col-md-5">
-                    <label class="form-label">Designação</label>
+                    <label class="form-label">Designação*</label>
                     <input type="text"
                            name="descricao"
                            class="form-control"
@@ -75,7 +75,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Tipo / Categoria</label>
+                    <label class="form-label">Tipo / Categoria*</label>
                     <select name="idTipo" class="form-select" required>
                         <option value="">Selecione</option>
 
@@ -104,7 +104,7 @@ include __DIR__ . '/includes/header_priv.php';
                         </select>
                     </div>
                                     <div class="col-md-3">
-                    <label class="form-label">Marca</label>
+                    <label class="form-label">Marca*</label>
                     <select name="idMarca" class="form-select" required>
                         <option value="">Selecione</option>
 
@@ -118,7 +118,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Modelo</label>
+                    <label class="form-label">Modelo*</label>
                     <input type="text"
                            name="modelo"
                            class="form-control"
@@ -126,7 +126,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Anos de Garantia</label>
+                    <label class="form-label">Anos de Garantia*</label>
                     <input type="number"
                            name="anosGarantia"
                            class="form-control"
@@ -135,7 +135,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Criticidade</label>
+                    <label class="form-label">Criticidade*</label>
                     <select name="criticidade" class="form-select" required>
                         <option value="">Selecione</option>
                         <option value="Baixa">Baixa</option>
@@ -171,6 +171,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </button>
 
                     <button type="submit" class="btn btn-primary">
+                       <!-- por a voltar para para a lista equipamentos-->
                         <i class="bi bi-plus-circle me-1"></i>
                         Inserir Equipamento
                     </button>
@@ -181,7 +182,7 @@ include __DIR__ . '/includes/header_priv.php';
             <div id="areaComponentes" class="d-none">
             <hr class="my-4">
 
-            <h5 class="mb-3 text-primary">Componentes associados</h5>
+            <h5 class="mt-3 mb-3">Componentes associados</h5>
 
             <div class="row g-2 mb-3 align-items-end">
 

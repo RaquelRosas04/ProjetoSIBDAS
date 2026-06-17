@@ -21,9 +21,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <link rel="stylesheet" href="../css/1230798.css">
     <link rel="icon" href="../assets/images/aba.png" type="image/png">
 
-
-
 </head>
+
 
 <body>
 
@@ -51,6 +50,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a class="nav-link <?= ($currentPage == 'dashboard.php') ? 'active' : '' ?>"href="dashboard.php">Dashboard</a>
                     </li>
 
+
                     <li class="nav-item">
                         <a class="nav-link <?= ($currentPage == 'detalhes_equipamento.php') ? 'active' : '' ?>" href="detalhes_equipamento.php">Detalhes</a>
                     </li>
@@ -68,14 +68,14 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </ul>
                     </li>
 
+
                     <li class="nav-item dropdown">
-                        <a class="nav-link <?= ($currentPage == 'lista_equipamentos.php') ? 'active' : '' ?>"href="lista_equipamentos.php" data-bs-toggle="dropdown">
+                        <a class="nav-link <?= ($currentPage == 'lista_equipamentos_unidade.php') ? 'active' : '' ?>"href="lista_equipamentos_unidade.php" data-bs-toggle="dropdown">
                             Inventário
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="lista_equipamentos_unidade.php">Lista</a></li>
-                            <li><a class="dropdown-item" href="inserir_equipamento_unidade.php">Inserir Equipamento Série</a></li>
-                            
+                            <li><a class="dropdown-item" href="inserir_equipamento_unidade.php">Inserir Equipamento Série</a></li> 
 
                         </ul>
                     </li>
@@ -85,15 +85,18 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a class="nav-link <?= ($currentPage == 'fornecedores.php') ? 'active' : '' ?>" href="fornecedores.php">Fornecedores</a>
                     </li>
 
+
                     <li class="nav-item">
                         <a class="nav-link <?= ($currentPage == 'localizacoes.php') ? 'active' : '' ?>" href="localizacoes.php">Localizações</a>
                     </li>
+
 
                     <li class="nav-item">
                         <a class="nav-link <?= ($currentPage == 'admin_editar.php') ? 'active' : '' ?>" href="admin_editar.php">Conteúdos</a>
                     </li>
 
                 </ul>
+
 
                 <!-- DIREITA -->
                 <div>
@@ -103,9 +106,9 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         onclick="window.location.href='/1230798/public/logout.php'">
                         Logout
                     </button>
-
                 </div>
 
             </div>
         </div>
+
     </nav>

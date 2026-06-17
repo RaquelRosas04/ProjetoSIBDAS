@@ -21,8 +21,6 @@ O sistema foi desenvolvido com foco na organização, eficiência operacional e 
 
 
 
-
-
 Estrutura de Diretorias
 
 /Projeto
@@ -88,11 +86,8 @@ Admin:
 
 | Perfil         | Username         | Password    |
 |----------------|------------------|-------------|
-| Assistente     | rita.sousa@lab.pt  | assistente 123    |
-| Técnico        | claudia.silva@laboratorio.pt     | claudia123    |
-| Administrador  |  paula.ribeiro@admin.pt       | admin123    |
-| Cliente        | antoniomaria1@gmail.com     | cli10    |
-| Motorista      | david.rodrigues@transportador.pt     | David123   |
+| Gestor         | rita.sousa@lab.pt   | assistente 123    |
+| Administrador  | paula.ribeiro@admin.pt | admin123    |
 
 
 

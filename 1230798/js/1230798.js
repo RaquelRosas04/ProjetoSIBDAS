@@ -163,7 +163,7 @@ if (id) {
 
 
 // ---------------------------------------------------------------------------------------------
-// ----------------------------------------LISTA_EQUIPAMENTOS-----------------------------------
+// ----------------------------------------LISTA_EQUIPAMENTOS_unidade----------------------------------
 // ---------------------------------------------------------------------------------------------
 
 // LISTA DE EQUIPAMENTOS -- BOTÃO VER
@@ -182,11 +182,12 @@ document.querySelectorAll(".btn-ver").forEach(btn => {
   });
 });
 
-// Filtros
+
+// Filtros  lista_equipamentos_unidade
 
 function aplicarFiltros() {
 
- const fCodigo = document.getElementById("fCodigo").value.toLowerCase();
+  const fCodigo = document.getElementById("fCodigo").value.toLowerCase();
   const fNome = document.getElementById("fNome").value.toLowerCase();
   const fMarca = document.getElementById("fMarca").value.toLowerCase();
   const fModelo = document.getElementById("fModelo").value.toLowerCase();
@@ -234,7 +235,7 @@ document.querySelectorAll("#fEstado, #fCriticidade")
 // botão limpar
 document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
-  document.querySelectorAll("#fCodigo, #fNome,  #fMarca, #fModelo, #fSerie, #fLocal, #fEstado, #fCriticidade")
+  document.querySelectorAll("#fCodigo, #fNome,  #fMarca, #fModelo, #fSerie, #fLocal")
     .forEach(input => input.value = "");
 
   document.getElementById("fEstado").value = "";
@@ -262,8 +263,8 @@ function filtrarTabela() {
   let nif = document.getElementById("fNIF").value.toLowerCase();
   let email = document.getElementById("fEmail").value.toLowerCase();
   let telefone = document.getElementById("fTelefone").value.toLowerCase();
-  let cod = document.getElementById("fCodPostal").value.toLowerCase();
   let morada = document.getElementById("fMorada").value.toLowerCase();
+  let codPostal = document.getElementById("fCodPostal").value.toLowerCase();
 
   let linhas = document.querySelectorAll("tbody tr");
 
@@ -276,15 +277,15 @@ function filtrarTabela() {
       col[1].innerText.toLowerCase().includes(nif) &&
       col[2].innerText.toLowerCase().includes(email) &&
       col[3].innerText.toLowerCase().includes(telefone) &&
-      col[4].innerText.toLowerCase().includes(cod) &&
-      col[5].innerText.toLowerCase().includes(morada);
+      col[4].innerText.toLowerCase().includes(morada)&&
+      col[5].innerText.toLowerCase().includes(codPostal);
 
     linha.style.display = mostrar ? "" : "none";
   });
 }
 
  // FILTRO AUTOMÁTICO
-  document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fCodPostal, #fMorada")
+  document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fMorada, #fCodPostal")
     .forEach(input => {
       input.addEventListener("input", filtrarTabela);
     });
@@ -516,3 +517,87 @@ function mostrarCodigoPrevisto(valorSelecionado = null) {
 //     }
 
 // });
+
+
+
+// Paginação genérica
+(function () {
+    // ── Tabela do histórico do equipamento ──
+    const tbodyHistorico = document.getElementById('tbodyHistorico');
+    const navHistorico   = document.querySelector('#paginacaoHistorico .pagination');
+    if (tbodyHistorico && navHistorico) {
+        iniciarPaginacaoSimples(tbodyHistorico, navHistorico, 10);
+    }
+
+    // ── Tabela de equipamentos (com filtros) ──
+    const tbodyEquip = document.getElementById('tbodyEquipamentos');
+    const navEquip   = document.querySelector('#paginacaoEquipamentos .pagination');
+    if (tbodyEquip && navEquip) {
+        window._paginacaoEquip = iniciarPaginacaoSimples(tbodyEquip, navEquip, 10);
+    }
+
+    function iniciarPaginacaoSimples(tbody, nav, porPagina) {
+        function visiveis() {
+            return Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== 'none');
+        }
+
+        function paginar(p) {
+            const todas  = Array.from(tbody.querySelectorAll('tr'));
+            const vis    = visiveis();
+            const inicio = (p - 1) * porPagina;
+            const fim    = inicio + porPagina;
+
+            todas.forEach(tr => tr.style.display = 'none');
+            vis.forEach((tr, i) => {
+                tr.style.display = (i >= inicio && i < fim) ? '' : 'none';
+            });
+
+            renderNav(nav, p, Math.ceil(vis.length / porPagina), paginar);
+        }
+
+        // Expor para uso externo
+        return { paginar, porPagina };
+    }
+
+    function renderNav(nav, paginaAtual, totalPaginas, paginar) {
+        nav.innerHTML = '';
+        if (totalPaginas <= 1) return;
+
+        nav.appendChild(criarItem('&laquo;', paginaAtual === 1, () => paginar(paginaAtual - 1)));
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            nav.appendChild(criarItem(i, false, () => paginar(i), i === paginaAtual));
+        }
+
+        nav.appendChild(criarItem('&raquo;', paginaAtual === totalPaginas, () => paginar(paginaAtual + 1)));
+    }
+
+    function criarItem(label, disabled, onClick, active = false) {
+        const li = document.createElement('li');
+        li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+        li.innerHTML = '<a class="page-link" href="#">' + label + '</a>';
+        if (!disabled) {
+            li.querySelector('a').addEventListener('click', function (e) {
+                e.preventDefault();
+                onClick();
+            });
+        }
+        return li;
+    }
+
+    // Ligar à função aplicarFiltros existente
+    const _aplicarFiltrosOriginal = window.aplicarFiltros;
+    if (typeof _aplicarFiltrosOriginal === 'function') {
+        window.aplicarFiltros = function () {
+            _aplicarFiltrosOriginal();
+            if (window._paginacaoEquip) {
+                setTimeout(() => window._paginacaoEquip.paginar(1), 0);
+            }
+        };
+    }
+
+    // Inicializar página 1
+    if (window._paginacaoEquip) {
+        setTimeout(() => window._paginacaoEquip.paginar(1), 0);
+    }
+})();

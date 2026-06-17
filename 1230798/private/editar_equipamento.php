@@ -247,7 +247,7 @@ include __DIR__ . '/includes/header_priv.php';
 
             <input type="hidden" name="id" value="<?= htmlspecialchars($equipamento->id) ?>">
 
-            <h5 class="mb-3 text-primary">Dados do Equipamento</h5>
+            <h5 class="mt-3 mb-3">Dados do Equipamento</h5>
 
             <div class="row g-3">
 
@@ -260,7 +260,7 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <label class="form-label">Tipo / Categoria</label>
                     <select name="idTipo" class="form-select" required>
                         <option value="">Selecione</option>
@@ -317,7 +317,7 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">Anos de Garantia</label>
                     <input type="number"
                            name="anosGarantia"
@@ -350,7 +350,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </select>
                 </div>
 
-                <div class="col-md-2">
+<!--                 <div class="col-md-2">
                     <label class="form-label">É componente?</label>
                     <select name="componente" class="form-select" required>
                         <option value="0" <?= $equipamento->componente == 0 ? 'selected' : '' ?>>
@@ -361,7 +361,7 @@ include __DIR__ . '/includes/header_priv.php';
                             Sim
                         </option>
                     </select>
-                </div>
+                </div> -->
 
             </div>
 
@@ -390,7 +390,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                 <hr class="my-4">
 
-                <h5 class="mb-3 text-primary">Componentes associados</h5>
+                <h5 class="mt-3 mb-3">Componentes associados</h5>
 
                 <div class="row g-2 mb-3 align-items-end">
 

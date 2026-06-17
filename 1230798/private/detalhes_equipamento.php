@@ -438,6 +438,9 @@ include __DIR__ . '/includes/header_priv.php';
 
                 </div>
 
+
+                
+
                 <div class="tab-pane fade" id="fornecedores">
 
                     <h5 class="mt-3 mb-3">Fornecedores Associados</h5>

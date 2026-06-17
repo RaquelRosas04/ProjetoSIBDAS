@@ -292,7 +292,6 @@ try {
 
     $validation_errors = $_SESSION['validation_errors'] ?? [];
     unset($_SESSION['validation_errors']);
-
 } catch (Exception $e) {
     $erro = "Erro ao carregar dados: " . $e->getMessage();
 
@@ -339,39 +338,39 @@ include __DIR__ . '/includes/header_priv.php';
                 <input type="hidden" name="id" value="<?= htmlspecialchars($unidade->id) ?>">
                 <input type="hidden" name="idEquipamento" value="<?= htmlspecialchars($unidade->idEquipamento) ?>">
 
-                <h5 class="mt-3 mb-3 text-primary">Dados da Unidade</h5>
+                <h5 class="mt-3 mb-3">Dados da Unidade</h5>
 
                 <div class="row g-3 mb-4">
 
                     <div class="col-md-6">
                         <label class="form-label">Equipamento</label>
                         <input type="text"
-                               class="form-control campo-bloqueado"
-                               value="<?= htmlspecialchars($unidade->equipamento) ?><?= !empty($unidade->modelo) ? ' - ' . htmlspecialchars($unidade->modelo) : '' ?>"
-                               readonly>
+                            class="form-control campo-bloqueado"
+                            value="<?= htmlspecialchars($unidade->equipamento) ?><?= !empty($unidade->modelo) ? ' - ' . htmlspecialchars($unidade->modelo) : '' ?>"
+                            readonly>
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Código</label>
                         <input type="text"
-                               class="form-control campo-bloqueado"
-                               value="<?= htmlspecialchars($unidade->Codigo) ?>"
-                               readonly>
+                            class="form-control campo-bloqueado"
+                            value="<?= htmlspecialchars($unidade->Codigo) ?>"
+                            readonly>
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Nº Série</label>
                         <input type="text"
-                               name="numSerie"
-                               class="form-control"
-                               maxlength="50"
-                               value="<?= htmlspecialchars($unidade->numSerie) ?>"
-                               required>
+                            name="numSerie"
+                            class="form-control"
+                            maxlength="50"
+                            value="<?= htmlspecialchars($unidade->numSerie) ?>"
+                            required>
                     </div>
 
                 </div>
 
-                <h5 class="mt-3 mb-3 text-primary">Localização e Fornecedor</h5>
+                <h5 class="mt-3 mb-3">Localização e Fornecedor</h5>
 
                 <div class="row g-3 mb-4">
 
@@ -396,7 +395,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                 </div>
 
-                <h5 class="mt-3 mb-3 text-primary">Dados Complementares</h5>
+                <h5 class="mt-3 mb-3">Dados Complementares</h5>
 
                 <div class="row g-3">
 
@@ -414,16 +413,16 @@ include __DIR__ . '/includes/header_priv.php';
                                 Inativo
                             </option>
 
-                            <option value="Em manutenção" <?= $unidade->estado === 'Em manutenção' ? 'selected' : '' ?>>
-                                Em manutenção
+                            <option value="Manutenção" <?= $unidade->estado === 'Manutenção' ? 'selected' : '' ?>>
+                                Manutenção
                             </option>
 
-                            <option value="Em calibração" <?= $unidade->estado === 'Em calibração' ? 'selected' : '' ?>>
-                                Em calibração
+                            <option value="Calibração" <?= $unidade->estado === 'Calibração' ? 'selected' : '' ?>>
+                                Calibração
                             </option>
 
-                            <option value="Em Quarentena" <?= $unidade->estado === 'Em Quarentena' ? 'selected' : '' ?>>
-                                Em Quarentena
+                            <option value="Quarentena" <?= $unidade->estado === 'Quarentena' ? 'selected' : '' ?>>
+                                Quarentena
                             </option>
 
                             <option value="Abatido" <?= $unidade->estado === 'Abatido' ? 'selected' : '' ?>>
@@ -435,30 +434,30 @@ include __DIR__ . '/includes/header_priv.php';
                     <div class="col-md-3">
                         <label class="form-label">Ano de Fabrico</label>
                         <input type="number"
-                               name="anoFabrico"
-                               class="form-control"
-                               min="1900"
-                               max="2100"
-                               value="<?= htmlspecialchars($unidade->anoFabrico) ?>"
-                               required>
+                            name="anoFabrico"
+                            class="form-control"
+                            min="1900"
+                            max="2100"
+                            value="<?= htmlspecialchars($unidade->anoFabrico) ?>"
+                            required>
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Data de Aquisição</label>
                         <input type="date"
-                               name="dataAquisicao"
-                               class="form-control"
-                               value="<?= htmlspecialchars($unidade->dataAquisicao) ?>"
-                               required>
+                            name="dataAquisicao"
+                            class="form-control"
+                            value="<?= htmlspecialchars($unidade->dataAquisicao) ?>"
+                            required>
                     </div>
 
                     <div class="col-md-3">
                         <label class="form-label">Data Fim Garantia</label>
                         <input type="date"
-                               name="dataFimGarantia"
-                               class="form-control"
-                               value="<?= htmlspecialchars($unidade->dataFimGarantia) ?>"
-                               required>
+                            name="dataFimGarantia"
+                            class="form-control"
+                            value="<?= htmlspecialchars($unidade->dataFimGarantia) ?>"
+                            required>
 
                         <div class="mt-2 garantia-info">
                             <small class="text-muted me-1">Garantia:</small>
@@ -500,8 +499,8 @@ include __DIR__ . '/includes/header_priv.php';
                     <div class="col-md-8">
                         <label class="form-label">Observações</label>
                         <textarea name="obs"
-                                  class="form-control"
-                                  rows="2"><?= htmlspecialchars($unidade->obs ?? '') ?></textarea>
+                            class="form-control"
+                            rows="2"><?= htmlspecialchars($unidade->obs ?? '') ?></textarea>
                     </div>
 
                 </div>
@@ -514,8 +513,8 @@ include __DIR__ . '/includes/header_priv.php';
 
                     <div>
                         <button type="button"
-                                id="btnMostrarFornecedores"
-                                class="btn btn-outline-primary me-2">
+                            id="btnMostrarFornecedores"
+                            class="btn btn-outline-primary me-2">
                             <i class="bi bi-truck"></i>
                             Associar Fornecedores
                         </button>
@@ -528,11 +527,11 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div id="areaFornecedores"
-                     class="<?= !empty($fornecedoresAssociadosAtuais) ? '' : 'd-none' ?>">
+                    class="<?= !empty($fornecedoresAssociadosAtuais) ? '' : 'd-none' ?>">
 
                     <hr class="my-4">
 
-                    <h5 class="mb-3 text-primary">Fornecedores associados</h5>
+                    <h5 class="mt-3 mb-3">Fornecedores associados</h5>
 
                     <div class="row g-2 mb-3 align-items-end">
 
@@ -544,7 +543,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                                 <?php foreach ($fornecedores as $fornecedor): ?>
                                     <option value="<?= $fornecedor->id ?>"
-                                            data-nome="<?= htmlspecialchars($fornecedor->nome, ENT_QUOTES) ?>">
+                                        data-nome="<?= htmlspecialchars($fornecedor->nome, ENT_QUOTES) ?>">
                                         <?= htmlspecialchars($fornecedor->nome) ?>
                                     </option>
                                 <?php endforeach; ?>
@@ -566,8 +565,8 @@ include __DIR__ . '/includes/header_priv.php';
 
                         <div class="col-md-2">
                             <button type="button"
-                                    id="btnAdicionarFornecedor"
-                                    class="btn btn-outline-primary w-100">
+                                id="btnAdicionarFornecedor"
+                                class="btn btn-outline-primary w-100">
                                 <i class="bi bi-plus-circle"></i>
                                 Adicionar
                             </button>
@@ -604,21 +603,21 @@ include __DIR__ . '/includes/header_priv.php';
                                             <?= htmlspecialchars($fornAssoc->nome) ?>
 
                                             <input type="hidden"
-                                                   name="fornecedoresAssociados[]"
-                                                   value="<?= htmlspecialchars($fornAssoc->idFornecedor) ?>">
+                                                name="fornecedoresAssociados[]"
+                                                value="<?= htmlspecialchars($fornAssoc->idFornecedor) ?>">
                                         </td>
 
                                         <td>
                                             <?= htmlspecialchars($fornAssoc->TipoFornecedor) ?>
 
                                             <input type="hidden"
-                                                   name="tiposFornecedoresAssociados[]"
-                                                   value="<?= htmlspecialchars($fornAssoc->TipoFornecedor) ?>">
+                                                name="tiposFornecedoresAssociados[]"
+                                                value="<?= htmlspecialchars($fornAssoc->TipoFornecedor) ?>">
                                         </td>
 
                                         <td>
                                             <button type="button"
-                                                    class="btn btn-sm btn-outline-danger btn-remover-fornecedor">
+                                                class="btn btn-sm btn-outline-danger btn-remover-fornecedor">
                                                 <i class="bi bi-trash"></i>
                                             </button>
                                         </td>
@@ -640,62 +639,62 @@ include __DIR__ . '/includes/header_priv.php';
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
 
-    const btnMostrarFornecedores = document.getElementById("btnMostrarFornecedores");
-    const areaFornecedores = document.getElementById("areaFornecedores");
+        const btnMostrarFornecedores = document.getElementById("btnMostrarFornecedores");
+        const areaFornecedores = document.getElementById("areaFornecedores");
 
-    if (btnMostrarFornecedores && areaFornecedores) {
-        btnMostrarFornecedores.addEventListener("click", function () {
-            areaFornecedores.classList.toggle("d-none");
-        });
-    }
+        if (btnMostrarFornecedores && areaFornecedores) {
+            btnMostrarFornecedores.addEventListener("click", function() {
+                areaFornecedores.classList.toggle("d-none");
+            });
+        }
 
-    const selectFornecedor = document.getElementById("selectFornecedorAssociado");
-    const selectTipoFornecedor = document.getElementById("selectTipoFornecedor");
-    const btnAdicionarFornecedor = document.getElementById("btnAdicionarFornecedor");
-    const tabelaBody = document.querySelector("#tabelaFornecedores tbody");
-    const linhaSemFornecedores = document.getElementById("linhaSemFornecedores");
+        const selectFornecedor = document.getElementById("selectFornecedorAssociado");
+        const selectTipoFornecedor = document.getElementById("selectTipoFornecedor");
+        const btnAdicionarFornecedor = document.getElementById("btnAdicionarFornecedor");
+        const tabelaBody = document.querySelector("#tabelaFornecedores tbody");
+        const linhaSemFornecedores = document.getElementById("linhaSemFornecedores");
 
-    if (!selectFornecedor || !selectTipoFornecedor || !btnAdicionarFornecedor || !tabelaBody || !linhaSemFornecedores) {
-        return;
-    }
-
-    let fornecedoresSelecionados = <?= json_encode($chavesFornecedoresAssociados) ?>;
-
-    btnAdicionarFornecedor.addEventListener("click", function () {
-
-        const optionFornecedor = selectFornecedor.options[selectFornecedor.selectedIndex];
-
-        const idFornecedor = optionFornecedor.value;
-        const nomeFornecedor = optionFornecedor.dataset.nome;
-        const tipoFornecedor = selectTipoFornecedor.value;
-
-        if (!idFornecedor) {
-            alert("Selecione um fornecedor.");
+        if (!selectFornecedor || !selectTipoFornecedor || !btnAdicionarFornecedor || !tabelaBody || !linhaSemFornecedores) {
             return;
         }
 
-        if (!tipoFornecedor) {
-            alert("Selecione o tipo de fornecedor.");
-            return;
-        }
+        let fornecedoresSelecionados = <?= json_encode($chavesFornecedoresAssociados) ?>;
 
-        const chave = idFornecedor + "|" + tipoFornecedor;
+        btnAdicionarFornecedor.addEventListener("click", function() {
 
-        if (fornecedoresSelecionados.includes(chave)) {
-            alert("Este fornecedor já foi adicionado com esse tipo.");
-            return;
-        }
+            const optionFornecedor = selectFornecedor.options[selectFornecedor.selectedIndex];
 
-        fornecedoresSelecionados.push(chave);
+            const idFornecedor = optionFornecedor.value;
+            const nomeFornecedor = optionFornecedor.dataset.nome;
+            const tipoFornecedor = selectTipoFornecedor.value;
 
-        linhaSemFornecedores.style.display = "none";
+            if (!idFornecedor) {
+                alert("Selecione um fornecedor.");
+                return;
+            }
 
-        const tr = document.createElement("tr");
-        tr.setAttribute("data-chave", chave);
+            if (!tipoFornecedor) {
+                alert("Selecione o tipo de fornecedor.");
+                return;
+            }
 
-        tr.innerHTML = `
+            const chave = idFornecedor + "|" + tipoFornecedor;
+
+            if (fornecedoresSelecionados.includes(chave)) {
+                alert("Este fornecedor já foi adicionado com esse tipo.");
+                return;
+            }
+
+            fornecedoresSelecionados.push(chave);
+
+            linhaSemFornecedores.style.display = "none";
+
+            const tr = document.createElement("tr");
+            tr.setAttribute("data-chave", chave);
+
+            tr.innerHTML = `
             <td>
                 ${nomeFornecedor}
                 <input type="hidden" name="fornecedoresAssociados[]" value="${idFornecedor}">
@@ -712,33 +711,33 @@ document.addEventListener("DOMContentLoaded", function () {
             </td>
         `;
 
-        tabelaBody.appendChild(tr);
+            tabelaBody.appendChild(tr);
 
-        selectFornecedor.value = "";
-        selectTipoFornecedor.value = "";
+            selectFornecedor.value = "";
+            selectTipoFornecedor.value = "";
+        });
+
+        tabelaBody.addEventListener("click", function(e) {
+
+            const botao = e.target.closest(".btn-remover-fornecedor");
+
+            if (!botao) {
+                return;
+            }
+
+            const tr = botao.closest("tr");
+            const chave = tr.getAttribute("data-chave");
+
+            fornecedoresSelecionados = fornecedoresSelecionados.filter(item => item !== chave);
+
+            tr.remove();
+
+            if (fornecedoresSelecionados.length === 0) {
+                linhaSemFornecedores.style.display = "";
+            }
+        });
+
     });
-
-    tabelaBody.addEventListener("click", function (e) {
-
-        const botao = e.target.closest(".btn-remover-fornecedor");
-
-        if (!botao) {
-            return;
-        }
-
-        const tr = botao.closest("tr");
-        const chave = tr.getAttribute("data-chave");
-
-        fornecedoresSelecionados = fornecedoresSelecionados.filter(item => item !== chave);
-
-        tr.remove();
-
-        if (fornecedoresSelecionados.length === 0) {
-            linhaSemFornecedores.style.display = "";
-        }
-    });
-
-});
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -747,5 +746,5 @@ document.addEventListener("DOMContentLoaded", function () {
 <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
 
 </body>
-</html>
 
+</html>
