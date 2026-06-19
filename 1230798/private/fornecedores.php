@@ -151,11 +151,12 @@ include __DIR__ . '/includes/header_priv.php';
                     <i class="bi bi-pencil"></i>
                   </a>
 
-                  <a href="apagar_fornecedor.php?id=<?= urlencode($fornecedor->id) ?>"
-                    class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm('Tem a certeza que deseja eliminar este fornecedor?');">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger btn-apagar"
+                    data-url="apagar_fornecedor.php?id=<?= urlencode($fornecedor->id) ?>">
                     <i class="bi bi-trash"></i>
-                  </a>
+                  </button>
                 </td>
               </tr>
             <?php endforeach; ?>
@@ -177,9 +178,9 @@ include __DIR__ . '/includes/header_priv.php';
 
         <div class="modal-header">
           <h5 class="modal-title text-danger">
-            <i class="bi bi-trash me-2"></i>
-            Confirmar
+            <i class="bi bi-exclamation-triangle"></i> Confirmar
           </h5>
+          <button class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 
         <div class="modal-body">
@@ -187,12 +188,11 @@ include __DIR__ . '/includes/header_priv.php';
         </div>
 
         <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancelar
+          </button>
           <button class="btn btn-danger" id="confirmarApagar">
             Eliminar
-          </button>
-
-
           </button>
         </div>
 
@@ -208,27 +208,24 @@ include __DIR__ . '/includes/header_priv.php';
 
 
   <script>
-    let linhaFornecedor = null;
+    let urlApagarFornecedor = null;
 
     document.addEventListener("click", function(e) {
 
       // clicar no botão apagar
-      if (e.target.closest(".btn-apagar")) {
+      const botaoApagar = e.target.closest(".btn-apagar");
 
-        linhaFornecedor = e.target.closest("tr");
-
-
+      if (botaoApagar) {
+        urlApagarFornecedor = botaoApagar.dataset.url;
         new bootstrap.Modal(document.getElementById("modalApagar")).show();
       }
 
       // confirmar apagar
       if (e.target.id === "confirmarApagar") {
 
-        if (linhaFornecedor) {
-          linhaFornecedor.remove();
+        if (urlApagarFornecedor) {
+          window.location.href = urlApagarFornecedor;
         }
-
-        bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
       }
 
     });
