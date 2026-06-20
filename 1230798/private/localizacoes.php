@@ -1,207 +1,204 @@
+<?php
 
-<?php include 'includes/header_priv.php'; ?>
-<?require_once __DIR__ . '/../../includes/db_connect.php';?>
-<?php require_once __DIR__ . '/includes/funcoes.php';
-      redirect_if_not_logged();
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/includes/funcoes.php';
+
+redirect_if_not_logged();
+
+try {
+    $ligacao = new PDO(
+        "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
+        MYSQL_USERNAME,
+        MYSQL_PASSWORD
+    );
+
+    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    $localizacoes = $ligacao->query("
+        SELECT
+            l.id,
+            e.nome AS edificio,
+            s.descricao AS servico,
+            l.andar,
+            l.sala
+        FROM localizacao l
+        INNER JOIN edificios e ON l.idEdificio = e.id
+        INNER JOIN servicos s ON l.idServico = s.id
+        ORDER BY e.nome, s.descricao, l.andar, l.sala
+    ")->fetchAll(PDO::FETCH_OBJ);
+
+    $erro = '';
+} catch (PDOException $e) {
+    $erro = 'Erro ao carregar localizacoes.';
+    $localizacoes = [];
+}
+
+include __DIR__ . '/includes/header_priv.php';
+
 ?>
 
-  <!-- CONTEÚDO -->
-  <div class="container py-4" style="padding-top: 100px;">
+<div class="container py-4">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>
-        <i class="bi bi-geo-alt me-2 text-primary"></i>
-        Localizações
-      </h2>
+        <h2 class="mb-0">
+            <i class="bi bi-geo-alt me-2 text-primary"></i>
+            Localizacoes
+        </h2>
 
-      <a href="inserir_localizacao.php" class="btn btn-primary">
-        <i class="bi bi-plus"></i> Inserir Localização
-      </a>
+        <a href="inserir_localizacao.php" class="btn btn-primary">
+            <i class="bi bi-plus"></i> Inserir Localizacao
+        </a>
     </div>
 
-    <!-- FILTROS -->
     <div class="card p-3 mb-4 shadow-sm">
+        <div class="row g-2 align-items-center">
 
-      <div class="row g-2 align-items-center">
+            <div class="col-md-3">
+                <input type="text" id="fNome" class="form-control" placeholder="Edificio">
+            </div>
 
-        <div class="col-md-3">
-          <input type="text" id="fNome" class="form-control" placeholder="Edifício">
+            <div class="col-md-3">
+                <input type="text" id="fNIF" class="form-control" placeholder="Servico">
+            </div>
+
+            <div class="col-md-2">
+                <input type="text" id="fEmail" class="form-control" placeholder="Andar">
+            </div>
+
+            <div class="col-md-2">
+                <input type="text" id="fTelefone" class="form-control" placeholder="Sala">
+            </div>
+
+            <div class="col-md-1">
+                <button class="btn btn-primary w-100" id="btnFiltrar">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+
+            <div class="col-md-1">
+                <button class="btn btn-outline-secondary w-100" id="btnLimpar">
+                    Limpar
+                </button>
+            </div>
+
         </div>
-
-        <div class="col-md-3">
-          <input type="text" id="fNIF" class="form-control" placeholder="Serviço">
-        </div>
-
-        <div class="col-md-2">
-          <input type="text" id="fEmail" class="form-control" placeholder="Andar">
-        </div>
-
-        <div class="col-md-2">
-          <input type="text" id="fTelefone" class="form-control" placeholder="Sala">
-        </div>
-
-
-        <!-- BOTÕES -->
-        <div class="col-md-1">
-          <button class="btn btn-primary w-100" id="btnFiltrar">
-            <i class="bi bi-search"></i>
-          </button>
-        </div>
-
-        <div class="col-md-1">
-          <button class="btn btn-outline-secondary w-100" id="btnLimpar">
-            Limpar
-          </button>
-        </div>
-
-      </div>
-
     </div>
 
-    <!-- TABELA -->
     <div class="table-responsive">
-      <table class="table table-bordered align-middle">
+        <table class="table table-bordered align-middle">
+            <thead class="table-custom">
+                <tr>
+                    <th>Edificio</th>
+                    <th>Servico</th>
+                    <th>Andar</th>
+                    <th>Sala</th>
+                    <th>Acoes</th>
+                </tr>
+            </thead>
 
-        <thead class="table-custom">
-          <tr>
-            <th>Edifício</th>
-            <th>Serviço</th>
-            <th>Andar</th>
-            <th>Sala</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
+            <tbody>
 
-        <tbody>
+                <?php if (!empty($erro)): ?>
 
-          <tr>
-            <td>Hospital Central</td>
-            <td>Cardiologia</td>
-            <td>2</td>
-            <td>203</td>
+                    <tr>
+                        <td colspan="5" class="text-center text-danger">
+                            <?= htmlspecialchars($erro) ?>
+                        </td>
+                    </tr>
 
-            <td>
-              <!-- EDITAR -->
-              <a href="editar_localizacao.php?id=1" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-pencil"></i>
-              </a>
+                <?php elseif (count($localizacoes) == 0): ?>
 
+                    <tr>
+                        <td colspan="5" class="text-center text-muted">
+                            Nao existem localizacoes registadas.
+                        </td>
+                    </tr>
 
-              <!-- APAGAR -->
-              <button class="btn btn-sm btn-outline-danger btn-apagar">
-                <i class="bi bi-trash"></i>
-              </button>
-            </td>
-          </tr>
+                <?php else: ?>
 
-        </tbody>
+                    <?php foreach ($localizacoes as $localizacao): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($localizacao->edificio) ?></td>
+                            <td><?= htmlspecialchars($localizacao->servico) ?></td>
+                            <td><?= htmlspecialchars($localizacao->andar) ?></td>
+                            <td><?= htmlspecialchars($localizacao->sala) ?></td>
 
-      </table>
+                            <td>
+                                <a href="editar_localizacao.php?id=<?= urlencode($localizacao->id) ?>"
+                                   class="btn btn-sm btn-outline-primary">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+
+                                <button
+                                    type="button"
+                                    class="btn btn-sm btn-outline-danger btn-apagar"
+                                    data-url="apagar_localizacao.php?id=<?= urlencode($localizacao->id) ?>">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+
+                <?php endif; ?>
+
+            </tbody>
+        </table>
     </div>
 
-  </div>
+</div>
 
-
-   <!-- BOTAO APAGAR-->
-
-  <div class="modal fade" id="modalApagar" tabindex="-1">
+<div class="modal fade" id="modalApagar" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
+        <div class="modal-content">
 
-        <div class="modal-header">
-          <h5 class="modal-title text-danger">
-            <i class="bi bi-exclamation-triangle"></i> Confirmar
-          </h5>
-          <button class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header">
+                <h5 class="modal-title text-danger">
+                    <i class="bi bi-exclamation-triangle"></i> Confirmar
+                </h5>
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                Tem a certeza que deseja apagar esta localizacao?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancelar
+                </button>
+
+                <button class="btn btn-danger" id="confirmarApagar">
+                    Apagar
+                </button>
+            </div>
+
         </div>
-
-        <div class="modal-body">
-          Tem a certeza que deseja apagar esta localização?
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-secondary" data-bs-dismiss="modal">
-            Cancelar
-          </button>
-
-          <button class="btn btn-danger" id="confirmarApagar">
-            Apagar
-          </button>
-        </div>
-
-      </div>
     </div>
-  </div>
+</div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../js/1230798.js"></script>
 
+<?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
 
+<script>
+    let urlApagarLocalizacao = null;
 
+    document.addEventListener("click", function(e) {
+        const botaoApagar = e.target.closest(".btn-apagar");
 
-  <div class="modal fade" id="modalSucesso" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-header">
-          <h5 class="modal-title text-success">
-            <i class="bi bi-check-circle me-2"></i>
-            Sucesso
-          </h5>
-        </div>
-
-        <div class="modal-body">
-          Equipamento inserido com sucesso!<br><br>
-          Deseja inserir outro equipamento?
-        </div>
-
-        <div class="modal-footer">
-          <button class="btn btn-outline-secondary" id="btnIrLista">
-            Concluir
-          </button>
-
-          <button class="btn btn-primary" id="btnNovo">
-            Inserir outro
-          </button>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/1230798.js"></script>
-
-
-      <script>
-
-      let linhaLocalizacao = null;
-
-      document.addEventListener("click", function (e) {
-
-        // clicar no botão apagar
-        if (e.target.closest(".btn-apagar")) {
-
-          linhaLocalizacao = e.target.closest("tr");
-
-
-          new bootstrap.Modal(document.getElementById("modalApagar")).show();
+        if (botaoApagar) {
+            urlApagarLocalizacao = botaoApagar.dataset.url;
+            new bootstrap.Modal(document.getElementById("modalApagar")).show();
         }
 
-        // confirmar apagar
         if (e.target.id === "confirmarApagar") {
-
-          if (linhaLocalizacao) {
-            linhaLocalizacao.remove();
-          }
-
-          bootstrap.Modal.getInstance(document.getElementById("modalApagar")).hide();
+            if (urlApagarLocalizacao) {
+                window.location.href = urlApagarLocalizacao;
+            }
         }
-
-      });
-
-    </script>
+    });
+</script>
 
 </body>
-
 </html>

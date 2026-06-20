@@ -75,8 +75,8 @@ try {
                 t.descricao AS categoria,
                 f.nome AS fabricante,
 
-                l.idEdificio,
-                l.idServico,
+                edf.nome as edificio,
+                ser.descricao as servico,
                 l.andar,
                 l.sala
 
@@ -86,6 +86,8 @@ try {
             INNER JOIN tipoequipamento t ON e.idTipo = t.id
             LEFT JOIN fabricante f ON e.idfabricante = f.id
             LEFT JOIN localizacao l ON eu.idLocalizacao = l.id
+            JOIN edificios edf ON edf.id = l.idEdificio
+            JOIN servicos ser ON ser.id= l.idServico
             WHERE $where
             LIMIT 1
         ");
@@ -116,15 +118,18 @@ try {
                 SELECT 
                     ec.data,
                     ec.estado,
-                    l.idEdificio,
-                    l.idServico,
+                    edf.nome AS edificio,
+                    ser.descricao AS servico,
                     l.andar,
                     l.sala
                 FROM equipamentocadastro ec
                 LEFT JOIN localizacao l ON ec.idlocalizacao = l.id
+                LEFT JOIN edificios edf ON edf.id = l.idEdificio
+                LEFT JOIN servicos ser ON ser.id = l.idServico
                 WHERE ec.idequipamento = ?
                 ORDER BY ec.data DESC, ec.id DESC
             ");
+
 
             $stmtHistorico->execute([$unidade->idEquipamento]);
             $historico = $stmtHistorico->fetchAll(PDO::FETCH_OBJ);
@@ -278,8 +283,8 @@ include __DIR__ . '/includes/header_priv.php';
 
                             <p>
                                 <strong>Localização:</strong>
-                                Edifício <?= htmlspecialchars($unidade->idEdificio ?? '–') ?> -
-                                Serviço <?= htmlspecialchars($unidade->idServico ?? '–') ?> -
+                                 <?= htmlspecialchars($unidade->edificio ?? '–') ?> -
+                                 <?= htmlspecialchars($unidade->servico ?? '–') ?> -
                                 Andar <?= htmlspecialchars($unidade->andar ?? '–') ?> -
                                 Sala <?= htmlspecialchars($unidade->sala ?? '–') ?>
                             </p>
@@ -418,8 +423,8 @@ include __DIR__ . '/includes/header_priv.php';
                                         <td><?= formatar_data($registo->data) ?></td>
                                         <td><?= htmlspecialchars($registo->estado ?? '–') ?></td>
                                         <td>
-                                            Edifício <?= htmlspecialchars($registo->idEdificio ?? '–') ?> -
-                                            Serviço <?= htmlspecialchars($registo->idServico ?? '–') ?> -
+                                            Edifício <?= htmlspecialchars($registo->edificio ?? '–') ?> -
+                                            Serviço <?= htmlspecialchars($registo->servico ?? '–') ?> -
                                             Andar <?= htmlspecialchars($registo->andar ?? '–') ?> -
                                             Sala <?= htmlspecialchars($registo->sala ?? '–') ?>
                                         </td>

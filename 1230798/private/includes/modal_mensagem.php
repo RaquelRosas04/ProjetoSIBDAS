@@ -6,7 +6,7 @@ if (session_status() === PHP_SESSION_NONE) {
 
 $mensagemModal = $_SESSION['mensagem_modal'] ?? null;
 unset($_SESSION['mensagem_modal']);
-
+ 
 if (!empty($mensagemModal)) {
 
     $tipo = $mensagemModal['tipo'] ?? 'info';

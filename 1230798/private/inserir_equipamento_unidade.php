@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/includes/funcoes.php';
@@ -39,9 +39,16 @@ try {
     ")->fetchAll(PDO::FETCH_OBJ);
 
     $localizacoes = $ligacao->query("
-        SELECT id, idEdificio, idServico, andar, sala
-        FROM localizacao
-        ORDER BY idEdificio, idServico, andar, sala
+        SELECT
+            l.id,
+            e.nome AS edificio,
+            s.descricao AS servico,
+            l.andar,
+            l.sala
+        FROM localizacao l
+        INNER JOIN edificios e ON l.idEdificio = e.id
+        INNER JOIN servicos s ON l.idServico = s.id
+        ORDER BY e.nome, s.descricao, l.andar, l.sala
     ")->fetchAll(PDO::FETCH_OBJ);
 
     $fornecedores = $ligacao->query("
@@ -127,7 +134,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Nº Série*</label>
+                    <label class="form-label">Nº Série</label>
                     <input type="text" name="numSerie" class="form-control" maxlength="50" required>
                 </div>
 
@@ -137,14 +144,14 @@ include __DIR__ . '/includes/header_priv.php';
 
             <div class="row g-3 mb-4">
                 <div class="col-md-6">
-                    <label class="form-label">Localização*</label>
-                    <select name="idLocalizacao" class="form-select" required>
+                    <label class="form-label">Localizacão*</label>
+                    <select id="idLocalizacao" name="idLocalizacao" class="form-select" required>
                         <option value="">Selecione a localização</option>
 
                         <?php foreach ($localizacoes as $loc): ?>
                             <option value="<?= $loc->id ?>">
-                                Edifício <?= htmlspecialchars($loc->idEdificio) ?> -
-                                Serviço <?= htmlspecialchars($loc->idServico) ?> -
+                                <?= htmlspecialchars($loc->edificio) ?> -
+                                <?= htmlspecialchars($loc->servico) ?> -
                                 Andar <?= htmlspecialchars($loc->andar) ?> -
                                 Sala <?= htmlspecialchars($loc->sala) ?>
                             </option>
@@ -203,13 +210,13 @@ include __DIR__ . '/includes/header_priv.php';
                     <select name="tipoEntrada" class="form-select" required>
                         <option value="">Selecione</option>
                         <option value="Compra">Compra</option>
-                        <option value="Doação">Doação</option>
+                        <option value="DoaÃ§Ã£o">Doação</option>
                         <option value="Aluguer">Aluguer</option>
-                        <option value="Empréstimo">Empréstimo</option>
+                        <option value="EmprÃ©stimo">Empréstimo</option>
                     </select>
                 </div>
 
-                <!--                    Para aparecer a garantia no ecra (mas fica desalinhada)
+                <!--Para aparecer a garantia no ecra (mas fica desalinhada)
                         <div class="col-md-4">
             <div class="border rounded p-3 bg-light h-100">
                 <small class="text-muted d-block">Garantia</small>
@@ -286,7 +293,7 @@ include __DIR__ . '/includes/header_priv.php';
                             <option value="Fabricante">Fabricante</option>
                             <option value="Distribuidor">Distribuidor</option>
                             <option value="AT">Assistência Técnica</option>
-                            <option value="Consumiveis">Consumíveis</option>
+                            <option value="Consumiveis">Consumiveis</option>
                         </select>
                     </div>
 
@@ -307,7 +314,7 @@ include __DIR__ . '/includes/header_priv.php';
                             <tr>
                                 <th>Fornecedor</th>
                                 <th>Tipo</th>
-                                <th style="width: 120px;">Ações</th>
+                                <th style="width: 120px;">AÃ§Ãµes</th>
                             </tr>
                         </thead>
 
@@ -382,13 +389,14 @@ include __DIR__ . '/includes/header_priv.php';
                 }
             }
 
-            inputCodigo.value = codigo || "Sem código definido";
+            inputCodigo.value = codigo || "Sem cÃ³digo definido";
         }
     });
+
+    let tomSelectLocalizacao = new TomSelect("#idLocalizacao");
 </script>
 
 
-</script>
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
@@ -434,7 +442,7 @@ include __DIR__ . '/includes/header_priv.php';
             const chave = idFornecedor + "|" + tipoFornecedor;
 
             if (fornecedoresSelecionados.includes(chave)) {
-                alert("Este fornecedor já foi adicionado com esse tipo.");
+                alert("Este fornecedor jÃ¡ foi adicionado com esse tipo.");
                 return;
             }
 
@@ -494,3 +502,4 @@ include __DIR__ . '/includes/header_priv.php';
 </body>
 
 </html>
+

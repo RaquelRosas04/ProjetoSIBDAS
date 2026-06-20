@@ -601,3 +601,80 @@ function mostrarCodigoPrevisto(valorSelecionado = null) {
         setTimeout(() => window._paginacaoEquip.paginar(1), 0);
     }
 })();
+
+
+//Exportacao para excel - respeitar os filtros
+document.addEventListener("DOMContentLoaded", function () {
+  const btnExportarExcel = document.getElementById("btnExportarExcel");
+
+  if (!btnExportarExcel) {
+    return;
+  }
+
+  btnExportarExcel.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    const filtros = {
+      fCodigo: document.getElementById("fCodigo")?.value.trim(),
+      fNome: document.getElementById("fNome")?.value.trim(),
+      fMarca: document.getElementById("fMarca")?.value.trim(),
+      fModelo: document.getElementById("fModelo")?.value.trim(),
+      fSerie: document.getElementById("fSerie")?.value.trim(),
+      fLocal: document.getElementById("fLocal")?.value.trim(),
+      fEstado: document.getElementById("fEstado")?.value.trim(),
+      fCriticidade: document.getElementById("fCriticidade")?.value.trim()
+    };
+
+    Object.keys(filtros).forEach(function (nome) {
+      if (filtros[nome]) {
+        params.append(nome, filtros[nome]);
+      }
+    });
+
+    const url =
+      "exportar_equipamentos_unidade.php" +
+      (params.toString() ? "?" + params.toString() : "");
+
+    window.location.href = url;
+  });
+});
+
+//Imprimir Etiquetas - Lista_equipamento_unidade
+document.addEventListener("DOMContentLoaded", function () {
+  const btnImprimirEtiquetas = document.getElementById("btnImprimirEtiquetas");
+
+  if (!btnImprimirEtiquetas) {
+    return;
+  }
+
+  btnImprimirEtiquetas.addEventListener("click", function (e) {
+    e.preventDefault();
+
+    const params = new URLSearchParams();
+
+    const filtros = {
+      fCodigo: document.getElementById("fCodigo")?.value.trim(),
+      fNome: document.getElementById("fNome")?.value.trim(),
+      fMarca: document.getElementById("fMarca")?.value.trim(),
+      fModelo: document.getElementById("fModelo")?.value.trim(),
+      fSerie: document.getElementById("fSerie")?.value.trim(),
+      fLocal: document.getElementById("fLocal")?.value.trim(),
+      fEstado: document.getElementById("fEstado")?.value.trim(),
+      fCriticidade: document.getElementById("fCriticidade")?.value.trim()
+    };
+
+    Object.keys(filtros).forEach(function (nome) {
+      if (filtros[nome]) {
+        params.append(nome, filtros[nome]);
+      }
+    });
+
+    const url =
+      "etiquetas_equipamentos_unidade.php" +
+      (params.toString() ? "?" + params.toString() : "");
+
+    window.open(url, "_blank");
+  });
+});

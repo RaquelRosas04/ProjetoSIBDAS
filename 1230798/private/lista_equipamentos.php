@@ -33,6 +33,7 @@ try {
     FROM equipamentos e
     INNER JOIN marca  ON e.idMarca = marca.id
          left JOIN fabricante f ON e.idFabricante = f.id
+    INNER JOIN tipoequipamento ON e.idTipo= tipoequipamento.id
     ORDER BY e.id DESC
     ";
 
@@ -61,6 +62,10 @@ try {
 
     <a href="inserir_equipamento.php" class="btn btn-primary">
       <i class="bi bi-plus"></i> Inserir Equipamento
+    </a>
+
+    <a href="exportar_equipamentos.php" class="btn btn-success" id="btnExportar">
+      <i class="bi bi-file-earmark-excel"></i> Exportar Excel
     </a>
 
   </div>

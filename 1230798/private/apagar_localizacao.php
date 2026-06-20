@@ -8,12 +8,11 @@ redirect_if_not_logged();
 $id = $_GET['id'] ?? '';
 
 if (empty($id)) {
-    header('Location: fornecedores.php');
+    header('Location: localizacoes.php');
     exit;
 }
 
 try {
-
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
         MYSQL_USERNAME,
@@ -22,57 +21,50 @@ try {
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // Verificar se existe
     $stmt = $ligacao->prepare("
         SELECT id
-        FROM fornecedores
+        FROM localizacao
         WHERE id = ?
     ");
-
     $stmt->execute([$id]);
 
     if (!$stmt->fetch(PDO::FETCH_OBJ)) {
-        header('Location: fornecedores.php');
+        header('Location: localizacoes.php');
         exit;
     }
 
-    // Verificar se o fornecedor esta associado a equipamentos
     $stmt = $ligacao->prepare("
         SELECT COUNT(*) AS total
-        FROM equipamentofornecedores
-        WHERE idFornecedor = ?
+        FROM equipamentounidade
+        WHERE idLocalizacao = ?
     ");
     $stmt->execute([$id]);
-    $associacoesEquipamento = $stmt->fetch(PDO::FETCH_OBJ);
+    $associacoes = $stmt->fetch(PDO::FETCH_OBJ);
 
-    if ($associacoesEquipamento->total > 0) {
+    if ($associacoes->total > 0) {
         definir_mensagem(
             'warning',
-            'Nao e possivel apagar este fornecedor porque existem equipamentos associados.'
+            'Nao e possivel apagar esta localizacao porque existem equipamentos associados.'
         );
 
-        header('Location: fornecedores.php');
+        header('Location: localizacoes.php');
         exit;
     }
 
-    // Apagar
     $stmt = $ligacao->prepare("
-        DELETE FROM fornecedores
+        DELETE FROM localizacao
         WHERE id = ?
     ");
-
     $stmt->execute([$id]);
 
-    definir_mensagem('success', 'Fornecedor apagado com sucesso.');
+    definir_mensagem('success', 'Localizacao apagada com sucesso.');
 
-    header('Location: fornecedores.php');
+    header('Location: localizacoes.php');
     exit;
 
 } catch (PDOException $e) {
+    definir_mensagem('danger', 'Erro ao apagar localizacao.');
 
-    definir_mensagem('danger', 'Erro ao apagar fornecedor.');
-
-    header('Location: fornecedores.php');
+    header('Location: localizacoes.php');
     exit;
-
 }

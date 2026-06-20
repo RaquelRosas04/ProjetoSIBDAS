@@ -1,6 +1,11 @@
-<?php require_once __DIR__ . '/../../config/config.php'; ?>
 
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+require_once __DIR__ . '/../../config/config.php';
+
 $currentPage = basename($_SERVER['PHP_SELF']);
 ?>
 
@@ -90,24 +95,27 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         <a class="nav-link <?= ($currentPage == 'localizacoes.php') ? 'active' : '' ?>" href="localizacoes.php">Localizações</a>
                     </li>
 
-
-                    <li class="nav-item">
-                        <a class="nav-link <?= ($currentPage == 'admin_editar.php') ? 'active' : '' ?>" href="admin_editar.php">Conteúdos</a>
-                    </li>
-
+                    <?php if ($_SESSION['perfil'] === 'Gestor'): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?= ($currentPage == 'admin_editar.php') ? 'active' : '' ?>" href="admin_editar.php">Conteúdos</a>
+                        </li>
+                    <?php endif; ?>
+                    
                 </ul>
 
 
                 <!-- DIREITA -->
-                <div>
-                   <!-- <button class="btn btn-outline-light">Logout</button> -->
-                    <button
-                        class="btn btn-outline-light"
-                        onclick="window.location.href='/1230798/public/logout.php'">
-                        Logout
-                    </button>
-                </div>
+                    <div class="d-flex align-items-center">
+                        <span class="text-white me-3">
+                            <?= htmlspecialchars($_SESSION['perfil']) ?>
+                        </span>
 
+                        <button
+                            class="btn btn-outline-light"
+                            onclick="window.location.href='/1230798/public/logout.php'">
+                            Logout
+                        </button>
+                    </div>
             </div>
         </div>
 

@@ -6,32 +6,36 @@ require_once __DIR__ . '/includes/funcoes.php';
 redirect_if_not_logged();
 
 try {
-$ligacao = new PDO(
+  $ligacao = new PDO(
     "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
     MYSQL_USERNAME,
     MYSQL_PASSWORD
-);
-  
+  );
 
-    $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    $sql = "
+  $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+  $sql = "
         SELECT euni.id, euni.codigo , e.descricao, marca.descricao AS marca, e.modelo, euni.numSerie, 
-        localizacao.idServico localizacao, euni.estado, e.criticidade
+         CONCAT(edificios.nome,' - ',
+            servicos.descricao,' - Andar ',
+            localizacao.andar, ' - Sala ', localizacao.sala
+        ) as localizacao, euni.estado, e.criticidade
         FROM equipamentos e
         INNER JOIN equipamentounidade euni
             ON e.id= euni.idequipamento
         INNER JOIN marca on e.idMarca=marca.id
         INNER JOIN localizacao ON euni.idlocalizacao=localizacao.id
+        INNER JOIN edificios ON localizacao.idEdificio = edificios.id
+        INNER JOIN servicos ON localizacao.idServico = servicos.id
     ";
 
-    $stmt = $ligacao->query($sql);
-    $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
-    $erro = '';
-
+  $stmt = $ligacao->query($sql);
+  $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
+  $erro = '';
 } catch (PDOException $e) {
-    $erro = 'Erro ao carregar equipamentos.';
-    $equipamentos = [];
+  $erro = 'Erro ao carregar equipamentos.';
+  $equipamentos = [];
 }
 
 ?>
@@ -52,10 +56,23 @@ $ligacao = new PDO(
       Lista de Equipamentos
     </h2>
 
-    <a href="inserir_equipamento.php" class="btn btn-primary">
-      <i class="bi bi-plus"></i> Inserir Equipamento
+    <a href="inserir_equipamento_unidade.php" class="btn btn-primary">
+      <i class="bi bi-plus"></i> Inserir Unidade 
     </a>
 
+    <a href="exportar_equipamentos_unidade.php"
+      id="btnExportarExcel"
+      class="btn btn-success">
+      <i class="bi bi-file-earmark-excel"></i> Exportar Excel
+    </a>
+
+    
+    <a href="etiquetas_equipamentos_unidade.php"
+      id="btnImprimirEtiquetas"
+      class="btn btn-outline-dark"
+      target="_blank">
+      <i class="bi bi-printer"></i> Imprimir Etiquetas
+    </a>
 
   </div>
 
@@ -145,58 +162,54 @@ $ligacao = new PDO(
       </thead>
       <tbody>
 
-<?php if (!empty($erro)): ?>
+        <?php if (!empty($erro)): ?>
 
-  <tr>
-    <td colspan="9" class="text-center text-danger">
-      <?= htmlspecialchars($erro) ?>
-    </td>
-  </tr>
+          <tr>
+            <td colspan="9" class="text-center text-danger">
+              <?= htmlspecialchars($erro) ?>
+            </td>
+          </tr>
 
-<?php elseif (count($equipamentos) == 0): ?>
+        <?php elseif (count($equipamentos) == 0): ?>
 
-  <tr>
-    <td colspan="9" class="text-center text-muted">
-      Não existem equipamentos registados.
-    </td>
-  </tr>
+          <tr>
+            <td colspan="9" class="text-center text-muted">
+              Não existem equipamentos registados.
+            </td>
+          </tr>
 
-<?php else: ?>
+        <?php else: ?>
 
-  <?php foreach ($equipamentos as $equipamento): ?>
-    <tr>
-      <td><?= htmlspecialchars($equipamento->codigo) ?></td>
-      <td><?= htmlspecialchars($equipamento->descricao) ?></td>
-      <td><?= htmlspecialchars($equipamento->marca) ?></td>
-      <td><?= htmlspecialchars($equipamento->modelo) ?></td>
-      <td><?= htmlspecialchars($equipamento->numSerie) ?></td>
-      <td><?= htmlspecialchars($equipamento->localizacao) ?></td>
-      <td><?= htmlspecialchars($equipamento->estado) ?></td>
-      <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
+          <?php foreach ($equipamentos as $equipamento): ?>
+            <tr>
+              <td><?= htmlspecialchars($equipamento->codigo) ?></td>
+              <td><?= htmlspecialchars($equipamento->descricao) ?></td>
+              <td><?= htmlspecialchars($equipamento->marca) ?></td>
+              <td><?= htmlspecialchars($equipamento->modelo) ?></td>
+              <td><?= htmlspecialchars($equipamento->numSerie) ?></td>
+              <td><?= htmlspecialchars($equipamento->localizacao) ?></td>
+              <td><?= htmlspecialchars($equipamento->estado) ?></td>
+              <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
 
-      <td>
-        <a href="detalhes_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
-           class="btn btn-sm btn-outline-primary">
-          <i class="bi bi-eye"></i>
-        </a>
-        
-        <a href="editar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
-                    class="btn btn-sm btn-outline-primary">
-                    <i class="bi bi-pencil"></i>
-                  </a>
+              <td>
+                <a href="detalhes_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
+                  class="btn btn-sm btn-outline-primary">
+                  <i class="bi bi-eye"></i>
+                </a>
 
-                  <a href="apagar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
-                    class="btn btn-sm btn-outline-danger"
-                    onclick="return confirm('Tem a certeza que deseja eliminar este equipamento?');">
-                    <i class="bi bi-trash"></i>
-                  </a>
-      </td>
-    </tr>
-  <?php endforeach; ?>
 
-<?php endif; ?>
+                <a href="apagar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
+                  class="btn btn-sm btn-outline-danger"
+                  onclick="return confirm('Tem a certeza que deseja eliminar este equipamento?');">
+                  <i class="bi bi-trash"></i>
+                </a>
+              </td>
+            </tr>
+          <?php endforeach; ?>
 
-</tbody>
+        <?php endif; ?>
+
+      </tbody>
     </table>
   </div>
 

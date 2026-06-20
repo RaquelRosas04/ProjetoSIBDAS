@@ -32,7 +32,6 @@ unset($_SESSION['server_error']);
   <link rel="stylesheet" href="../css/1230798.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/1230798.js"></script>
   <link rel="icon" href="../assets/images/aba.png" type="image/png">
 </head>
 

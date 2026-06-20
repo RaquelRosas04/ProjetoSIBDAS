@@ -77,16 +77,17 @@ if (!$user) {
 }
 
 
-if ($user->password != $password) {
+if (!password_verify($password, $user->password)) {
     $_SESSION['server_error'] = 'Login inválido.';
     header('Location: ../public/login.php');
     exit;
 }
+
 // boa pratica para nao deixar a ligacao à bd aberta
 $ligacao = null;
 
 $_SESSION['utilizador'] = $user->email;
-//$_SESSION['perfil'] = $user->perfil;
+$_SESSION['perfil'] = $user->perfil;
 
 header('Location: lista_equipamentos.php');
 exit;

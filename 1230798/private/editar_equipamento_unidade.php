@@ -35,6 +35,7 @@ try {
         $idLocalizacao = $_POST['idLocalizacao'] ?? '';
         $numSerie = trim($_POST['numSerie'] ?? '');
         $estado = $_POST['estado'] ?? '';
+        $dataAlteracaoCadastro = $_POST['dataAlteracaoCadastro'] ?? '';
         $anoFabrico = $_POST['anoFabrico'] ?? '';
         $dataAquisicao = $_POST['dataAquisicao'] ?? '';
         $dataFimGarantia = $_POST['dataFimGarantia'] ?? '';
@@ -66,6 +67,28 @@ try {
             $erros[] = 'Selecione o estado.';
         }
 
+        // verifica se estado actual é diferente de estado da base de dados
+        $stmtEstadoAtual = $ligacao->prepare("
+            SELECT estado, idLocalizacao
+            FROM equipamentounidade
+            WHERE id = ?
+        ");
+        $stmtEstadoAtual->execute([$id]);
+        $unidadeAtual = $stmtEstadoAtual->fetch(PDO::FETCH_OBJ);
+
+        if (!$unidadeAtual) {
+            $erros[] = 'Unidade inválida.';
+        }
+
+        
+            $estadoAlterado = $unidadeAtual && $estado !== $unidadeAtual->estado;
+            $localizacaoAlterada = $unidadeAtual && $idLocalizacao != $unidadeAtual->idLocalizacao;
+            $cadastroAlterado = $estadoAlterado || $localizacaoAlterada;
+
+            if ($cadastroAlterado && empty($dataAlteracaoCadastro)) {
+                $erros[] = 'Indique a data da alteração de localização/estado.';
+            }        
+        
         if (empty($anoFabrico)) {
             $erros[] = 'Preencha o ano de fabrico.';
         }
@@ -175,7 +198,27 @@ try {
             $id
         ]);
 
-        /*
+            // Se alterou estado ou localização, regista no cadastro/histórico
+            if ($cadastroAlterado) {
+                $stmtCadastro = $ligacao->prepare("
+                    INSERT INTO equipamentocadastro
+                    (
+                        idequipamento,
+                        idlocalizacao,
+                        estado,
+                        data
+                    )
+                    VALUES (?, ?, ?, ?)
+                ");
+
+                $stmtCadastro->execute([
+                    $idEquipamento,
+                    $idLocalizacao,
+                    $estado,
+                    $dataAlteracaoCadastro
+                ]);
+            }
+                    /*
          * Atualizar fornecedores associados.
          * Como são opcionais:
          * - se não vier nenhum, apaga os antigos e fica sem fornecedores associados;
@@ -258,11 +301,18 @@ try {
         exit;
     }
 
-    $localizacoes = $ligacao->query("
-        SELECT id, idEdificio, idServico, andar, sala
-        FROM localizacao
-        ORDER BY idEdificio, idServico, andar, sala
-    ")->fetchAll(PDO::FETCH_OBJ);
+        $localizacoes = $ligacao->query("
+            SELECT
+                l.id,
+                e.nome AS edificio,
+                s.descricao AS servico,
+                l.andar,
+                l.sala
+            FROM localizacao l
+            INNER JOIN edificios e ON l.idEdificio = e.id
+            INNER JOIN servicos s ON l.idServico = s.id
+            ORDER BY e.nome, s.descricao, l.andar, l.sala
+        ")->fetchAll(PDO::FETCH_OBJ);
 
     $fornecedores = $ligacao->query("
         SELECT id, nome
@@ -370,27 +420,51 @@ include __DIR__ . '/includes/header_priv.php';
 
                 </div>
 
-                <h5 class="mt-3 mb-3">Localização e Fornecedor</h5>
+                <h5 class="mt-3 mb-3">Localização e Estado</h5>
 
                 <div class="row g-3 mb-4">
 
                     <div class="col-md-6">
                         <label class="form-label">Localização</label>
 
-                        <select name="idLocalizacao" class="form-select" required>
+                        <select id="idLocalizacao" name="idLocalizacao" class="form-select" required>
                             <option value="">Selecione a localização</option>
 
                             <?php foreach ($localizacoes as $loc): ?>
                                 <option value="<?= $loc->id ?>"
                                     <?= $unidade->idLocalizacao == $loc->id ? 'selected' : '' ?>>
-                                    Edifício <?= htmlspecialchars($loc->idEdificio) ?> -
-                                    Serviço <?= htmlspecialchars($loc->idServico) ?> -
+                                    <?= htmlspecialchars($loc->edificio) ?> -
+                                    <?= htmlspecialchars($loc->servico) ?> -
                                     Andar <?= htmlspecialchars($loc->andar) ?> -
                                     Sala <?= htmlspecialchars($loc->sala) ?>
                                 </option>
                             <?php endforeach; ?>
-
                         </select>
+                    </div>
+
+
+    
+                    <div class="col-md-3">
+                        <label class="form-label">Estado</label>
+
+                        <select id="estado" name="estado" class="form-select" required>
+                            <option value="">Selecione</option>
+
+                            <option value="Ativo" <?= $unidade->estado === 'Ativo' ? 'selected' : '' ?>>Ativo</option>
+                            <option value="Inativo" <?= $unidade->estado === 'Inativo' ? 'selected' : '' ?>>Inativo</option>
+                            <option value="Manutenção" <?= $unidade->estado === 'Manutenção' ? 'selected' : '' ?>>Manutenção</option>
+                            <option value="Calibração" <?= $unidade->estado === 'Calibração' ? 'selected' : '' ?>>Calibração</option>
+                            <option value="Quarentena" <?= $unidade->estado === 'Quarentena' ? 'selected' : '' ?>>Quarentena</option>
+                            <option value="Abatido" <?= $unidade->estado === 'Abatido' ? 'selected' : '' ?>>Abatido</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-3 d-none" id="areaDataCadastro">
+                        <label class="form-label">Data da alteração*</label>
+                        <input type="date"
+                            name="dataAlteracaoCadastro"
+                            id="dataAlteracaoCadastro"
+                            class="form-control">
                     </div>
 
                 </div>
@@ -399,38 +473,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                 <div class="row g-3">
 
-                    <div class="col-md-3">
-                        <label class="form-label">Estado</label>
-
-                        <select name="estado" class="form-select" required>
-                            <option value="">Selecione</option>
-
-                            <option value="Ativo" <?= $unidade->estado === 'Ativo' ? 'selected' : '' ?>>
-                                Ativo
-                            </option>
-
-                            <option value="Inativo" <?= $unidade->estado === 'Inativo' ? 'selected' : '' ?>>
-                                Inativo
-                            </option>
-
-                            <option value="Manutenção" <?= $unidade->estado === 'Manutenção' ? 'selected' : '' ?>>
-                                Manutenção
-                            </option>
-
-                            <option value="Calibração" <?= $unidade->estado === 'Calibração' ? 'selected' : '' ?>>
-                                Calibração
-                            </option>
-
-                            <option value="Quarentena" <?= $unidade->estado === 'Quarentena' ? 'selected' : '' ?>>
-                                Quarentena
-                            </option>
-
-                            <option value="Abatido" <?= $unidade->estado === 'Abatido' ? 'selected' : '' ?>>
-                                Abatido
-                            </option>
-                        </select>
-                    </div>
-
+                
                     <div class="col-md-3">
                         <label class="form-label">Ano de Fabrico</label>
                         <input type="number"
@@ -506,10 +549,13 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="mt-4 d-flex justify-content-between">
-                    <a href="lista_equipamentos.php" class="btn btn-outline-secondary">
+
+                    
+                    <a href="lista_equipamentos_unidade.php" class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i>
                         Voltar
                     </a>
+
 
                     <div>
                         <button type="button"
@@ -637,6 +683,44 @@ include __DIR__ . '/includes/header_priv.php';
     <?php endif; ?>
 
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const estadoSelect = document.getElementById("estado");
+    const localizacaoSelect = document.getElementById("idLocalizacao");
+    const areaDataCadastro = document.getElementById("areaDataCadastro");
+    const dataAlteracaoCadastro = document.getElementById("dataAlteracaoCadastro");
+
+    const estadoAtual = <?= json_encode($unidade->estado ?? '') ?>;
+    const localizacaoAtual = <?= json_encode((string)($unidade->idLocalizacao ?? '')) ?>;
+
+    if (!estadoSelect || !localizacaoSelect || !areaDataCadastro || !dataAlteracaoCadastro) {
+        return;
+    }
+
+    function atualizarCampoDataCadastro() {
+        const estadoAlterado = estadoSelect.value !== estadoAtual;
+        const localizacaoAlterada = localizacaoSelect.value !== localizacaoAtual;
+
+        if (estadoAlterado || localizacaoAlterada) {
+            areaDataCadastro.classList.remove("d-none");
+            dataAlteracaoCadastro.required = true;
+
+            if (!dataAlteracaoCadastro.value) {
+                dataAlteracaoCadastro.value = new Date().toISOString().split("T")[0];
+            }
+        } else {
+            areaDataCadastro.classList.add("d-none");
+            dataAlteracaoCadastro.required = false;
+            dataAlteracaoCadastro.value = "";
+        }
+    }
+
+    estadoSelect.addEventListener("change", atualizarCampoDataCadastro);
+    localizacaoSelect.addEventListener("change", atualizarCampoDataCadastro);
+
+    atualizarCampoDataCadastro();
+});
+</script>
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {

@@ -206,6 +206,8 @@ include __DIR__ . '/includes/header_priv.php';
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="../js/1230798.js"></script>
 
+  <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
+
 
   <script>
     let urlApagarFornecedor = null;
