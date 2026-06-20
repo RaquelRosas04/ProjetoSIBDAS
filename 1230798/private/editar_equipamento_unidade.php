@@ -560,12 +560,12 @@ include __DIR__ . '/includes/header_priv.php';
                     <div>
                         <button type="button"
                             id="btnMostrarFornecedores"
-                            class="btn btn-outline-primary me-2">
+                            class="btn btn-outline-primary me-2 <?= !empty($fornecedoresAssociadosAtuais) ? 'd-none' : '' ?>">
                             <i class="bi bi-truck"></i>
                             Associar Fornecedores
                         </button>
 
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" id="btnGuardarUnidadeTopo" class="btn btn-primary <?= !empty($fornecedoresAssociadosAtuais) ? 'd-none' : '' ?>">
                             <i class="bi bi-save me-1"></i>
                             Guardar Alterações
                         </button>
@@ -674,6 +674,18 @@ include __DIR__ . '/includes/header_priv.php';
                         </table>
                     </div>
 
+                    <div class="mt-4 d-flex justify-content-between">
+                        <a href="lista_equipamentos_unidade.php" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left"></i>
+                            Voltar
+                        </a>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i>
+                            Guardar Alterações
+                        </button>
+                    </div>
+
                 </div>
 
             </form>
@@ -730,7 +742,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (btnMostrarFornecedores && areaFornecedores) {
             btnMostrarFornecedores.addEventListener("click", function() {
-                areaFornecedores.classList.toggle("d-none");
+                areaFornecedores.classList.remove("d-none");
+                btnMostrarFornecedores.classList.add("d-none");
+
+                const btnGuardarUnidadeTopo = document.getElementById("btnGuardarUnidadeTopo");
+
+                if (btnGuardarUnidadeTopo) {
+                    btnGuardarUnidadeTopo.classList.add("d-none");
+                }
             });
         }
 

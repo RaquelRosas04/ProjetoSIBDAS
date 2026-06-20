@@ -13,24 +13,24 @@ if (!empty($mensagemModal)) {
     $texto = $mensagemModal['texto'] ?? '';
 
     $titulo = 'Mensagem';
-    $classe = 'bg-info text-white';
+    $classe = 'text-info';
     $icone = 'bi-info-circle-fill';
 
     if ($tipo === 'success') {
         $titulo = 'Sucesso';
-        $classe = 'bg-success text-white';
+        $classe = 'text-success';
         $icone = 'bi-check-circle-fill';
     } elseif ($tipo === 'danger') {
         $titulo = 'Erro';
-        $classe = 'bg-danger text-white';
+        $classe = 'text-danger';
         $icone = 'bi-exclamation-triangle-fill';
     } elseif ($tipo === 'warning') {
         $titulo = 'Atenção';
-        $classe = 'bg-warning text-dark';
+        $classe = 'text-warning';
         $icone = 'bi-exclamation-circle-fill';
     } elseif ($tipo === 'info') {
         $titulo = 'Informação';
-        $classe = 'bg-info text-white';
+        $classe = 'text-info';
         $icone = 'bi-info-circle-fill';
     }
 ?>
@@ -39,14 +39,14 @@ if (!empty($mensagemModal)) {
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content shadow">
 
-            <div class="modal-header <?= $classe ?>">
-                <h5 class="modal-title">
+            <div class="modal-header">
+                <h5 class="modal-title <?= $classe ?>">
                     <i class="bi <?= $icone ?> me-2"></i>
                     <?= htmlspecialchars($titulo) ?>
                 </h5>
 
                 <button type="button"
-                        class="btn-close <?= $tipo === 'warning' ? '' : 'btn-close-white' ?>"
+                        class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
             </div>

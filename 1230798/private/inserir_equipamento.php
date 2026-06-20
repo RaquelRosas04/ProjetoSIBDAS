@@ -54,7 +54,7 @@ include __DIR__ . '/includes/header_priv.php';
 <div class="container py-5" style="padding-top: 100px;">
 
     <h2 class="mb-4">
-        <i class="bi bi-plus-circle me-2 text-primary"></i>
+        <i class="bi bi-save me-2 text-primary"></i>
         Inserir Equipamento
     </h2>
 
@@ -170,7 +170,7 @@ include __DIR__ . '/includes/header_priv.php';
                         Associar Componentes
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" id="btnInserirEquipamentoTopo" class="btn btn-primary">
                        <!-- por a voltar para para a lista equipamentos-->
                         <i class="bi bi-plus-circle me-1"></i>
                         Inserir Equipamento
@@ -242,7 +242,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                 <button type="submit" class="btn btn-primary">
                     <i class="bi bi-plus-circle me-1"></i>
-                    Gravar componente
+                    Inserir Equipamento
                 </button>
             </div>
 
@@ -324,7 +324,9 @@ tabelaBody.addEventListener('click', function (e) {
 
 <script>
 document.getElementById("btnMostrarComponentes").onclick = function () {
-    document.getElementById("areaComponentes").classList.toggle("d-none");
+    document.getElementById("areaComponentes").classList.remove("d-none");
+    document.getElementById("btnInserirEquipamentoTopo").classList.add("d-none");
+    this.classList.add("d-none");
 };
 
 

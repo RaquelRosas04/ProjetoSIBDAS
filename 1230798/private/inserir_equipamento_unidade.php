@@ -253,8 +253,8 @@ include __DIR__ . '/includes/header_priv.php';
                         Associar Fornecedores
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-plus-circle me-1"></i>
+                    <button type="submit" id="btnInserirUnidadeTopo" class="btn btn-primary">
+                        <i class="bi bi-save me-1"></i>
                         Inserir Unidade
                     </button>
                 </div>
@@ -336,7 +336,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-save me-1"></i>
-                        Gravar fornecedores
+                        Inserir Unidade
                     </button>
                 </div>
 
@@ -405,7 +405,14 @@ include __DIR__ . '/includes/header_priv.php';
 
         if (btnMostrarFornecedores && areaFornecedores) {
             btnMostrarFornecedores.addEventListener("click", function() {
-                areaFornecedores.classList.toggle("d-none");
+                areaFornecedores.classList.remove("d-none");
+                btnMostrarFornecedores.classList.add("d-none");
+
+                const btnInserirUnidadeTopo = document.getElementById("btnInserirUnidadeTopo");
+
+                if (btnInserirUnidadeTopo) {
+                    btnInserirUnidadeTopo.classList.add("d-none");
+                }
             });
         }
 

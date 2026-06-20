@@ -256,7 +256,7 @@ include __DIR__ . '/includes/header_priv.php';
                     <input type="text"
                            name="descricao"
                            class="form-control"
-                           value="<?= htmlspecialchars($equipamento->descricao) ?>"
+                           value="<?= htmlspecialchars($old_input['descricao'] ?? $equipamento->descricao) ?>"
                            required>
                 </div>
 
@@ -267,7 +267,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                         <?php foreach ($tipos as $tipo): ?>
                             <option value="<?= $tipo->id ?>"
-                                <?= $equipamento->idTipo == $tipo->id ? 'selected' : '' ?>>
+                                <?= (($old_input['idTipo'] ?? $equipamento->idTipo) == $tipo->id) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($tipo->descricao) ?>
                             </option>
                         <?php endforeach; ?>
@@ -283,7 +283,8 @@ include __DIR__ . '/includes/header_priv.php';
                             <option value="">Selecione</option>
                             <option value="">Sem fabricante / Não aplicável</option>
                             <?php foreach ($fabricantes as $fabricante): ?>
-                                <option value="<?= $fabricante->id ?>">
+                                <option value="<?= $fabricante->id ?>"
+                                    <?= (($old_input['idfabricante'] ?? $equipamento->idfabricante) == $fabricante->id) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($fabricante->nome) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -300,7 +301,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                         <?php foreach ($marcas as $marca): ?>
                             <option value="<?= $marca->id ?>"
-                                <?= $equipamento->idMarca == $marca->id ? 'selected' : '' ?>>
+                                <?= (($old_input['idMarca'] ?? $equipamento->idMarca) == $marca->id) ? 'selected' : '' ?>>
                                 <?= htmlspecialchars($marca->descricao) ?>
                             </option>
                         <?php endforeach; ?>
@@ -313,7 +314,7 @@ include __DIR__ . '/includes/header_priv.php';
                     <input type="text"
                            name="modelo"
                            class="form-control"
-                           value="<?= htmlspecialchars($equipamento->modelo) ?>"
+                           value="<?= htmlspecialchars($old_input['modelo'] ?? $equipamento->modelo) ?>"
                            required>
                 </div>
 
@@ -323,7 +324,7 @@ include __DIR__ . '/includes/header_priv.php';
                            name="anosGarantia"
                            class="form-control"
                            min="0"
-                           value="<?= htmlspecialchars($equipamento->anosGarantia) ?>"
+                           value="<?= htmlspecialchars($old_input['anosGarantia'] ?? $equipamento->anosGarantia) ?>"
                            required>
                 </div>
 
@@ -374,12 +375,12 @@ include __DIR__ . '/includes/header_priv.php';
                 <div>
                     <button type="button"
                             id="btnMostrarComponentes"
-                            class="btn btn-outline-primary me-2">
+                            class="btn btn-outline-primary me-2 <?= !empty($componentesAssociados) ? 'd-none' : '' ?>">
                         <i class="bi bi-diagram-3"></i>
                         Associar Componentes
                     </button>
 
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" id="btnGuardarEquipamentoTopo" class="btn btn-primary <?= !empty($componentesAssociados) ? 'd-none' : '' ?>">
                         <i class="bi bi-save me-1"></i>
                         Guardar Alterações
                     </button>
@@ -539,7 +540,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (btnMostrarComponentes && areaComponentes) {
         btnMostrarComponentes.addEventListener('click', function () {
-            areaComponentes.classList.toggle('d-none');
+            areaComponentes.classList.remove('d-none');
+            btnMostrarComponentes.classList.add('d-none');
+
+            const btnGuardarEquipamentoTopo = document.getElementById('btnGuardarEquipamentoTopo');
+
+            if (btnGuardarEquipamentoTopo) {
+                btnGuardarEquipamentoTopo.classList.add('d-none');
+            }
         });
     }
 
