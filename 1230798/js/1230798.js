@@ -186,6 +186,9 @@ document.querySelectorAll(".btn-ver").forEach(btn => {
 // Filtros  lista_equipamentos_unidade
 
 function aplicarFiltros() {
+  if (!document.getElementById("fCodigo") || !document.getElementById("fLocal") || !document.getElementById("fEstado")) {
+    return;
+  }
 
   const fCodigo = document.getElementById("fCodigo").value.toLowerCase();
   const fNome = document.getElementById("fNome").value.toLowerCase();
@@ -234,6 +237,9 @@ document.querySelectorAll("#fEstado, #fCriticidade")
 
 // botão limpar
 document.getElementById("btnLimpar")?.addEventListener("click", function () {
+  if (!document.getElementById("fCodigo") || !document.getElementById("fLocal") || !document.getElementById("fEstado")) {
+    return;
+  }
 
   document.querySelectorAll("#fCodigo, #fNome,  #fMarca, #fModelo, #fSerie, #fLocal")
     .forEach(input => input.value = "");

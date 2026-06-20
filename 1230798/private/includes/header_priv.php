@@ -23,7 +23,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
     <!-- para dropdow pesquisavel no inserir_equipamento-->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
     <!-- CSS -->
-    <link rel="stylesheet" href="../css/1230798.css">
+    <link rel="stylesheet" href="../css/1230798.css?v=2">
     <link rel="icon" href="../assets/images/aba.png" type="image/png">
 
 </head>

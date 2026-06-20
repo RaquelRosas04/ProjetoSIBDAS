@@ -115,7 +115,7 @@ include __DIR__ . '/includes/header_priv.php';
           </tr>
         </thead>
 
-        <tbody>
+        <tbody id="tbodyFornecedores">
 
           <?php if (!empty($erro)): ?>
 
@@ -165,6 +165,10 @@ include __DIR__ . '/includes/header_priv.php';
 
         </tbody>
       </table>
+
+      <nav id="paginacaoFornecedores" class="mt-3 paginacao-inventario-wrapper">
+        <ul class="pagination pagination-sm justify-content-end paginacao-inventario"></ul>
+      </nav>
     </div>
 
   </div>
@@ -207,6 +211,168 @@ include __DIR__ . '/includes/header_priv.php';
   <script src="../js/1230798.js"></script>
 
   <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const tbody = document.getElementById("tbodyFornecedores");
+      const paginacao = document.querySelector("#paginacaoFornecedores .pagination");
+
+      if (!tbody || !paginacao) {
+        return;
+      }
+
+      const linhasPorPagina = 10;
+      let paginaAtual = 1;
+
+      const filtros = {
+        nome: document.getElementById("fNome"),
+        nif: document.getElementById("fNIF"),
+        email: document.getElementById("fEmail"),
+        telefone: document.getElementById("fTelefone"),
+        morada: document.getElementById("fMorada"),
+        codPostal: document.getElementById("fCodPostal")
+      };
+
+      function textoFiltro(campo) {
+        return (campo?.value || "").toLowerCase().trim();
+      }
+
+      function obterLinhasFiltradas() {
+        const nome = textoFiltro(filtros.nome);
+        const nif = textoFiltro(filtros.nif);
+        const email = textoFiltro(filtros.email);
+        const telefone = textoFiltro(filtros.telefone);
+        const morada = textoFiltro(filtros.morada);
+        const codPostal = textoFiltro(filtros.codPostal);
+
+        return Array.from(tbody.querySelectorAll("tr")).filter(function (linha) {
+          const colunas = linha.querySelectorAll("td");
+
+          if (colunas.length < 6) {
+            return false;
+          }
+
+          const linhaNome = colunas[0].textContent.toLowerCase();
+          const linhaNif = colunas[1].textContent.toLowerCase();
+          const linhaEmail = colunas[2].textContent.toLowerCase();
+          const linhaTelefone = colunas[3].textContent.toLowerCase();
+          const linhaMorada = colunas[4].textContent.toLowerCase();
+          const linhaCodPostal = colunas[5].textContent.toLowerCase();
+
+          return linhaNome.includes(nome)
+            && linhaNif.includes(nif)
+            && linhaEmail.includes(email)
+            && linhaTelefone.includes(telefone)
+            && linhaMorada.includes(morada)
+            && linhaCodPostal.includes(codPostal);
+        });
+      }
+
+      function criarItem(texto, desativado, aoClicar) {
+        const item = document.createElement("li");
+        item.className = "page-item" + (desativado ? " disabled" : "");
+
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "page-link";
+        botao.innerHTML = texto;
+        botao.disabled = desativado;
+
+        botao.addEventListener("click", function () {
+          if (!desativado) {
+            aoClicar();
+          }
+        });
+
+        item.appendChild(botao);
+        paginacao.appendChild(item);
+      }
+
+      function renderizarPaginacao() {
+        const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
+        const linhasDados = todasLinhas.filter(function (linha) {
+          return linha.querySelectorAll("td").length >= 6;
+        });
+
+        if (linhasDados.length === 0) {
+          todasLinhas.forEach(function (linha) {
+            linha.style.display = "";
+          });
+          paginacao.innerHTML = "";
+          return;
+        }
+
+        const linhasFiltradas = obterLinhasFiltradas();
+        const totalPaginas = Math.ceil(linhasFiltradas.length / linhasPorPagina);
+
+        if (paginaAtual > totalPaginas) {
+          paginaAtual = 1;
+        }
+
+        todasLinhas.forEach(function (linha) {
+          linha.style.display = "none";
+        });
+
+        const inicio = (paginaAtual - 1) * linhasPorPagina;
+        const fim = inicio + linhasPorPagina;
+
+        linhasFiltradas.slice(inicio, fim).forEach(function (linha) {
+          linha.style.display = "";
+        });
+
+        paginacao.innerHTML = "";
+
+        if (totalPaginas <= 1) {
+          return;
+        }
+
+        criarItem("&laquo;", paginaAtual === 1, function () {
+          paginaAtual--;
+          renderizarPaginacao();
+        });
+
+        const indicador = document.createElement("li");
+        indicador.className = "page-item disabled";
+        indicador.innerHTML = '<span class="page-link">Página ' + paginaAtual + ' de ' + totalPaginas + '</span>';
+        paginacao.appendChild(indicador);
+
+        criarItem("&raquo;", paginaAtual === totalPaginas, function () {
+          paginaAtual++;
+          renderizarPaginacao();
+        });
+      }
+
+      Object.values(filtros).forEach(function (campo) {
+        if (!campo) {
+          return;
+        }
+
+        campo.addEventListener("input", function () {
+          paginaAtual = 1;
+          renderizarPaginacao();
+        });
+
+        campo.addEventListener("change", function () {
+          paginaAtual = 1;
+          renderizarPaginacao();
+        });
+      });
+
+      document.getElementById("btnFiltrar")?.addEventListener("click", function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      });
+
+      document.getElementById("btnLimpar")?.addEventListener("click", function () {
+        setTimeout(function () {
+          paginaAtual = 1;
+          renderizarPaginacao();
+        }, 0);
+      });
+
+      renderizarPaginacao();
+    });
+  </script>
 
 
   <script>

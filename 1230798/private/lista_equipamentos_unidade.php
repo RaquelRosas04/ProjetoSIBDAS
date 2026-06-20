@@ -149,7 +149,7 @@ try {
           <th>Ações</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="tbodyInventario">
 
         <?php if (!empty($erro)): ?>
 
@@ -196,7 +196,9 @@ try {
       </tbody>
     </table>
 
-
+    <nav class="mt-3 paginacao-inventario-wrapper">
+      <ul id="paginacaoInventario" class="pagination pagination-sm justify-content-end paginacao-inventario"></ul>
+    </nav>
 
     <a href="etiquetas_equipamentos_unidade.php"
       id="btnImprimirEtiquetas"
@@ -253,6 +255,176 @@ try {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tbody = document.getElementById("tbodyInventario");
+    const paginacao = document.getElementById("paginacaoInventario");
+
+    if (!tbody || !paginacao) {
+      return;
+    }
+
+    const linhasPorPagina = 10;
+    let paginaAtual = 1;
+
+    const filtros = {
+      codigo: document.getElementById("fCodigo"),
+      nome: document.getElementById("fNome"),
+      marca: document.getElementById("fMarca"),
+      modelo: document.getElementById("fModelo"),
+      serie: document.getElementById("fSerie"),
+      localizacao: document.getElementById("fLocal"),
+      estado: document.getElementById("fEstado"),
+      criticidade: document.getElementById("fCriticidade")
+    };
+
+    function textoFiltro(campo) {
+      return (campo?.value || "").toLowerCase().trim();
+    }
+
+    function obterLinhasFiltradas() {
+      const codigo = textoFiltro(filtros.codigo);
+      const nome = textoFiltro(filtros.nome);
+      const marca = textoFiltro(filtros.marca);
+      const modelo = textoFiltro(filtros.modelo);
+      const serie = textoFiltro(filtros.serie);
+      const localizacao = textoFiltro(filtros.localizacao);
+      const estado = textoFiltro(filtros.estado);
+      const criticidade = textoFiltro(filtros.criticidade);
+
+      return Array.from(tbody.querySelectorAll("tr")).filter(function (linha) {
+        const colunas = linha.querySelectorAll("td");
+
+        if (colunas.length < 8) {
+          return false;
+        }
+
+        const linhaCodigo = colunas[0].textContent.toLowerCase();
+        const linhaNome = colunas[1].textContent.toLowerCase();
+        const linhaMarca = colunas[2].textContent.toLowerCase();
+        const linhaModelo = colunas[3].textContent.toLowerCase();
+        const linhaSerie = colunas[4].textContent.toLowerCase();
+        const linhaLocalizacao = colunas[5].textContent.toLowerCase();
+        const linhaEstado = colunas[6].textContent.toLowerCase().trim();
+        const linhaCriticidade = colunas[7].textContent.toLowerCase().trim();
+
+        return linhaCodigo.includes(codigo)
+          && linhaNome.includes(nome)
+          && linhaMarca.includes(marca)
+          && linhaModelo.includes(modelo)
+          && linhaSerie.includes(serie)
+          && linhaLocalizacao.includes(localizacao)
+          && (estado === "" || linhaEstado === estado)
+          && (criticidade === "" || linhaCriticidade === criticidade);
+      });
+    }
+
+    function renderizarPaginacao() {
+      const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
+      const linhasDados = todasLinhas.filter(function (linha) {
+        return linha.querySelectorAll("td").length >= 8;
+      });
+
+      if (linhasDados.length === 0) {
+        todasLinhas.forEach(function (linha) {
+          linha.style.display = "";
+        });
+        paginacao.innerHTML = "";
+        return;
+      }
+
+      const linhasFiltradas = obterLinhasFiltradas();
+      const totalPaginas = Math.ceil(linhasFiltradas.length / linhasPorPagina);
+
+      if (paginaAtual > totalPaginas) {
+        paginaAtual = 1;
+      }
+
+      todasLinhas.forEach(function (linha) {
+        linha.style.display = "none";
+      });
+
+      const inicio = (paginaAtual - 1) * linhasPorPagina;
+      const fim = inicio + linhasPorPagina;
+
+      linhasFiltradas.slice(inicio, fim).forEach(function (linha) {
+        linha.style.display = "";
+      });
+
+      paginacao.innerHTML = "";
+
+      if (totalPaginas <= 1) {
+        return;
+      }
+
+      const criarItem = function (texto, desativado, aoClicar) {
+        const item = document.createElement("li");
+        item.className = "page-item" + (desativado ? " disabled" : "");
+
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "page-link";
+        botao.innerHTML = texto;
+        botao.disabled = desativado;
+
+        botao.addEventListener("click", function () {
+          if (!desativado) {
+            aoClicar();
+          }
+        });
+
+        item.appendChild(botao);
+        paginacao.appendChild(item);
+      };
+
+      criarItem("&laquo;", paginaAtual === 1, function () {
+        paginaAtual--;
+        renderizarPaginacao();
+      });
+
+      const indicador = document.createElement("li");
+      indicador.className = "page-item disabled";
+      indicador.innerHTML = '<span class="page-link">Página ' + paginaAtual + ' de ' + totalPaginas + '</span>';
+      paginacao.appendChild(indicador);
+
+      criarItem("&raquo;", paginaAtual === totalPaginas, function () {
+        paginaAtual++;
+        renderizarPaginacao();
+      });
+    }
+
+    Object.values(filtros).forEach(function (campo) {
+      if (!campo) {
+        return;
+      }
+
+      campo.addEventListener("input", function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      });
+
+      campo.addEventListener("change", function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      });
+    });
+
+    document.getElementById("btnFiltrar")?.addEventListener("click", function () {
+      paginaAtual = 1;
+      renderizarPaginacao();
+    });
+
+    document.getElementById("btnLimpar")?.addEventListener("click", function () {
+      setTimeout(function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      }, 0);
+    });
+
+    renderizarPaginacao();
+  });
+</script>
 
 
 

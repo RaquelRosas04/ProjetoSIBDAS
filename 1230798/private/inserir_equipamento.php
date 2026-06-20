@@ -253,7 +253,50 @@ include __DIR__ . '/includes/header_priv.php';
 
 </div>
 
+<div class="modal fade" id="modalComponentes" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    Atenção
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="mb-0" id="textoModalComponentes"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal">
+                    OK
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
+function mostrarModalComponentes(mensagem) {
+    const texto = document.getElementById('textoModalComponentes');
+    const modalElemento = document.getElementById('modalComponentes');
+
+    if (!texto || !modalElemento) {
+        alert(mensagem);
+        return;
+    }
+
+    texto.textContent = mensagem;
+
+    const modal = new bootstrap.Modal(modalElemento);
+    modal.show();
+}
+
 const selectComponente = document.getElementById('selectComponente');
 const btnAdicionar = document.getElementById('btnAdicionarComponente');
 const tabelaBody = document.querySelector('#tabelaComponentes tbody');
@@ -265,7 +308,7 @@ btnAdicionar.addEventListener('click', function () {
     const option = selectComponente.options[selectComponente.selectedIndex];
 
     if (!option.value) {
-        alert('Selecione um componente.');
+        mostrarModalComponentes('Selecione um componente.');
         return;
     }
 
@@ -274,7 +317,7 @@ btnAdicionar.addEventListener('click', function () {
     const modelo = option.dataset.modelo || 'Sem modelo';
 
     if (componentesSelecionados.includes(id)) {
-        alert('Este componente já foi adicionado.');
+        mostrarModalComponentes('Este componente já foi adicionado.');
         return;
     }
 

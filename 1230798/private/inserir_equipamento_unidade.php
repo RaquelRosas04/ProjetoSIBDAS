@@ -347,6 +347,34 @@ include __DIR__ . '/includes/header_priv.php';
 
 </div>
 
+<div class="modal fade" id="modalFornecedores" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    Atenção
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="mb-0" id="textoModalFornecedores"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal">
+                    OK
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <!-- para dropdow pesquisavel no inserir_equipamento-->
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -400,6 +428,21 @@ include __DIR__ . '/includes/header_priv.php';
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
+        function mostrarModalFornecedores(mensagem) {
+            const texto = document.getElementById("textoModalFornecedores");
+            const modalElemento = document.getElementById("modalFornecedores");
+
+            if (!texto || !modalElemento) {
+                alert(mensagem);
+                return;
+            }
+
+            texto.textContent = mensagem;
+
+            const modal = new bootstrap.Modal(modalElemento);
+            modal.show();
+        }
+
         const btnMostrarFornecedores = document.getElementById("btnMostrarFornecedores");
         const areaFornecedores = document.getElementById("areaFornecedores");
 
@@ -437,19 +480,19 @@ include __DIR__ . '/includes/header_priv.php';
             const tipoFornecedor = selectTipoFornecedor.value;
 
             if (!idFornecedor) {
-                alert("Selecione um fornecedor.");
+                mostrarModalFornecedores("Selecione um fornecedor.");
                 return;
             }
 
             if (!tipoFornecedor) {
-                alert("Selecione o tipo de fornecedor.");
+                mostrarModalFornecedores("Selecione o tipo de fornecedor.");
                 return;
             }
 
             const chave = idFornecedor + "|" + tipoFornecedor;
 
             if (fornecedoresSelecionados.includes(chave)) {
-                alert("Este fornecedor jÃ¡ foi adicionado com esse tipo.");
+                mostrarModalFornecedores("Este fornecedor já foi adicionado com esse tipo.");
                 return;
             }
 

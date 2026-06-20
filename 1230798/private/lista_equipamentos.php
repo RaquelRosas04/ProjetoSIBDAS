@@ -188,8 +188,8 @@ try {
       <i class="bi bi-file-earmark-excel"></i> Exportar Excel
     </a>
 
-    <nav id="paginacaoEquipamentos"> <!-- AQUI -->
-      <ul class="pagination pagination-sm justify-content-end"></ul>
+    <nav id="paginacaoEquipamentos" class="mt-3 paginacao-inventario-wrapper">
+      <ul class="pagination pagination-sm justify-content-end paginacao-inventario"></ul>
     </nav>
 
   </div>
@@ -226,9 +226,171 @@ try {
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/1230798.js"></script>
+<script src="../js/1230798.js?v=2"></script>
 
 <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const tbody = document.getElementById("tbodyEquipamentos");
+    const paginacao = document.querySelector("#paginacaoEquipamentos .pagination");
+
+    if (!tbody || !paginacao) {
+      return;
+    }
+
+    const linhasPorPagina = 10;
+    let paginaAtual = 1;
+
+    const filtros = {
+      nome: document.getElementById("fNome"),
+      tipo: document.getElementById("fTipo"),
+      marca: document.getElementById("fMarca"),
+      modelo: document.getElementById("fModelo"),
+      criticidade: document.getElementById("fCriticidade"),
+      fabricante: document.getElementById("fFabricante")
+    };
+
+    function textoFiltro(campo) {
+      return (campo?.value || "").toLowerCase().trim();
+    }
+
+    function obterLinhasFiltradas() {
+      const nome = textoFiltro(filtros.nome);
+      const tipo = textoFiltro(filtros.tipo);
+      const marca = textoFiltro(filtros.marca);
+      const modelo = textoFiltro(filtros.modelo);
+      const criticidade = textoFiltro(filtros.criticidade);
+      const fabricante = textoFiltro(filtros.fabricante);
+
+      return Array.from(tbody.querySelectorAll("tr")).filter(function (linha) {
+        const colunas = linha.querySelectorAll("td");
+
+        if (colunas.length < 6) {
+          return false;
+        }
+
+        const linhaNome = colunas[0].textContent.toLowerCase();
+        const linhaTipo = colunas[1].textContent.toLowerCase();
+        const linhaMarca = colunas[2].textContent.toLowerCase();
+        const linhaModelo = colunas[3].textContent.toLowerCase();
+        const linhaCriticidade = colunas[4].textContent.toLowerCase().trim();
+        const linhaFabricante = colunas[5].textContent.toLowerCase();
+
+        return linhaNome.includes(nome)
+          && linhaTipo.includes(tipo)
+          && linhaMarca.includes(marca)
+          && linhaModelo.includes(modelo)
+          && (criticidade === "" || linhaCriticidade === criticidade)
+          && linhaFabricante.includes(fabricante);
+      });
+    }
+
+    function criarItem(texto, desativado, aoClicar) {
+      const item = document.createElement("li");
+      item.className = "page-item" + (desativado ? " disabled" : "");
+
+      const botao = document.createElement("button");
+      botao.type = "button";
+      botao.className = "page-link";
+      botao.innerHTML = texto;
+      botao.disabled = desativado;
+
+      botao.addEventListener("click", function () {
+        if (!desativado) {
+          aoClicar();
+        }
+      });
+
+      item.appendChild(botao);
+      paginacao.appendChild(item);
+    }
+
+    function renderizarPaginacao() {
+      const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
+      const linhasDados = todasLinhas.filter(function (linha) {
+        return linha.querySelectorAll("td").length >= 6;
+      });
+
+      if (linhasDados.length === 0) {
+        todasLinhas.forEach(function (linha) {
+          linha.style.display = "";
+        });
+        paginacao.innerHTML = "";
+        return;
+      }
+
+      const linhasFiltradas = obterLinhasFiltradas();
+      const totalPaginas = Math.ceil(linhasFiltradas.length / linhasPorPagina);
+
+      if (paginaAtual > totalPaginas) {
+        paginaAtual = 1;
+      }
+
+      todasLinhas.forEach(function (linha) {
+        linha.style.display = "none";
+      });
+
+      const inicio = (paginaAtual - 1) * linhasPorPagina;
+      const fim = inicio + linhasPorPagina;
+
+      linhasFiltradas.slice(inicio, fim).forEach(function (linha) {
+        linha.style.display = "";
+      });
+
+      paginacao.innerHTML = "";
+
+      if (totalPaginas <= 1) {
+        return;
+      }
+
+      criarItem("&laquo;", paginaAtual === 1, function () {
+        paginaAtual--;
+        renderizarPaginacao();
+      });
+
+      const indicador = document.createElement("li");
+      indicador.className = "page-item disabled";
+      indicador.innerHTML = '<span class="page-link">Página ' + paginaAtual + ' de ' + totalPaginas + '</span>';
+      paginacao.appendChild(indicador);
+
+      criarItem("&raquo;", paginaAtual === totalPaginas, function () {
+        paginaAtual++;
+        renderizarPaginacao();
+      });
+    }
+
+    Object.values(filtros).forEach(function (campo) {
+      if (!campo) {
+        return;
+      }
+
+      campo.addEventListener("input", function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      });
+
+      campo.addEventListener("change", function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      });
+    });
+
+    document.getElementById("btnFiltrar")?.addEventListener("click", function () {
+      paginaAtual = 1;
+      renderizarPaginacao();
+    });
+
+    document.getElementById("btnLimpar")?.addEventListener("click", function () {
+      setTimeout(function () {
+        paginaAtual = 1;
+        renderizarPaginacao();
+      }, 0);
+    });
+
+    renderizarPaginacao();
+  });
+</script>
 
 <script>
   let urlApagarEquipamento = null;

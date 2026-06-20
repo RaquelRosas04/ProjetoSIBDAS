@@ -695,6 +695,35 @@ include __DIR__ . '/includes/header_priv.php';
     <?php endif; ?>
 
 </div>
+
+<div class="modal fade" id="modalFornecedores" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title text-warning">
+                    <i class="bi bi-exclamation-circle-fill me-2"></i>
+                    Atenção
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="mb-0" id="textoModalFornecedores"></p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button"
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal">
+                    OK
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     const estadoSelect = document.getElementById("estado");
@@ -737,6 +766,21 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
     document.addEventListener("DOMContentLoaded", function() {
 
+        function mostrarModalFornecedores(mensagem) {
+            const texto = document.getElementById("textoModalFornecedores");
+            const modalElemento = document.getElementById("modalFornecedores");
+
+            if (!texto || !modalElemento) {
+                alert(mensagem);
+                return;
+            }
+
+            texto.textContent = mensagem;
+
+            const modal = new bootstrap.Modal(modalElemento);
+            modal.show();
+        }
+
         const btnMostrarFornecedores = document.getElementById("btnMostrarFornecedores");
         const areaFornecedores = document.getElementById("areaFornecedores");
 
@@ -774,19 +818,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const tipoFornecedor = selectTipoFornecedor.value;
 
             if (!idFornecedor) {
-                alert("Selecione um fornecedor.");
+                mostrarModalFornecedores("Selecione um fornecedor.");
                 return;
             }
 
             if (!tipoFornecedor) {
-                alert("Selecione o tipo de fornecedor.");
+                mostrarModalFornecedores("Selecione o tipo de fornecedor.");
                 return;
             }
 
             const chave = idFornecedor + "|" + tipoFornecedor;
 
             if (fornecedoresSelecionados.includes(chave)) {
-                alert("Este fornecedor já foi adicionado com esse tipo.");
+                mostrarModalFornecedores("Este fornecedor já foi adicionado com esse tipo.");
                 return;
             }
 
