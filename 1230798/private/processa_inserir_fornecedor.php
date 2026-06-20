@@ -108,6 +108,8 @@ try {
         $email
     ]);
 
+    definir_mensagem('success', 'Fornecedor inserido com sucesso.');
+
     header('Location: fornecedores.php');
     exit;
 

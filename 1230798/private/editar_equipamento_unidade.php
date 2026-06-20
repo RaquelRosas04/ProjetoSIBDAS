@@ -261,7 +261,7 @@ try {
             'Unidade de equipamento alterada com sucesso.'
         );
 
-        header('Location: lista_equipamentos_unidade.php');
+        header('Location: detalhes_equipamento.php');
         exit;
     }
 
@@ -551,7 +551,7 @@ include __DIR__ . '/includes/header_priv.php';
                 <div class="mt-4 d-flex justify-content-between">
 
                     
-                    <a href="lista_equipamentos_unidade.php" class="btn btn-outline-secondary">
+                    <a  class="btn btn-outline-secondary">
                         <i class="bi bi-arrow-left"></i>
                         Voltar
                     </a>
@@ -827,7 +827,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
 
-<?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
+
 
 </body>
 

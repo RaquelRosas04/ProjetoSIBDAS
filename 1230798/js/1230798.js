@@ -60,7 +60,7 @@ if (form) {
 let anexos = [];
 
 // CLICK GLOBAL (EVITA ERROS DE NULL)
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
 
   // 👉 BOTÃO UPLOAD
   if (e.target.id === "btnGuardarAnexo") {
@@ -135,7 +135,7 @@ function atualizarTabelaAnexos() {
 
 
 // REMOVER ANEXO
-document.addEventListener("click", function(e) {
+document.addEventListener("click", function (e) {
 
   if (e.target.closest(".btn-remover-anexo")) {
 
@@ -208,9 +208,9 @@ function aplicarFiltros() {
       td[3].textContent.toLowerCase().includes(fModelo) &&
       td[4].textContent.toLowerCase().includes(fSerie) &&
       td[5].textContent.toLowerCase().includes(fLocal) &&
-      td[6].textContent.toLowerCase().includes(fEstado) &&
-      td[7].textContent.toLowerCase().includes(fCriticidade);
-      
+      (fEstado === "" || td[6].textContent.trim().toLowerCase() === fEstado) &&
+      (fCriticidade === "" || td[7].textContent.trim().toLowerCase() === fCriticidade);
+
 
     row.style.display = match ? "" : "none";
   });
@@ -277,32 +277,32 @@ function filtrarTabela() {
       col[1].innerText.toLowerCase().includes(nif) &&
       col[2].innerText.toLowerCase().includes(email) &&
       col[3].innerText.toLowerCase().includes(telefone) &&
-      col[4].innerText.toLowerCase().includes(morada)&&
+      col[4].innerText.toLowerCase().includes(morada) &&
       col[5].innerText.toLowerCase().includes(codPostal);
 
     linha.style.display = mostrar ? "" : "none";
   });
 }
 
- // FILTRO AUTOMÁTICO
-  document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fMorada, #fCodPostal")
-    .forEach(input => {
-      input.addEventListener("input", filtrarTabela);
+// FILTRO AUTOMÁTICO
+document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone, #fMorada, #fCodPostal")
+  .forEach(input => {
+    input.addEventListener("input", filtrarTabela);
+  });
+
+//  LIMPAR
+let btnLimpar = document.getElementById("btnLimpar");
+if (btnLimpar) {
+  btnLimpar.addEventListener("click", function () {
+
+    document.querySelectorAll("input").forEach(i => i.value = "");
+
+    document.querySelectorAll("tbody tr").forEach(linha => {
+      linha.style.display = "";
     });
 
-  //  LIMPAR
-  let btnLimpar = document.getElementById("btnLimpar");
-  if (btnLimpar) {
-    btnLimpar.addEventListener("click", function () {
-
-      document.querySelectorAll("input").forEach(i => i.value = "");
-
-      document.querySelectorAll("tbody tr").forEach(linha => {
-        linha.style.display = "";
-      });
-
-    });
-  }
+  });
+}
 
 
 
@@ -350,7 +350,7 @@ document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
     input.addEventListener("input", aplicarFiltrosLocalizacoes);
   });
 
-  document.getElementById("btnLimpar")?.addEventListener("click", function () {
+document.getElementById("btnLimpar")?.addEventListener("click", function () {
 
   document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
     .forEach(input => input.value = "");
@@ -366,99 +366,99 @@ document.querySelectorAll("#fNome, #fNIF, #fEmail, #fTelefone")
 
 
 function calcularGarantia() {
-    const equipamento = document.getElementById("idEquipamento");
-    const dataAquisicao = document.getElementById("dataAquisicao");
-    const dataGarantia = document.getElementById("dataFimGarantia");
+  const equipamento = document.getElementById("idEquipamento");
+  const dataAquisicao = document.getElementById("dataAquisicao");
+  const dataGarantia = document.getElementById("dataFimGarantia");
 
-    if (!equipamento || !dataAquisicao || !dataGarantia) {
-        return;
-    }
+  if (!equipamento || !dataAquisicao || !dataGarantia) {
+    return;
+  }
 
-    if (!equipamento.value || !dataAquisicao.value) {
-        return;
-    }
+  if (!equipamento.value || !dataAquisicao.value) {
+    return;
+  }
 
-    const anosGarantia =
-        equipamento.options[equipamento.selectedIndex].dataset.garantia;
+  const anosGarantia =
+    equipamento.options[equipamento.selectedIndex].dataset.garantia;
 
-    if (!anosGarantia) {
-        return;
-    }
+  if (!anosGarantia) {
+    return;
+  }
 
-    let data = new Date(dataAquisicao.value);
+  let data = new Date(dataAquisicao.value);
 
-    data.setFullYear(data.getFullYear() + parseInt(anosGarantia));
+  data.setFullYear(data.getFullYear() + parseInt(anosGarantia));
 
-    dataGarantia.value = data.toISOString().split("T")[0];
+  dataGarantia.value = data.toISOString().split("T")[0];
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-    const dataAquisicao = document.getElementById("dataAquisicao");
+  const dataAquisicao = document.getElementById("dataAquisicao");
 
-    if (dataAquisicao) {
-        dataAquisicao.addEventListener("change", calcularGarantia);
-    }
+  if (dataAquisicao) {
+    dataAquisicao.addEventListener("change", calcularGarantia);
+  }
 });
 
 
 
 function atualizarTextoGarantia(valorSelecionado = null) {
-    const selectEquipamento = document.getElementById("idEquipamento");
-    const textoGarantia = document.getElementById("textoGarantia");
+  const selectEquipamento = document.getElementById("idEquipamento");
+  const textoGarantia = document.getElementById("textoGarantia");
 
-    if (!selectEquipamento || !textoGarantia) return;
+  if (!selectEquipamento || !textoGarantia) return;
 
-    const valor = valorSelecionado || selectEquipamento.value;
+  const valor = valorSelecionado || selectEquipamento.value;
 
-    if (!valor) {
-        textoGarantia.textContent = "Não definida";
-        return;
-    }
+  if (!valor) {
+    textoGarantia.textContent = "Não definida";
+    return;
+  }
 
-    const option = Array.from(selectEquipamento.options).find(opt => opt.value == valor);
+  const option = Array.from(selectEquipamento.options).find(opt => opt.value == valor);
 
-    if (!option) {
-        textoGarantia.textContent = "Não definida";
-        return;
-    }
+  if (!option) {
+    textoGarantia.textContent = "Não definida";
+    return;
+  }
 
-    const anosGarantia = option.dataset.garantia;
+  const anosGarantia = option.dataset.garantia;
 
-    if (!anosGarantia || anosGarantia == 0) {
-        textoGarantia.textContent = "Sem garantia definida";
-        return;
-    }
+  if (!anosGarantia || anosGarantia == 0) {
+    textoGarantia.textContent = "Sem garantia definida";
+    return;
+  }
 
-    textoGarantia.textContent =
-        anosGarantia == 1
-            ? "1 ano de garantia"
-            : anosGarantia + " anos de garantia";
+  textoGarantia.textContent =
+    anosGarantia == 1
+      ? "1 ano de garantia"
+      : anosGarantia + " anos de garantia";
 }
 
 
 
 
 function mostrarCodigoPrevisto(valorSelecionado = null) {
-    const select = document.getElementById("idEquipamento");
-    const inputCodigo = document.getElementById("codigoPrevisto");
+  const select = document.getElementById("idEquipamento");
+  const inputCodigo = document.getElementById("codigoPrevisto");
 
-    if (!select || !inputCodigo) return;
+  if (!select || !inputCodigo) return;
 
-    const valor = valorSelecionado || select.value;
+  const valor = valorSelecionado || select.value;
 
-    if (!valor) {
-        inputCodigo.value = "Gerado automaticamente";
-        return;
-    }
+  if (!valor) {
+    inputCodigo.value = "Gerado automaticamente";
+    return;
+  }
 
-    const option = Array.from(select.options).find(opt => opt.value == valor);
+  const option = Array.from(select.options).find(opt => opt.value == valor);
 
-    if (!option) {
-        inputCodigo.value = "Gerado automaticamente";
-        return;
-    }
+  if (!option) {
+    inputCodigo.value = "Gerado automaticamente";
+    return;
+  }
 
-    inputCodigo.value = option.dataset.codigo || "Sem código definido";
+  inputCodigo.value = option.dataset.codigo || "Sem código definido";
 }
 
 
@@ -522,84 +522,84 @@ function mostrarCodigoPrevisto(valorSelecionado = null) {
 
 // Paginação genérica
 (function () {
-    // ── Tabela do histórico do equipamento ──
-    const tbodyHistorico = document.getElementById('tbodyHistorico');
-    const navHistorico   = document.querySelector('#paginacaoHistorico .pagination');
-    if (tbodyHistorico && navHistorico) {
-        iniciarPaginacaoSimples(tbodyHistorico, navHistorico, 10);
+  // ── Tabela do histórico do equipamento ──
+  const tbodyHistorico = document.getElementById('tbodyHistorico');
+  const navHistorico = document.querySelector('#paginacaoHistorico .pagination');
+  if (tbodyHistorico && navHistorico) {
+    iniciarPaginacaoSimples(tbodyHistorico, navHistorico, 10);
+  }
+
+  // ── Tabela de equipamentos (com filtros) ──
+  const tbodyEquip = document.getElementById('tbodyEquipamentos');
+  const navEquip = document.querySelector('#paginacaoEquipamentos .pagination');
+  if (tbodyEquip && navEquip) {
+    window._paginacaoEquip = iniciarPaginacaoSimples(tbodyEquip, navEquip, 10);
+  }
+
+  function iniciarPaginacaoSimples(tbody, nav, porPagina) {
+    function visiveis() {
+      return Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== 'none');
     }
 
-    // ── Tabela de equipamentos (com filtros) ──
-    const tbodyEquip = document.getElementById('tbodyEquipamentos');
-    const navEquip   = document.querySelector('#paginacaoEquipamentos .pagination');
-    if (tbodyEquip && navEquip) {
-        window._paginacaoEquip = iniciarPaginacaoSimples(tbodyEquip, navEquip, 10);
+    function paginar(p) {
+      const todas = Array.from(tbody.querySelectorAll('tr'));
+      const vis = visiveis();
+      const inicio = (p - 1) * porPagina;
+      const fim = inicio + porPagina;
+
+      todas.forEach(tr => tr.style.display = 'none');
+      vis.forEach((tr, i) => {
+        tr.style.display = (i >= inicio && i < fim) ? '' : 'none';
+      });
+
+      renderNav(nav, p, Math.ceil(vis.length / porPagina), paginar);
     }
 
-    function iniciarPaginacaoSimples(tbody, nav, porPagina) {
-        function visiveis() {
-            return Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== 'none');
-        }
+    // Expor para uso externo
+    return { paginar, porPagina };
+  }
 
-        function paginar(p) {
-            const todas  = Array.from(tbody.querySelectorAll('tr'));
-            const vis    = visiveis();
-            const inicio = (p - 1) * porPagina;
-            const fim    = inicio + porPagina;
+  function renderNav(nav, paginaAtual, totalPaginas, paginar) {
+    nav.innerHTML = '';
+    if (totalPaginas <= 1) return;
 
-            todas.forEach(tr => tr.style.display = 'none');
-            vis.forEach((tr, i) => {
-                tr.style.display = (i >= inicio && i < fim) ? '' : 'none';
-            });
+    nav.appendChild(criarItem('&laquo;', paginaAtual === 1, () => paginar(paginaAtual - 1)));
 
-            renderNav(nav, p, Math.ceil(vis.length / porPagina), paginar);
-        }
-
-        // Expor para uso externo
-        return { paginar, porPagina };
+    for (let i = 1; i <= totalPaginas; i++) {
+      nav.appendChild(criarItem(i, false, () => paginar(i), i === paginaAtual));
     }
 
-    function renderNav(nav, paginaAtual, totalPaginas, paginar) {
-        nav.innerHTML = '';
-        if (totalPaginas <= 1) return;
+    nav.appendChild(criarItem('&raquo;', paginaAtual === totalPaginas, () => paginar(paginaAtual + 1)));
+  }
 
-        nav.appendChild(criarItem('&laquo;', paginaAtual === 1, () => paginar(paginaAtual - 1)));
-
-        for (let i = 1; i <= totalPaginas; i++) {
-            nav.appendChild(criarItem(i, false, () => paginar(i), i === paginaAtual));
-        }
-
-        nav.appendChild(criarItem('&raquo;', paginaAtual === totalPaginas, () => paginar(paginaAtual + 1)));
+  function criarItem(label, disabled, onClick, active = false) {
+    const li = document.createElement('li');
+    li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
+    li.innerHTML = '<a class="page-link" href="#">' + label + '</a>';
+    if (!disabled) {
+      li.querySelector('a').addEventListener('click', function (e) {
+        e.preventDefault();
+        onClick();
+      });
     }
+    return li;
+  }
 
-    function criarItem(label, disabled, onClick, active = false) {
-        const li = document.createElement('li');
-        li.className = 'page-item' + (disabled ? ' disabled' : '') + (active ? ' active' : '');
-        li.innerHTML = '<a class="page-link" href="#">' + label + '</a>';
-        if (!disabled) {
-            li.querySelector('a').addEventListener('click', function (e) {
-                e.preventDefault();
-                onClick();
-            });
-        }
-        return li;
-    }
-
-    // Ligar à função aplicarFiltros existente
-    const _aplicarFiltrosOriginal = window.aplicarFiltros;
-    if (typeof _aplicarFiltrosOriginal === 'function') {
-        window.aplicarFiltros = function () {
-            _aplicarFiltrosOriginal();
-            if (window._paginacaoEquip) {
-                setTimeout(() => window._paginacaoEquip.paginar(1), 0);
-            }
-        };
-    }
-
-    // Inicializar página 1
-    if (window._paginacaoEquip) {
+  // Ligar à função aplicarFiltros existente
+  const _aplicarFiltrosOriginal = window.aplicarFiltros;
+  if (typeof _aplicarFiltrosOriginal === 'function') {
+    window.aplicarFiltros = function () {
+      _aplicarFiltrosOriginal();
+      if (window._paginacaoEquip) {
         setTimeout(() => window._paginacaoEquip.paginar(1), 0);
-    }
+      }
+    };
+  }
+
+  // Inicializar página 1
+  if (window._paginacaoEquip) {
+    setTimeout(() => window._paginacaoEquip.paginar(1), 0);
+  }
 })();
 
 

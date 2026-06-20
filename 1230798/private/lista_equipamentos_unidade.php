@@ -57,22 +57,11 @@ try {
     </h2>
 
     <a href="inserir_equipamento_unidade.php" class="btn btn-primary">
-      <i class="bi bi-plus"></i> Inserir Unidade 
+      <i class="bi bi-plus"></i> Inserir Unidade
     </a>
 
-    <a href="exportar_equipamentos_unidade.php"
-      id="btnExportarExcel"
-      class="btn btn-success">
-      <i class="bi bi-file-earmark-excel"></i> Exportar Excel
-    </a>
 
-    
-    <a href="etiquetas_equipamentos_unidade.php"
-      id="btnImprimirEtiquetas"
-      class="btn btn-outline-dark"
-      target="_blank">
-      <i class="bi bi-printer"></i> Imprimir Etiquetas
-    </a>
+
 
   </div>
 
@@ -198,11 +187,6 @@ try {
                 </a>
 
 
-                <a href="apagar_equipamento_unidade.php?id=<?= urlencode($equipamento->id) ?>"
-                  class="btn btn-sm btn-outline-danger"
-                  onclick="return confirm('Tem a certeza que deseja eliminar este equipamento?');">
-                  <i class="bi bi-trash"></i>
-                </a>
               </td>
             </tr>
           <?php endforeach; ?>
@@ -211,6 +195,22 @@ try {
 
       </tbody>
     </table>
+
+
+
+    <a href="etiquetas_equipamentos_unidade.php"
+      id="btnImprimirEtiquetas"
+      class="btn btn-outline-dark"
+      target="_blank">
+      <i class="bi bi-printer"></i> Imprimir Etiquetas
+    </a>
+
+
+    <a href="exportar_equipamentos_unidade.php"
+      id="btnExportarExcel"
+      class="btn btn-success">
+      <i class="bi bi-file-earmark-excel"></i> Exportar Excel
+    </a>
   </div>
 
 
@@ -219,6 +219,33 @@ try {
 
 </div>
 
+<div class="modal fade" id="modalApagar" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title text-danger">
+          <i class="bi bi-exclamation-triangle"></i> Confirmar
+        </h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        Tem a certeza que deseja eliminar esta unidade de equipamento?
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button class="btn btn-danger" id="confirmarApagar">
+          Eliminar
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 
 
@@ -226,6 +253,8 @@ try {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
+
+
 
 </div>
 

@@ -128,6 +128,8 @@ try {
 
     $ligacao->commit();
 
+    definir_mensagem('success', 'Equipamento inserido com sucesso.');
+
     header('Location: lista_equipamentos.php');
     exit;
 

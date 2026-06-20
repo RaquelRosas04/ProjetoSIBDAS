@@ -647,6 +647,5 @@ document.addEventListener("click", function(e) {
 <script src="../js/1230798.js"></script>
 
 <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
-
 </body>
 </html>

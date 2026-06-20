@@ -49,6 +49,8 @@ try {
                 $id
             ]);
 
+            definir_mensagem('success', 'Fornecedor alterado com sucesso.');
+
             header('Location: fornecedores.php');
             exit;
         }

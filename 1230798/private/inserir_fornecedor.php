@@ -72,12 +72,12 @@ unset($_SESSION['validation_errors']);
 
           <div class="col-md-6">
             <label class="form-label">Localidade</label>
-            <input type="text" class="form-control" id="localidade" name="localidade">
+            <input type="text" class="form-control" id="localidade" name="localidade" >
           </div>
 
           <div class="col-md-6">
             <label class="form-label">Código postal*</label>
-            <input type="text" class="form-control" id="codPostal" name="codPostal">
+            <input type="text" class="form-control" id="codPostal" name="codPostal" required>
           </div>
 
 
