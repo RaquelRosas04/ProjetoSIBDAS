@@ -14,7 +14,6 @@ $fornecedores = [];
 $historico = [];
 $acessorios = [];
 $consumiveis = [];
-$contratos = [];
 
 function formatar_data($data)
 {
@@ -131,27 +130,10 @@ try {
                 ORDER BY ec.data DESC, ec.id DESC
             ");
 
+
             $stmtHistorico->execute([$unidade->idEquipamento]);
             $historico = $stmtHistorico->fetchAll(PDO::FETCH_OBJ);
 
-         // Dados de contratos
-          $stmtContratos = $ligacao->prepare("
-                SELECT 
-                    id,
-                    dataInicio,
-                    dataFim,
-                    obs,
-                    caminho,
-                    ficheiro
-                FROM equipamentocontratos
-                WHERE idEquipamentoUni = ?
-                ORDER BY dataInicio DESC, id DESC
-            ");
-
-            $stmtContratos->execute([$unidade->id]);
-            $contratos = $stmtContratos->fetchAll(PDO::FETCH_OBJ);
-
-            
             $stmtComponentes = $ligacao->prepare("
                 SELECT 
                     comp.descricao,
@@ -506,91 +488,46 @@ include __DIR__ . '/includes/header_priv.php';
 
                 </div>
 
-<div class="tab-pane fade" id="contratos">
+                <div class="tab-pane fade" id="contratos">
 
-    <h5 class="mt-3 mb-3">Contratos</h5>
+                    <h5 class="mt-3">Documentos</h5>
 
-    <form action="guardar_contrato.php"
-          method="post"
-          enctype="multipart/form-data"
-          class="card p-3 mb-4 shadow-sm">
+                    <div class="mb-3">
+                        <button class="btn btn-outline-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalAnexo">
+                            <i class="bi bi-paperclip"></i>
+                            Anexar ficheiro
+                        </button>
+                    </div>
 
-        <input type="hidden" name="idEquipamentoUni" value="<?= htmlspecialchars($unidade->id) ?>">
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-sm">
+                            <thead class="table-custom">
+                                <tr>
+                                    <th>Descrição</th>
+                                    <th>Nome</th>
+                                    <th>Tipo</th>
+                                    <th>Ação</th>
+                                </tr>
+                            </thead>
 
-        <div class="row g-3">
+                            <tbody id="listaAnexos">
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted">
+                                        Sem documentos registados.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Data Início</label>
-                <input type="date" name="dataInicio" class="form-control" required>
-            </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Fim Garantia:</label>
+                        <p><?= formatar_data($unidade->dataFimGarantia) ?></p>
+                    </div>
 
-            <div class="col-md-3">
-                <label class="form-label">Data Fim</label>
-                <input type="date" name="dataFim" class="form-control">
-            </div>
-
-            <div class="col-md-6">
-                <label class="form-label">Ficheiro</label>
-                <input type="file" name="ficheiro" class="form-control" required>
-            </div>
-
-            <div class="col-12">
-                <label class="form-label">Observações</label>
-                <textarea name="obs" class="form-control" rows="3"></textarea>
-            </div>
-
-            <div class="col-12">
-                <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-save"></i>
-                    Guardar Contrato
-                </button>
-            </div>
-
-        </div>
-    </form>
-
-    <div class="table-responsive">
-        <table class="table table-bordered table-sm align-middle">
-            <thead class="table-custom">
-                <tr>
-                    <th>Data Início</th>
-                    <th>Data Fim</th>
-                    <th>Observações</th>
-                    <th>Ficheiro</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php if (!empty($contratos)): ?>
-                    <?php foreach ($contratos as $contrato): ?>
-                        <tr>
-                            <td><?= formatar_data($contrato->dataInicio ?? $contrato->datainicio ?? null) ?></td>
-                            <td><?= formatar_data($contrato->dataFim ?? $contrato->datafim ?? null) ?></td>
-                            <td><?= nl2br(htmlspecialchars($contrato->obs ?? '–')) ?></td>
-                            <td>
-                                <?php if (!empty($contrato->caminho)): ?>
-                                    <a href="<?= htmlspecialchars($contrato->caminho) ?>" target="_blank" class="btn btn-sm btn-outline-primary">
-                                        <i class="bi bi-file-earmark"></i>
-                                        Ver
-                                    </a>
-                                <?php else: ?>
-                                    –
-                                <?php endif; ?>
-                            </td>
-                        </tr>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <tr>
-                        <td colspan="4" class="text-center text-muted">
-                            Sem contratos registados.
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-
-</div>
+                </div>
 
                 <div class="tab-pane fade" id="anexos">
 

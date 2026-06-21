@@ -219,7 +219,8 @@ try {
             $_SESSION['validation_errors'] = [
                 'Já existe uma unidade com esse número de série para o mesmo fabricante e modelo.'
             ];
-
+            //Guarda os dados dos campos do form 
+            $_SESSION['old'] = $_POST;
             header('Location: inserir_equipamento_unidade.php');
             exit;
         }

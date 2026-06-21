@@ -102,6 +102,146 @@ document.addEventListener("click", function (e) {
 
 
 
+//FILTORS
+
+// Paginação genérica
+// Filtros e paginacao - lista_equipamentos.php
+document.addEventListener("DOMContentLoaded", function () {
+  const tbody = document.getElementById("tbodyEquipamentos");
+  const paginacao = document.querySelector("#paginacaoEquipamentos .pagination");
+
+  if (!tbody || !paginacao || !document.getElementById("fEqTipo") || !document.getElementById("fEqFabricante")) {
+    return;
+  }
+
+  const linhasPorPagina = 10;
+  let paginaAtual = 1;
+
+  
+  function filtrarEquipamentos() {
+    const fNome = document.getElementById("fEqNome").value.toLowerCase().trim();
+    const fTipo = document.getElementById("fEqTipo").value.toLowerCase().trim();
+    const fMarca = document.getElementById("fEqMarca").value.toLowerCase().trim();
+    const fModelo = document.getElementById("fEqModelo").value.toLowerCase().trim();
+    const fCriticidade = document.getElementById("fEqCriticidade").value.toLowerCase().trim();
+    const fFabricante = document.getElementById("fEqFabricante").value.toLowerCase().trim();
+
+    return Array.from(tbody.querySelectorAll("tr")).filter(linha => {
+      const td = linha.querySelectorAll("td");
+
+      if (td.length < 6) {
+        return false;
+      }
+
+      return td[0].textContent.toLowerCase().includes(fNome) &&
+        td[1].textContent.toLowerCase().includes(fTipo) &&
+        td[2].textContent.toLowerCase().includes(fMarca) &&
+        td[3].textContent.toLowerCase().includes(fModelo) &&
+        (fCriticidade === "" || td[4].textContent.trim().toLowerCase() === fCriticidade) &&
+        td[5].textContent.toLowerCase().includes(fFabricante);
+    });
+  }
+
+  function criarItem(texto, desativado, aoClicar) {
+    const li = document.createElement("li");
+    li.className = "page-item" + (desativado ? " disabled" : "");
+
+    const botao = document.createElement("button");
+    botao.type = "button";
+    botao.className = "page-link";
+    botao.innerHTML = texto;
+    botao.disabled = desativado;
+
+    botao.addEventListener("click", function () {
+      if (!desativado) {
+        aoClicar();
+      }
+    });
+
+    li.appendChild(botao);
+    paginacao.appendChild(li);
+  }
+
+  function renderizarEquipamentos() {
+    const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
+    const linhasDados = todasLinhas.filter(linha => linha.querySelectorAll("td").length >= 6);
+
+    if (linhasDados.length === 0) {
+      todasLinhas.forEach(linha => linha.style.display = "");
+      paginacao.innerHTML = "";
+      return;
+    }
+
+    const linhasFiltradas = filtrarEquipamentos();
+    const totalPaginas = Math.ceil(linhasFiltradas.length / linhasPorPagina);
+
+    if (paginaAtual > totalPaginas) {
+      paginaAtual = 1;
+    }
+
+    todasLinhas.forEach(linha => linha.style.display = "none");
+
+    const inicio = (paginaAtual - 1) * linhasPorPagina;
+    const fim = inicio + linhasPorPagina;
+
+    linhasFiltradas.slice(inicio, fim).forEach(linha => linha.style.display = "");
+
+    paginacao.innerHTML = "";
+
+    if (totalPaginas <= 1) {
+      return;
+    }
+
+    criarItem("&laquo;", paginaAtual === 1, function () {
+      paginaAtual--;
+      renderizarEquipamentos();
+    });
+
+    const indicador = document.createElement("li");
+    indicador.className = "page-item disabled";
+    indicador.innerHTML = '<span class="page-link">Pagina ' + paginaAtual + ' de ' + totalPaginas + '</span>';
+    paginacao.appendChild(indicador);
+
+    criarItem("&raquo;", paginaAtual === totalPaginas, function () {
+      paginaAtual++;
+      renderizarEquipamentos();
+    });
+  }
+
+  document.querySelectorAll("#fEqNome, #fEqTipo, #fEqMarca, #fEqModelo, #fEqCriticidade, #fEqFabricante")
+    .forEach(campo => {
+      campo.addEventListener("input", function () {
+        paginaAtual = 1;
+        renderizarEquipamentos();
+      });
+
+      campo.addEventListener("change", function () {
+        paginaAtual = 1;
+        renderizarEquipamentos();
+      });
+    });
+
+  document.getElementById("btnFiltrarEquipamentos")?.addEventListener("click", function () {
+    paginaAtual = 1;
+    renderizarEquipamentos();
+  });
+
+  document.getElementById("btnLimparEquipamentos")?.addEventListener("click", function () {
+    document.querySelectorAll("#fEqNome, #fEqTipo, #fEqMarca, #fEqModelo, #fEqFabricante")
+      .forEach(input => input.value = "");
+
+    document.getElementById("fEqCriticidade").value = "";
+
+    paginaAtual = 1;
+    renderizarEquipamentos();
+  });
+
+  renderizarEquipamentos();
+});
+
+
+
+
 ///NAO SEI BEM O QUE FAZ --------------------------------------------------------------
 
 
@@ -526,7 +666,8 @@ function mostrarCodigoPrevisto(valorSelecionado = null) {
 
 
 
-// Paginação genérica
+
+
 (function () {
   // ── Tabela do histórico do equipamento ──
   const tbodyHistorico = document.getElementById('tbodyHistorico');
@@ -536,12 +677,6 @@ function mostrarCodigoPrevisto(valorSelecionado = null) {
   }
 
   // ── Tabela de equipamentos (com filtros) ──
-  const tbodyEquip = document.getElementById('tbodyEquipamentos');
-  const navEquip = document.querySelector('#paginacaoEquipamentos .pagination');
-  if (tbodyEquip && navEquip) {
-    window._paginacaoEquip = iniciarPaginacaoSimples(tbodyEquip, navEquip, 10);
-  }
-
   function iniciarPaginacaoSimples(tbody, nav, porPagina) {
     function visiveis() {
       return Array.from(tbody.querySelectorAll('tr')).filter(tr => tr.style.display !== 'none');

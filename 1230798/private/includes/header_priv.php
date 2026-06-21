@@ -80,7 +80,7 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="lista_equipamentos_unidade.php">Lista</a></li>
-                            <li><a class="dropdown-item" href="inserir_equipamento_unidade.php">Inserir Equipamento Série</a></li> 
+                            <li><a class="dropdown-item" href="inserir_equipamento_unidade.php">Inserir Unidade</a></li> 
 
                         </ul>
                     </li>

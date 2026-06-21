@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/includes/funcoes.php';
@@ -314,7 +314,7 @@ include __DIR__ . '/includes/header_priv.php';
                             <tr>
                                 <th>Fornecedor</th>
                                 <th>Tipo</th>
-                                <th style="width: 120px;">Ações</th>
+                                <th style="width: 120px;">AÃ§Ãµes</th>
                             </tr>
                         </thead>
 
@@ -417,7 +417,7 @@ include __DIR__ . '/includes/header_priv.php';
                 }
             }
 
-            inputCodigo.value = codigo || "Sem código definido";
+            inputCodigo.value = codigo || "Sem cÃ³digo definido";
         }
     });
 

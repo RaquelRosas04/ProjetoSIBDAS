@@ -29,11 +29,13 @@ try {
         tipoequipamento.descricao AS tipo,
         marca.descricao AS marca,
         e.modelo,
-        e.criticidade
+        e.criticidade,
+        fabricante.nome AS fabricante
     FROM equipamentos e
     INNER JOIN marca  ON e.idMarca = marca.id
          left JOIN fabricante f ON e.idFabricante = f.id
     INNER JOIN tipoequipamento ON e.idTipo= tipoequipamento.id
+    INNER JOIN fabricante ON e.idFabricante=fabricante.id
     ORDER BY e.id DESC
     ";
 
@@ -73,42 +75,43 @@ try {
     <div class="row g-2">
 
       <div class="col-md-2">
-        <input type="text" id="fNome" class="form-control" placeholder="Nome">
+        <input type="text" id="fEqNome" class="form-control" placeholder="Nome">
       </div>
 
       <div class="col-md-2">
-        <input type="text" id="fTipo" class="form-control" placeholder="Tipo">
+        <input type="text" id="fEqTipo" class="form-control" placeholder="Tipo">
       </div>
 
       <div class="col-md-2">
-        <input type="text" id="fMarca" class="form-control" placeholder="Marca">
+        <input type="text" id="fEqMarca" class="form-control" placeholder="Marca">
       </div>
 
       <div class="col-md-1">
-        <input type="text" id="fModelo" class="form-control" placeholder="Modelo">
+        <input type="text" id="fEqModelo" class="form-control" placeholder="Modelo">
       </div>
 
       <div class="col-md-2">
-        <select id="fCriticidade" class="form-select">
+        <select id="fEqCriticidade" class="form-select">
           <option value="">Criticidade</option>
-          <option>Baixo</option>
-          <option>Médio</option>
-          <option>Alto</option>
+          <option>Baixa</option>
+          <option>Média</option>
+          <option>Alta</option>
+          <option>Suporte de Vida</option>
         </select>
       </div>
 
       <div class="col-md-1">
-        <input type="text" id="fFabricante" class="form-control" placeholder="Fabricante">
+        <input type="text" id="fEqFabricante" class="form-control" placeholder="Fabricante">
       </div>
 
       <div class="col-md-1 d-grid">
-        <button class="btn btn-primary" id="btnFiltrar">
+        <button class="btn btn-primary" id="btnFiltrarEquipamentos">
           <i class="bi bi-search"></i>
         </button>
       </div>
 
       <div class="col-md-1 ">
-        <button class="btn btn-outline-secondary w-100" id="btnLimpar">
+        <button class="btn btn-outline-secondary w-100" id="btnLimparEquipamentos">
           Limpar
         </button>
       </div>
@@ -159,7 +162,7 @@ try {
               <td><?= htmlspecialchars($equipamento->marca) ?></td>
               <td><?= htmlspecialchars($equipamento->modelo) ?></td>
               <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
-              <td><?= htmlspecialchars($equipamento->fabricante ?? '') ?></td>
+              <td><?= htmlspecialchars($equipamento->fabricante) ?></td>
 
               <td>
                 <a href="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
@@ -226,171 +229,9 @@ try {
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="../js/1230798.js?v=2"></script>
+<script src="../js/1230798.js?v=3"></script>
 
 <?php include __DIR__ . '/includes/modal_mensagem.php'; ?>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const tbody = document.getElementById("tbodyEquipamentos");
-    const paginacao = document.querySelector("#paginacaoEquipamentos .pagination");
-
-    if (!tbody || !paginacao) {
-      return;
-    }
-
-    const linhasPorPagina = 10;
-    let paginaAtual = 1;
-
-    const filtros = {
-      nome: document.getElementById("fNome"),
-      tipo: document.getElementById("fTipo"),
-      marca: document.getElementById("fMarca"),
-      modelo: document.getElementById("fModelo"),
-      criticidade: document.getElementById("fCriticidade"),
-      fabricante: document.getElementById("fFabricante")
-    };
-
-    function textoFiltro(campo) {
-      return (campo?.value || "").toLowerCase().trim();
-    }
-
-    function obterLinhasFiltradas() {
-      const nome = textoFiltro(filtros.nome);
-      const tipo = textoFiltro(filtros.tipo);
-      const marca = textoFiltro(filtros.marca);
-      const modelo = textoFiltro(filtros.modelo);
-      const criticidade = textoFiltro(filtros.criticidade);
-      const fabricante = textoFiltro(filtros.fabricante);
-
-      return Array.from(tbody.querySelectorAll("tr")).filter(function (linha) {
-        const colunas = linha.querySelectorAll("td");
-
-        if (colunas.length < 6) {
-          return false;
-        }
-
-        const linhaNome = colunas[0].textContent.toLowerCase();
-        const linhaTipo = colunas[1].textContent.toLowerCase();
-        const linhaMarca = colunas[2].textContent.toLowerCase();
-        const linhaModelo = colunas[3].textContent.toLowerCase();
-        const linhaCriticidade = colunas[4].textContent.toLowerCase().trim();
-        const linhaFabricante = colunas[5].textContent.toLowerCase();
-
-        return linhaNome.includes(nome)
-          && linhaTipo.includes(tipo)
-          && linhaMarca.includes(marca)
-          && linhaModelo.includes(modelo)
-          && (criticidade === "" || linhaCriticidade === criticidade)
-          && linhaFabricante.includes(fabricante);
-      });
-    }
-
-    function criarItem(texto, desativado, aoClicar) {
-      const item = document.createElement("li");
-      item.className = "page-item" + (desativado ? " disabled" : "");
-
-      const botao = document.createElement("button");
-      botao.type = "button";
-      botao.className = "page-link";
-      botao.innerHTML = texto;
-      botao.disabled = desativado;
-
-      botao.addEventListener("click", function () {
-        if (!desativado) {
-          aoClicar();
-        }
-      });
-
-      item.appendChild(botao);
-      paginacao.appendChild(item);
-    }
-
-    function renderizarPaginacao() {
-      const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
-      const linhasDados = todasLinhas.filter(function (linha) {
-        return linha.querySelectorAll("td").length >= 6;
-      });
-
-      if (linhasDados.length === 0) {
-        todasLinhas.forEach(function (linha) {
-          linha.style.display = "";
-        });
-        paginacao.innerHTML = "";
-        return;
-      }
-
-      const linhasFiltradas = obterLinhasFiltradas();
-      const totalPaginas = Math.ceil(linhasFiltradas.length / linhasPorPagina);
-
-      if (paginaAtual > totalPaginas) {
-        paginaAtual = 1;
-      }
-
-      todasLinhas.forEach(function (linha) {
-        linha.style.display = "none";
-      });
-
-      const inicio = (paginaAtual - 1) * linhasPorPagina;
-      const fim = inicio + linhasPorPagina;
-
-      linhasFiltradas.slice(inicio, fim).forEach(function (linha) {
-        linha.style.display = "";
-      });
-
-      paginacao.innerHTML = "";
-
-      if (totalPaginas <= 1) {
-        return;
-      }
-
-      criarItem("&laquo;", paginaAtual === 1, function () {
-        paginaAtual--;
-        renderizarPaginacao();
-      });
-
-      const indicador = document.createElement("li");
-      indicador.className = "page-item disabled";
-      indicador.innerHTML = '<span class="page-link">Página ' + paginaAtual + ' de ' + totalPaginas + '</span>';
-      paginacao.appendChild(indicador);
-
-      criarItem("&raquo;", paginaAtual === totalPaginas, function () {
-        paginaAtual++;
-        renderizarPaginacao();
-      });
-    }
-
-    Object.values(filtros).forEach(function (campo) {
-      if (!campo) {
-        return;
-      }
-
-      campo.addEventListener("input", function () {
-        paginaAtual = 1;
-        renderizarPaginacao();
-      });
-
-      campo.addEventListener("change", function () {
-        paginaAtual = 1;
-        renderizarPaginacao();
-      });
-    });
-
-    document.getElementById("btnFiltrar")?.addEventListener("click", function () {
-      paginaAtual = 1;
-      renderizarPaginacao();
-    });
-
-    document.getElementById("btnLimpar")?.addEventListener("click", function () {
-      setTimeout(function () {
-        paginaAtual = 1;
-        renderizarPaginacao();
-      }, 0);
-    });
-
-    renderizarPaginacao();
-  });
-</script>
 
 <script>
   let urlApagarEquipamento = null;

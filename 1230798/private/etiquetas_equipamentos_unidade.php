@@ -81,7 +81,6 @@ try {
     $stmt->execute($params);
 
     $equipamentos = $stmt->fetchAll(PDO::FETCH_OBJ);
-
 } catch (PDOException $e) {
     die('Erro ao carregar etiquetas.');
 }
@@ -90,13 +89,14 @@ try {
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <title>Etiquetas de Equipamentos</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="../css/1230798.css?v=2">
     <style>
         body {
             background: #f8f9fa;
@@ -219,10 +219,11 @@ try {
         </div>
 
     <?php endif; ?>
-<script>
-window.onload = function () {
-    window.print();
-};
-</script>
+    <script>
+        window.onload = function() {
+            window.print();
+        };
+    </script>
 </body>
+
 </html>
