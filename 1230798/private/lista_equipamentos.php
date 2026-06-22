@@ -30,7 +30,8 @@ try {
         marca.descricao AS marca,
         e.modelo,
         e.criticidade,
-        fabricante.nome AS fabricante
+        fabricante.nome AS fabricante,
+        e.componente
     FROM equipamentos e
     INNER JOIN marca  ON e.idMarca = marca.id
          left JOIN fabricante f ON e.idFabricante = f.id
