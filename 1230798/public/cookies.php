@@ -50,7 +50,7 @@
 
         <!-- LOGIN (DIREITA) -->
         <div>
-          <a href="../login/login.php" class="btn btn-primary">Login</a>
+          <a href="login.php" class="btn btn-primary">Login</a>
         </div>
 
       </div>

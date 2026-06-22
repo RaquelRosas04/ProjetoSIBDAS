@@ -406,7 +406,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </select>
                 </div>
 
-<!--                 <div class="col-md-2">
+                <div class="col-md-2">
                     <label class="form-label">É componente?</label>
                     <select name="componente" class="form-select" required>
                         <option value="0" <?= $equipamento->componente == 0 ? 'selected' : '' ?>>
@@ -417,7 +417,7 @@ include __DIR__ . '/includes/header_priv.php';
                             Sim
                         </option>
                     </select>
-                </div> -->
+                </div>
 
             </div>
 
