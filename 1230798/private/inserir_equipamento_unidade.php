@@ -210,9 +210,9 @@ include __DIR__ . '/includes/header_priv.php';
                     <select name="tipoEntrada" class="form-select" required>
                         <option value="">Selecione</option>
                         <option value="Compra">Compra</option>
-                        <option value="DoaÃ§Ã£o">Doação</option>
+                        <option value="Doação">Doação</option>
                         <option value="Aluguer">Aluguer</option>
-                        <option value="EmprÃ©stimo">Empréstimo</option>
+                        <option value="Empréstimo">Empréstimo</option>
                     </select>
                 </div>
 

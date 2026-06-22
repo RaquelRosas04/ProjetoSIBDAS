@@ -91,7 +91,7 @@ try {
         <input type="text" id="fEqModelo" class="form-control" placeholder="Modelo">
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-1">
         <select id="fEqCriticidade" class="form-select">
           <option value="">Criticidade</option>
           <option>Baixa</option>
@@ -106,7 +106,7 @@ try {
       </div>
 
 
-      <div class="col-md-1">
+      <div class="col-md-2">
         <select id="fEqComponente" class="form-select">
           <option value=""> É componente?</option>
           <option>Não</option>

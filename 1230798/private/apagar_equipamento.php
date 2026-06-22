@@ -42,6 +42,24 @@ try {
     }
 
     // 2. Apagar associações de componentes
+    $stmt = $ligacao->prepare("
+        SELECT COUNT(*) AS total
+        FROM equipamentocomponentes
+        WHERE idEquiComp = ?
+    ");
+    $stmt->execute([$id]);
+    $resultado = $stmt->fetch(PDO::FETCH_OBJ);
+
+    if ($resultado->total > 0) {
+        definir_mensagem(
+            'warning',
+            'Não é possível apagar este componente porque está associado a um equipamento.'
+        );
+
+        header('Location: lista_equipamentos.php');
+        exit;
+    }  
+
     $ligacao->beginTransaction();
 
     $stmt = $ligacao->prepare("

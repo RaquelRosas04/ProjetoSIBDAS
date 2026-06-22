@@ -515,7 +515,7 @@ include __DIR__ . '/includes/header_priv.php';
                         </div>
                     </div>
 
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <label class="form-label">Tipo de Entrada</label>
 
                         <select name="tipoEntrada" class="form-select" required>
@@ -539,7 +539,7 @@ include __DIR__ . '/includes/header_priv.php';
                         </select>
                     </div>
 
-                    <div class="col-md-8">
+                    <div class="col-md-10">
                         <label class="form-label">Observações</label>
                         <textarea name="obs"
                             class="form-control"
