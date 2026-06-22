@@ -44,7 +44,7 @@ try {
     if ($associacoes->total > 0) {
         definir_mensagem(
             'warning',
-            'Nao e possivel apagar esta localizacao porque existem equipamentos associados.'
+            'Não é possível apagar esta localização porque existem equipamentos associados.'
         );
 
         header('Location: localizacoes.php');

@@ -7,6 +7,8 @@ if (session_status() === PHP_SESSION_NONE) {
 require_once __DIR__ . '/../../config/config.php';
 
 $currentPage = basename($_SERVER['PHP_SELF']);
+$perfilAtual = strtolower($_SESSION['perfil'] ?? '');
+$isGestor = ($perfilAtual === 'gestor');
 ?>
 
 <!DOCTYPE html>
@@ -100,7 +102,12 @@ $currentPage = basename($_SERVER['PHP_SELF']);
                             <a class="nav-link <?= ($currentPage == 'admin_editar.php') ? 'active' : '' ?>" href="admin_editar.php">Conteúdos</a>
                         </li>
                     <?php endif; ?>
-                    
+                    <?php if ($isGestor): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?= ($currentPage == 'criar_conta.php') ? 'active' : '' ?>" href="criar_conta.php">Criar Conta</a>
+                        </li>
+                    <?php endif; ?>
+
                 </ul>
 
 

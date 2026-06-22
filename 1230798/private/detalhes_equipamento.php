@@ -71,6 +71,9 @@ try {
                 e.modelo,
                 e.anosGarantia,
                 e.criticidade,
+                e.manualSer,
+                e.manualTec,
+                e.manualCon,
 
                 m.descricao AS marca,
                 t.descricao AS categoria,
@@ -597,35 +600,48 @@ include __DIR__ . '/includes/header_priv.php';
                     <h5 class="mt-3">Anexos</h5>
 
                     <div class="d-flex flex-wrap gap-3 mt-3">
-                        <p class="text-muted">Sem anexos registados.</p>
+
+                        <?php if (
+                            empty($unidade->manualSer) &&
+                            empty($unidade->manualTec) &&
+                            empty($unidade->manualCon)
+                        ): ?>
+
+                            <p class="text-muted">Sem anexos registados.</p>
+
+                        <?php else: ?>
+
+                            <?php if (!empty($unidade->manualSer)): ?>
+                                <a href="<?= htmlspecialchars($unidade->manualSer) ?>"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary">
+                                    Ver Manual de Serviço
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if (!empty($unidade->manualTec)): ?>
+                                <a href="<?= htmlspecialchars($unidade->manualTec) ?>"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary">
+                                    Ver Manual Técnico
+                                </a>
+                            <?php endif; ?>
+
+                            <?php if (!empty($unidade->manualCon)): ?>
+                                <a href="<?= htmlspecialchars($unidade->manualCon) ?>"
+                                target="_blank"
+                                class="btn btn-sm btn-outline-primary">
+                                    Ver Consumíveis
+                                </a>
+                            <?php endif; ?>
+
+                        <?php endif; ?>
+
                     </div>
 
                 </div>
 
-                <div class="modal fade" id="modalAnexo">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-
-                            <div class="modal-header">
-                                <h5>Novo Anexo</h5>
-                                <button class="btn-close" data-bs-dismiss="modal"></button>
-                            </div>
-
-                            <div class="modal-body">
-                                <input type="file" id="ficheiroAnexo" class="form-control mb-2">
-                                <input type="text" id="descricaoAnexo" class="form-control" placeholder="Descrição">
-                            </div>
-
-                            <div class="modal-footer">
-                                <button class="btn btn-primary" id="btnGuardarAnexo">
-                                    Upload
-                                </button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
+                
             </div>
 
         </div>

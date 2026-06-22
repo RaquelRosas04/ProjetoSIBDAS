@@ -674,7 +674,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </div>
 
                     <div class="mt-4 d-flex justify-content-between">
-                        <a href="lista_equipamentos_unidade.php" class="btn btn-outline-secondary">
+                        <a href="detalhes_equipamento.php" class="btn btn-outline-secondary">
                             <i class="bi bi-arrow-left"></i>
                             Voltar
                         </a>

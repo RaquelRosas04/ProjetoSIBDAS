@@ -83,10 +83,38 @@
                 localStorage.setItem("cookies", document.getElementById("cookies").value);
                 localStorage.setItem("privacidade", document.getElementById("privacidade").value);
 
-                alert("Conteúdos atualizados!");
+                new bootstrap.Modal(document.getElementById("modalConteudosGuardados")).show();
             }
 
         </script>
+
+        <div class="modal fade" id="modalConteudosGuardados" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content shadow">
+
+                    <div class="modal-header">
+                        <h5 class="modal-title text-success">
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Sucesso
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <p class="mb-0">Conteúdos atualizados com sucesso.</p>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            OK
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
     </body>
 

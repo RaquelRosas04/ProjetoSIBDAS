@@ -5,6 +5,14 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
+$perfilAtual = strtolower($_SESSION['perfil'] ?? '');
+
+if ($perfilAtual === 'tecnico') {
+    definir_mensagem('warning', 'Não tem permissão para adicionar equipamentos.');
+    header('Location: lista_equipamentos.php');
+    exit;
+}
+
 try {
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
@@ -60,8 +68,7 @@ include __DIR__ . '/includes/header_priv.php';
 
     <div class="card p-4 shadow-sm">
 
-        <form method="post" action="processa_inserir_equipamento.php">
-
+        <form method="post" action="processa_inserir_equipamento.php" enctype="multipart/form-data">
             <h5 class="mt-3 mb-3">Dados do Equipamento</h5>
 
             <div class="row g-3">
@@ -151,6 +158,44 @@ include __DIR__ . '/includes/header_priv.php';
                         <option value="0">Não</option>
                         <option value="1">Sim</option>
                     </select>
+                </div>
+
+            </div>
+
+            <hr class="my-4">
+
+
+            <h5 class="mt-3 mb-3">
+                <i class="bi bi-file-earmark-text me-1"></i>
+                Manuais
+            </h5>
+
+            <!--Separador Manuais -->
+
+            <div class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label">Manual de Serviço</label>
+                    <input type="file" name="manualSer" id="manualSer" class="form-control">
+                    <a href="#" id="verManualSer" class="btn btn-sm btn-outline-primary mt-2 d-none" target="_blank">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Manual Técnico</label>
+                    <input type="file" name="manualTec" id="manualTec" class="form-control">
+                    <a href="#" id="verManualTec" class="btn btn-sm btn-outline-primary mt-2 d-none" target="_blank">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label">Manual Consumíveis</label>
+                    <input type="file" name="manualCon" id="manualCon" class="form-control">
+                    <a href="#" id="verManualCon" class="btn btn-sm btn-outline-primary mt-2 d-none" target="_blank">
+                        <i class="bi bi-eye"></i> Ver
+                    </a>
                 </div>
 
             </div>
@@ -371,11 +416,45 @@ document.getElementById("btnMostrarComponentes").onclick = function () {
     document.getElementById("btnInserirEquipamentoTopo").classList.add("d-none");
     this.classList.add("d-none");
 };
-
-
 </script>
+
+ <!--Para mostrar os botoes de ver manuais -->
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function prepararPreview(inputId, linkId) {
+        const input = document.getElementById(inputId);
+        const link = document.getElementById(linkId);
+
+        if (!input || !link) return;
+
+        input.addEventListener("change", function () {
+            const ficheiro = input.files[0];
+
+            if (!ficheiro) {
+                link.classList.add("d-none");
+                link.removeAttribute("href");
+                return;
+            }
+
+            link.href = URL.createObjectURL(ficheiro);
+            link.classList.remove("d-none");
+        });
+    }
+
+    prepararPreview("manualSer", "verManualSer");
+    prepararPreview("manualTec", "verManualTec");
+    prepararPreview("manualCon", "verManualCon");
+});
+</script>
+
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="../js/1230798.js"></script>
+
+
 
 
 

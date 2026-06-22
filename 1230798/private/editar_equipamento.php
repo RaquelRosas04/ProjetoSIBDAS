@@ -7,6 +7,36 @@ redirect_if_not_logged();
 
 $erros = [];
 
+
+function guardar_manual($campo, $manualAtual = null)
+{
+    if (empty($_FILES[$campo]['name'])) {
+        return $manualAtual;
+    }
+
+    $extensoesPermitidas = ['pdf', 'doc', 'docx'];
+    $nomeOriginal = $_FILES[$campo]['name'];
+    $extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+
+    if (!in_array($extensao, $extensoesPermitidas, true)) {
+        throw new Exception('Tipo de ficheiro inválido em ' . $campo . '.');
+    }
+
+    $pastaDestino = __DIR__ . '/../uploads/manuais/';
+
+    if (!is_dir($pastaDestino)) {
+        mkdir($pastaDestino, 0777, true);
+    }
+
+    $nomeFicheiro = $campo . '_' . uniqid() . '.' . $extensao;
+    $caminhoServidor = $pastaDestino . $nomeFicheiro;
+    $caminhoBD = '../uploads/manuais/' . $nomeFicheiro;
+
+    move_uploaded_file($_FILES[$campo]['tmp_name'], $caminhoServidor);
+
+    return $caminhoBD;
+}
+
 try {
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
@@ -73,6 +103,20 @@ try {
 
         $ligacao->beginTransaction();
 
+            $stmtManuaisAtuais = $ligacao->prepare("
+                SELECT manualSer, manualTec, manualCon
+                FROM equipamentos
+                WHERE id = ?
+            ");
+            $stmtManuaisAtuais->execute([$id]);
+            $manuaisAtuais = $stmtManuaisAtuais->fetch(PDO::FETCH_OBJ);
+
+            $manualSer = guardar_manual('manualSer', $manuaisAtuais->manualSer ?? null);
+            $manualTec = guardar_manual('manualTec', $manuaisAtuais->manualTec ?? null);
+            $manualCon = guardar_manual('manualCon', $manuaisAtuais->manualCon ?? null);
+
+
+
         $sqlEquipamento = "
             UPDATE equipamentos
             SET descricao = ?,
@@ -82,7 +126,10 @@ try {
                 modelo = ?,
                 anosGarantia = ?,
                 criticidade = ?,
-                componente = ?
+                componente = ?,
+                manualSer = ?,
+                manualTec = ?,
+                manualCon = ?
             WHERE id = ?
         ";
 
@@ -97,6 +144,9 @@ try {
             $anosGarantia,
             $criticidade,
             ($componente ? "\x01" : "\x00"),
+             $manualSer,
+            $manualTec,
+            $manualCon,
             $id
         ]);
 
@@ -153,7 +203,10 @@ try {
                modelo,
                anosGarantia,
                criticidade,
-               componente + 0 AS componente
+               componente + 0 AS componente,
+               manualSer,
+               manualTec,
+               manualCon
         FROM equipamentos
         WHERE id = ?
     ");
@@ -243,7 +296,9 @@ include __DIR__ . '/includes/header_priv.php';
             </div>
         <?php endif; ?>
 
-        <form method="post" action="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>">
+<form method="post"
+      action="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
+      enctype="multipart/form-data">
 
             <input type="hidden" name="id" value="<?= htmlspecialchars($equipamento->id) ?>">
 
@@ -365,6 +420,68 @@ include __DIR__ . '/includes/header_priv.php';
                 </div> -->
 
             </div>
+
+<hr class="my-4">
+
+<h5 class="mt-3 mb-3">
+    <i class="bi bi-file-earmark-text me-1"></i>
+    Manuais
+</h5>
+
+<div class="row g-3">
+
+    <div class="col-md-4">
+        <label class="form-label">Manual de Serviço</label>
+        <input type="file" name="manualSer" id="manualSer" class="form-control">
+
+        <?php if (!empty($equipamento->manualSer)): ?>
+            <a href="<?= htmlspecialchars($equipamento->manualSer) ?>"
+               class="btn btn-sm btn-outline-primary mt-2"
+               target="_blank">
+                <i class="bi bi-eye"></i> Ver atual
+            </a>
+        <?php endif; ?>
+
+        <a href="#" id="verManualSer" class="btn btn-sm btn-outline-secondary mt-2 d-none" target="_blank">
+            <i class="bi bi-eye"></i> Ver novo
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Manual Técnico</label>
+        <input type="file" name="manualTec" id="manualTec" class="form-control">
+
+        <?php if (!empty($equipamento->manualTec)): ?>
+            <a href="<?= htmlspecialchars($equipamento->manualTec) ?>"
+               class="btn btn-sm btn-outline-primary mt-2"
+               target="_blank">
+                <i class="bi bi-eye"></i> Ver atual
+            </a>
+        <?php endif; ?>
+
+        <a href="#" id="verManualTec" class="btn btn-sm btn-outline-secondary mt-2 d-none" target="_blank">
+            <i class="bi bi-eye"></i> Ver novo
+        </a>
+    </div>
+
+    <div class="col-md-4">
+        <label class="form-label">Manual Consumíveis</label>
+        <input type="file" name="manualCon" id="manualCon" class="form-control">
+
+        <?php if (!empty($equipamento->manualCon)): ?>
+            <a href="<?= htmlspecialchars($equipamento->manualCon) ?>"
+               class="btn btn-sm btn-outline-primary mt-2"
+               target="_blank">
+                <i class="bi bi-eye"></i> Ver atual
+            </a>
+        <?php endif; ?>
+
+        <a href="#" id="verManualCon" class="btn btn-sm btn-outline-secondary mt-2 d-none" target="_blank">
+            <i class="bi bi-eye"></i> Ver novo
+        </a>
+    </div>
+
+</div>
 
             <div class="mt-4 d-flex justify-content-between">
                 <a href="lista_equipamentos.php" class="btn btn-outline-secondary">
@@ -626,6 +743,31 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 });
+
+
+function prepararPreviewManual(inputId, linkId) {
+    const input = document.getElementById(inputId);
+    const link = document.getElementById(linkId);
+
+    if (!input || !link) return;
+
+    input.addEventListener("change", function () {
+        const ficheiro = input.files[0];
+
+        if (!ficheiro) {
+            link.classList.add("d-none");
+            link.removeAttribute("href");
+            return;
+        }
+
+        link.href = URL.createObjectURL(ficheiro);
+        link.classList.remove("d-none");
+    });
+}
+
+prepararPreviewManual("manualSer", "verManualSer");
+prepararPreviewManual("manualTec", "verManualTec");
+prepararPreviewManual("manualCon", "verManualCon");
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

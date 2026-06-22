@@ -5,6 +5,14 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
+$perfilAtual = strtolower($_SESSION['perfil'] ?? '');
+
+if ($perfilAtual === 'tecnico') {
+    definir_mensagem('warning', 'Não tem permissão para adicionar equipamentos.');
+    header('Location: lista_equipamentos.php');
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header('Location: inserir_equipamento.php');
     exit;
@@ -59,6 +67,40 @@ if (!empty($erros)) {
     exit;
 }
 
+
+
+function guardar_manual($campo)
+{
+    if (empty($_FILES[$campo]['name'])) {
+        return null;
+    }
+
+    $extensoesPermitidas = ['pdf', 'doc', 'docx'];
+    $nomeOriginal = $_FILES[$campo]['name'];
+    $extensao = strtolower(pathinfo($nomeOriginal, PATHINFO_EXTENSION));
+
+    if (!in_array($extensao, $extensoesPermitidas, true)) {
+        throw new Exception('Tipo de ficheiro inválido em ' . $campo . '.');
+    }
+
+    $pastaDestino = __DIR__ . '/../uploads/manuais/';
+
+    if (!is_dir($pastaDestino)) {
+        mkdir($pastaDestino, 0777, true);
+    }
+
+    $nomeFicheiro = $campo . '_' . uniqid() . '.' . $extensao;
+    $caminhoServidor = $pastaDestino . $nomeFicheiro;
+    $caminhoBD = '../uploads/manuais/' . $nomeFicheiro;
+
+    move_uploaded_file($_FILES[$campo]['tmp_name'], $caminhoServidor);
+
+    return $caminhoBD;
+}
+
+
+
+
 try {
     $ligacao = new PDO(
         "mysql:host=" . MYSQL_HOST . ";port=" . MYSQL_PORT . ";dbname=" . MYSQL_DATABASE . ";charset=utf8",
@@ -70,9 +112,11 @@ try {
 
     $ligacao->beginTransaction();
 
-  $componente = $_POST['componente'] ?? 0;
-   $componente = ($componente == 1 || $componente === 'Sim') ? 1 : 0;
-
+    $componente = $_POST['componente'] ?? 0;
+    $componente = ($componente == 1 || $componente === 'Sim') ? 1 : 0;
+    $manualSer = guardar_manual('manualSer');
+    $manualTec = guardar_manual('manualTec');
+    $manualCon = guardar_manual('manualCon');
 
 
     $sqlEquipamento = "
@@ -85,9 +129,12 @@ try {
             modelo,
             anosGarantia,
             criticidade,
-            componente
+            componente,
+            manualSer,
+            manualTec,
+            manualCon
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?,?)
+        VALUES (?, ?, ?, ?, ?, ?, ?,?,?,?,?)
     ";
 
     $stmtEquipamento = $ligacao->prepare($sqlEquipamento);
@@ -100,7 +147,11 @@ try {
         $modelo,
         $anosGarantia,
         $criticidade,
-        ($componente ? "\x01" : "\x00")
+        ($componente ? "\x01" : "\x00"),
+        $manualSer,
+        $manualTec,
+        $manualCon
+
     ]);
 
     $idEquipamento = $ligacao->lastInsertId();

@@ -48,7 +48,7 @@ try {
     if ($associacoesEquipamento->total > 0) {
         definir_mensagem(
             'warning',
-            'Nao e possivel apagar este fornecedor porque existem equipamentos associados.'
+            'Não é possível apagar este fornecedor porque existem equipamentos associados.'
         );
 
         header('Location: fornecedores.php');
