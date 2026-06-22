@@ -46,7 +46,7 @@ include __DIR__ . '/includes/header_priv.php';
         </h2>
 
         <a href="inserir_localizacao.php" class="btn btn-primary">
-            <i class="bi bi-plus"></i> Inserir Localizacao
+            <i class="bi bi-plus"></i> Inserir Localização
         </a>
     </div>
 
@@ -54,11 +54,11 @@ include __DIR__ . '/includes/header_priv.php';
         <div class="row g-2 align-items-center">
 
             <div class="col-md-3">
-                <input type="text" id="fNome" class="form-control" placeholder="Edificio">
+                <input type="text" id="fNome" class="form-control" placeholder="Edifício">
             </div>
 
             <div class="col-md-3">
-                <input type="text" id="fNIF" class="form-control" placeholder="Servico">
+                <input type="text" id="fNIF" class="form-control" placeholder="Serviço">
             </div>
 
             <div class="col-md-2">
@@ -88,11 +88,11 @@ include __DIR__ . '/includes/header_priv.php';
         <table class="table table-bordered align-middle">
             <thead class="table-custom">
                 <tr>
-                    <th>Edificio</th>
-                    <th>Servico</th>
+                    <th>Edifício</th>
+                    <th>Serviço</th>
                     <th>Andar</th>
                     <th>Sala</th>
-                    <th>Acoes</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
 

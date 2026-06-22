@@ -5,7 +5,7 @@
   <h1>Gestão Inteligente de Equipamentos</h1>
   <p>Controlo total, eficiência máxima e segurança hospitalar.</p>
 
-  <a href="../login/login.php" class="btn btn-primary btn-lg mt-3">
+  <a href="login.php" class="btn btn-primary btn-lg mt-3">
     Entrar no Sistema
   </a>
 </div>

@@ -114,21 +114,34 @@ h2, h3, h4, h5 {
 }
 
 /* Criticidade */
+.badge-criticidade {
+  display: inline-block;
+  min-width: 72px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-align: center;
+}
+
 .badge-baixa {
-  background-color: #6c757d;
+  background-color: #198754;
+  color: #fff;
 }
 
 .badge-media {
-  background-color: #ff0707;
-  color: #000;
+  background-color: #ffc107;
+  color: #212529;
 }
 
 .badge-alta {
-  background-color: #dc3545;
+  background-color: #f47f1f;
+  color: #fff;
 }
 
 .badge-suporte {
-  background-color: #000;
+  background-color: #dc3545;
+  color: #fff;
 }
 
 
@@ -777,4 +790,9 @@ textarea.admin-textarea {
     padding: 6px 10px;
     font-size: 0.9rem;
     line-height: 1.2;
+}
+
+.text-bg-orange {
+    color: #fff !important;
+    background-color: #fd7e14 !important;
 }

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $confirmarPassword = $_POST['confirmar_password'] ?? '';
     $perfil = $_POST['perfil'] ?? '';
 
-    $perfisPermitidos = ['Gestor', 'Tecnico'];
+    $perfisPermitidos = ['Gestor', 'Técnico'];
 
     if (strlen($nome) < 2) {
         definir_mensagem('danger', 'Introduza o nome.');
@@ -57,13 +57,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($password !== $confirmarPassword) {
-        definir_mensagem('danger', 'As passwords nao coincidem.');
+        definir_mensagem('danger', 'As passwords não coincidem.');
         header('Location: criar_conta.php');
         exit;
     }
 
     if (!in_array($perfil, $perfisPermitidos, true)) {
-        definir_mensagem('danger', 'Selecione um perfil valido.');
+        definir_mensagem('danger', 'Selecione um perfil válido.');
         header('Location: criar_conta.php');
         exit;
     }
@@ -149,7 +149,7 @@ include __DIR__ . '/includes/header_priv.php';
                     <select name="perfil" class="form-select" required>
                         <option value="">Selecione...</option>
                         <option value="Gestor">Gestor</option>
-                        <option value="Tecnico">Técnico</option>
+                        <option value="Técnico">Técnico</option>
                     </select>
                 </div>
 

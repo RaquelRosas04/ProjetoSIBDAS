@@ -1,0 +1,41 @@
+a98347b - RaquelRosas04 - 2026-06-22 08:05:59 +0100 - lista_equipamentos
+b49c636 - RaquelRosas04 - 2026-06-22 02:13:49 +0100 - correcoes, ligar dashboard BD
+96c8a72 - RaquelRosas04 - 2026-06-21 18:34:01 +0100 - anexos contratos
+44ce277 - RaquelRosas04 - 2026-06-20 19:22:35 +0100 - paginaçao
+8dd7c2f - RaquelRosas04 - 2026-06-20 17:27:05 +0100 - botoes a desaparecer
+54c1257 - RaquelRosas04 - 2026-06-20 16:17:21 +0100 - modais
+bae28a3 - RaquelRosas04 - 2026-06-20 10:58:46 +0100 - controlo do historico, exportar, imprimir, pag localizacoes, permissoes
+eed1cd6 - RaquelRosas04 - 2026-06-19 12:30:06 +0100 - modal fornecedores
+b1f5c9b - RaquelRosas04 - 2026-06-17 16:56:29 +0100 - paginas equipamentos, filtros
+4d11211 - RaquelRosas04 - 2026-06-16 00:46:25 +0100 - editar equipament+ detalhes equipamento
+b928818 - RaquelRosas04 - 2026-06-13 22:39:57 +0100 - equi+componentes inserte, edicao e apaga
+48ff2fb - RaquelRosas04 - 2026-06-13 17:47:49 +0100 - ligaçao de fornecedores+ apagar+ editar
+1326fc5 - RaquelRosas04 - 2026-06-10 17:35:01 +0100 - login+insert equipamentos
+2f0ef81 - RaquelRosas04 - 2026-06-08 12:57:37 +0100 - dashboard+logo
+bf547f1 - RaquelRosas04 - 2026-06-08 10:14:17 +0100 - login+ proteçao/logout
+7b8946d - RaquelRosas04 - 2026-06-06 12:49:46 +0100 - php
+34e7c46 - RaquelRosas04 - 2026-06-04 23:03:18 +0100 - nome da alteraçao
+903c9b7 - RaquelRosas04 - 2026-06-04 19:17:47 +0100 - Pagina admin, uniformização estetica
+4422ede - RaquelRosas04 - 2026-06-04 13:01:26 +0100 - Lista_equipamentos, concluida
+e972379 - RaquelRosas04 - 2026-06-03 23:59:44 +0100 - Melhorias gerais das paginas ja criadas
+579223e - RaquelRosas04 - 2026-06-03 13:05:43 +0100 - avisos e confirmações~
+216ff4e - RaquelRosas04 - 2026-06-03 10:40:46 +0100 - localizaçoes+ Equipamentos
+9d118b1 - RaquelRosas04 - 2026-06-03 07:59:47 +0100 - Fornecedores
+414f77c - RaquelRosas04 - 2026-06-02 18:16:00 +0100 - fornecedoores+ melhorias nas paginas de equipamento + localizaçoes
+accd695 - RaquelRosas04 - 2026-06-01 19:41:09 +0100 - Pagina fornecedores
+8306b1b - RaquelRosas04 - 2026-05-28 08:09:46 +0100 - Finalização parte pública
+55a5410 - RaquelRosas04 - 2026-05-19 14:03:41 +0100 - login+melhorias detalhes_equipamento+ pagina principal
+edc5470 - RaquelRosas04 - 2026-05-18 08:30:00 +0100 - pagina publica
+f27bbbe - RaquelRosas04 - 2026-05-13 15:49:33 +0100 - melhorias paginas ja criadas
+5f4ac7f - RaquelRosas04 - 2026-05-13 13:49:34 +0100 - alteraçoes detalhes_equipamentos e lista_equipamentos, nav
+69c28bc - RaquelRosas04 - 2026-05-12 16:55:11 +0100 - logo+nav+estilos+melhoria pagina detalhes- ainda nao finalizada
+592878b - RaquelRosas04 - 2026-04-28 16:10:30 +0100 - Pagina editar_equipamento
+46a0400 - RaquelRosas04 - 2026-04-28 08:09:02 +0100 - estrutura e inicio lista_agendamentos
+3d03b0d - RaquelRosas04 - 2026-04-26 13:30:14 +0100 - DesenhoBD3
+f659845 - RaquelRosas04 - 2026-04-26 13:26:36 +0100 - DesenhoBD2
+4275059 - RaquelRosas04 - 2026-04-26 13:14:17 +0100 - Desenho BD1
+b19453f - RaquelRosas04 - 2026-04-26 12:46:08 +0100 - Desenho BDados
+d1fc089 - RaquelRosas04 - 2026-04-19 12:47:59 +0100 - Ficheiro alteraçoes v3
+3071392 - RaquelRosas04 - 2026-04-19 12:37:20 +0100 - Ficheiro alteraçoes v2
+39887ac - RaquelRosas04 - 2026-04-19 12:19:23 +0100 - Inserção do Capitulo 1
+8c6efdf - RaquelRosas04 - 2026-04-19 12:14:22 +0100 - Ficheiro inicial do Relatorio

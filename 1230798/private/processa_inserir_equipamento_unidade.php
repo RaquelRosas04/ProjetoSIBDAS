@@ -312,7 +312,7 @@ $stmtCadastro->execute([
     'Unidade inserida com sucesso. Código: ' . $Codigo
 );
 
-    header('Location: lista_equipamentos.php');
+    header('Location: lista_equipamentos_unidade.php');
     exit;
 
 } catch (Exception $e) {

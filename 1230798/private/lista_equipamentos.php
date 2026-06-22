@@ -31,7 +31,7 @@ try {
         e.modelo,
         e.criticidade,
         fabricante.nome AS fabricante,
-        e.componente
+        e.componente + 0 AS componente
     FROM equipamentos e
     INNER JOIN marca  ON e.idMarca = marca.id
          left JOIN fabricante f ON e.idFabricante = f.id
@@ -75,7 +75,7 @@ try {
   <div class="card p-3 mb-4 shadow-sm">
     <div class="row g-2">
 
-      <div class="col-md-2">
+      <div class="col-md-1">
         <input type="text" id="fEqNome" class="form-control" placeholder="Nome">
       </div>
 
@@ -83,11 +83,11 @@ try {
         <input type="text" id="fEqTipo" class="form-control" placeholder="Tipo">
       </div>
 
-      <div class="col-md-2">
+      <div class="col-md-1">
         <input type="text" id="fEqMarca" class="form-control" placeholder="Marca">
       </div>
 
-      <div class="col-md-1">
+      <div class="col-md-2">
         <input type="text" id="fEqModelo" class="form-control" placeholder="Modelo">
       </div>
 
@@ -105,11 +105,23 @@ try {
         <input type="text" id="fEqFabricante" class="form-control" placeholder="Fabricante">
       </div>
 
+
+      <div class="col-md-1">
+        <select id="fEqComponente" class="form-select">
+          <option value=""> É componente?</option>
+          <option>Não</option>
+          <option>Sim</option>
+
+        </select>
+      </div>
+
       <div class="col-md-1 d-grid">
         <button class="btn btn-primary" id="btnFiltrarEquipamentos">
           <i class="bi bi-search"></i>
         </button>
       </div>
+
+      
 
       <div class="col-md-1 ">
         <button class="btn btn-outline-secondary w-100" id="btnLimparEquipamentos">
@@ -131,6 +143,7 @@ try {
           <th>Modelo</th>
           <th>Criticidade</th>
           <th>Fabricante</th>
+          <th>Componente</th>
           <th>Ações</th>
         </tr>
       </thead>
@@ -162,8 +175,9 @@ try {
               <td><?= htmlspecialchars($equipamento->tipo) ?></td>
               <td><?= htmlspecialchars($equipamento->marca) ?></td>
               <td><?= htmlspecialchars($equipamento->modelo) ?></td>
-              <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
+              <td><?= badge_criticidade($equipamento->criticidade) ?></td>
               <td><?= htmlspecialchars($equipamento->fabricante) ?></td>
+              <td><?= $equipamento->componente == 1 ? 'Sim' : 'Não' ?></td>
 
               <td>
                 <a href="editar_equipamento.php?id=<?= urlencode($equipamento->id) ?>"

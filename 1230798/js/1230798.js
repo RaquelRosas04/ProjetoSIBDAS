@@ -125,11 +125,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const fModelo = document.getElementById("fEqModelo").value.toLowerCase().trim();
     const fCriticidade = document.getElementById("fEqCriticidade").value.toLowerCase().trim();
     const fFabricante = document.getElementById("fEqFabricante").value.toLowerCase().trim();
+    const fComponente = document.getElementById("fEqComponente").value.toLowerCase().trim();
 
     return Array.from(tbody.querySelectorAll("tr")).filter(linha => {
       const td = linha.querySelectorAll("td");
 
-      if (td.length < 6) {
+      if (td.length < 7) {
         return false;
       }
 
@@ -138,7 +139,8 @@ document.addEventListener("DOMContentLoaded", function () {
         td[2].textContent.toLowerCase().includes(fMarca) &&
         td[3].textContent.toLowerCase().includes(fModelo) &&
         (fCriticidade === "" || td[4].textContent.trim().toLowerCase() === fCriticidade) &&
-        td[5].textContent.toLowerCase().includes(fFabricante);
+        td[5].textContent.toLowerCase().includes(fFabricante)&&
+        td[6].textContent.toLowerCase().includes(fComponente);
     });
   }
 
@@ -164,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   function renderizarEquipamentos() {
     const todasLinhas = Array.from(tbody.querySelectorAll("tr"));
-    const linhasDados = todasLinhas.filter(linha => linha.querySelectorAll("td").length >= 6);
+    const linhasDados = todasLinhas.filter(linha => linha.querySelectorAll("td").length >= 7);
 
     if (linhasDados.length === 0) {
       todasLinhas.forEach(linha => linha.style.display = "");
@@ -208,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  document.querySelectorAll("#fEqNome, #fEqTipo, #fEqMarca, #fEqModelo, #fEqCriticidade, #fEqFabricante")
+  document.querySelectorAll("#fEqNome, #fEqTipo, #fEqMarca, #fEqModelo, #fEqCriticidade, #fEqFabricante, #fEqComponente")
     .forEach(campo => {
       campo.addEventListener("input", function () {
         paginaAtual = 1;
@@ -231,6 +233,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .forEach(input => input.value = "");
 
     document.getElementById("fEqCriticidade").value = "";
+    document.getElementById("fEqComponente").value = "";
 
     paginaAtual = 1;
     renderizarEquipamentos();

@@ -178,7 +178,7 @@ try {
               <td><?= htmlspecialchars($equipamento->numSerie) ?></td>
               <td><?= htmlspecialchars($equipamento->localizacao) ?></td>
               <td><?= htmlspecialchars($equipamento->estado) ?></td>
-              <td><?= htmlspecialchars($equipamento->criticidade) ?></td>
+              <td><?= badge_criticidade($equipamento->criticidade) ?></td>
 
               <td>
                 <a href="detalhes_equipamento.php?id=<?= urlencode($equipamento->id) ?>"
@@ -308,6 +308,11 @@ try {
         const linhaLocalizacao = colunas[5].textContent.toLowerCase();
         const linhaEstado = colunas[6].textContent.toLowerCase().trim();
         const linhaCriticidade = colunas[7].textContent.toLowerCase().trim();
+        const esconderAbatido = codigo === "" && estado === "" && linhaEstado === "abatido";
+
+        if (esconderAbatido) {
+          return false;
+        }
 
         return linhaCodigo.includes(codigo)
           && linhaNome.includes(nome)

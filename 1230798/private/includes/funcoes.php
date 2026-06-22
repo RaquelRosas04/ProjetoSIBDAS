@@ -48,3 +48,20 @@ function definir_mensagem($tipo, $texto)
         'texto' => $texto
     ];
 }
+
+function badge_criticidade($criticidade)
+{
+    $texto = $criticidade ?? '–';
+    $valor = strtolower(trim($texto));
+    $classe = 'badge text-bg-success';
+
+    if ($valor === 'média' || $valor === 'media') {
+        $classe = 'badge text-bg-warning';
+    } elseif ($valor === 'alta') {
+        $classe = 'badge text-bg-orange';
+    } elseif ($valor === 'suporte de vida') {
+        $classe = 'badge text-bg-danger';
+    }
+
+    return '<span class="' . $classe . '">' . htmlspecialchars($texto) . '</span>';
+}

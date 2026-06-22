@@ -118,10 +118,15 @@ try {
             $stmtFornecedores->execute([$unidade->id]);
             $fornecedores = $stmtFornecedores->fetchAll(PDO::FETCH_OBJ);
 
+            $stmtColunaObsCadastro = $ligacao->query("SHOW COLUMNS FROM equipamentocadastro LIKE 'obs'");
+            $temObsCadastro = (bool) $stmtColunaObsCadastro->fetch(PDO::FETCH_OBJ);
+            $campoObsHistorico = $temObsCadastro ? "ec.obs AS obs," : "NULL AS obs,";
+
             $stmtHistorico = $ligacao->prepare("
                 SELECT 
                     ec.data,
                     ec.estado,
+                    $campoObsHistorico
                     edf.nome AS edificio,
                     ser.descricao AS servico,
                     l.andar,
@@ -249,7 +254,7 @@ include __DIR__ . '/includes/header_priv.php';
                             data-bs-toggle="tab"
                             data-bs-target="#consumivel"
                             type="button">
-                        Acessórios e Consumíveis
+                        Acessórios 
                     </button>
                 </li>
 
@@ -310,7 +315,7 @@ include __DIR__ . '/includes/header_priv.php';
                                 Sala <?= htmlspecialchars($unidade->sala ?? '–') ?>
                             </p>
 
-                            <p><strong>Criticidade:</strong> <?= htmlspecialchars($unidade->criticidade ?? '–') ?></p>
+                            <p><strong>Criticidade:</strong> <?= badge_criticidade($unidade->criticidade ?? '–') ?></p>
                             <p><strong>Fabricante:</strong> <?= htmlspecialchars($unidade->fabricante ?? 'Não definido') ?></p>
                             <p><strong>Data Aquisição:</strong> <?= formatar_data($unidade->dataAquisicao) ?></p>
                         </div>
@@ -342,13 +347,15 @@ include __DIR__ . '/includes/header_priv.php';
                             Editar
                         </a>
 
-                        <button id="btnAbater"
-                                class="btn btn-outline-danger mt-3"
-                                data-bs-toggle="modal"
-                                data-bs-target="#modalAbater">
-                            <i class="bi bi-trash"></i>
-                            Abater
-                        </button>
+                        <?php if (($unidade->estado ?? '') !== 'Abatido'): ?>
+                            <button id="btnAbater"
+                                    class="btn btn-outline-danger mt-3"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalAbater">
+                                <i class="bi bi-trash"></i>
+                                Abater
+                            </button>
+                        <?php endif; ?>
                     </div>
 
                 </div>
@@ -388,39 +395,7 @@ include __DIR__ . '/includes/header_priv.php';
                         </tbody>
                     </table>
 
-                    <h5>Consumíveis</h5>
-
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Nome</th>
-                                <th>Tipo</th>
-                                <th>Quantidade</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <?php if (!empty($consumiveis)): ?>
-                                <?php foreach ($consumiveis as $consumivel): ?>
-                                    <tr>
-                                        <td>
-                                            <?= htmlspecialchars($consumivel->descricao) ?>
-                                            <?= !empty($consumivel->modelo) ? ' - ' . htmlspecialchars($consumivel->modelo) : '' ?>
-                                        </td>
-                                        <td><?= htmlspecialchars($consumivel->tipo ?? 'Consumível') ?></td>
-                                        <td>1</td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="3" class="text-center text-muted">
-                                        Nenhum consumível associado.
-                                    </td>
-                                </tr>
-                            <?php endif; ?>
-                        </tbody>
-                    </table>
-
+                    
                 </div>
 
                 <div class="tab-pane fade" id="historicoEquipamento">
@@ -434,6 +409,7 @@ include __DIR__ . '/includes/header_priv.php';
                                 <th style="width: 120px;">Data</th>
                                 <th>Estado</th>
                                 <th>Localização</th>
+                                <th>Observações</th>
                             </tr>
                         </thead>
 
@@ -449,11 +425,12 @@ include __DIR__ . '/includes/header_priv.php';
                                             Andar <?= htmlspecialchars($registo->andar ?? '–') ?> -
                                             Sala <?= htmlspecialchars($registo->sala ?? '–') ?>
                                         </td>
+                                        <td><?= nl2br(htmlspecialchars($registo->obs ?? '–')) ?></td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else: ?>
                                 <tr>
-                                    <td colspan="3" class="text-center text-muted">
+                                    <td colspan="4" class="text-center text-muted">
                                         Sem histórico registado.
                                     </td>
                                 </tr>
@@ -662,20 +639,29 @@ include __DIR__ . '/includes/header_priv.php';
                 <button class="btn-close" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                Tem a certeza que deseja abater esta unidade de equipamento?
-            </div>
+            <form method="post" action="apagar_equipamento_unidade.php">
+                <div class="modal-body">
+                    <input type="hidden" name="id" value="<?= htmlspecialchars($unidade->id) ?>">
 
-            <div class="modal-footer">
-                <button class="btn btn-secondary" data-bs-dismiss="modal">
-                    Cancelar
-                </button>
+                    <p>Tem a certeza que deseja abater esta unidade de equipamento?</p>
 
-                <a href="apagar_equipamento_unidade.php?id=<?= urlencode($unidade->id) ?>"
-                   class="btn btn-danger">
-                    Abater
-                </a>
-            </div>
+                    <label class="form-label">Razão do abate</label>
+                    <textarea name="motivo"
+                              class="form-control"
+                              rows="3"
+                              required></textarea>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        Cancelar
+                    </button>
+
+                    <button type="submit" class="btn btn-danger">
+                        Abater
+                    </button>
+                </div>
+            </form>
 
         </div>
     </div>
