@@ -119,7 +119,7 @@ $isGestor = ($perfilAtual === 'gestor');
 
                         <button
                             class="btn btn-outline-light"
-                            onclick="window.location.href='/1230798/public/logout.php'">
+                            onclick="window.location.href='<?= BASE_URL ?>/public/logout.php'">
                             Logout
                         </button>
                     </div>

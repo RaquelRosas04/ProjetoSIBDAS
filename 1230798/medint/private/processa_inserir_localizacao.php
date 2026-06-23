@@ -48,6 +48,29 @@ try {
 
     $ligacao->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
+    $stmtVerifica = $ligacao->prepare("
+        SELECT id
+        FROM localizacao
+        WHERE idEdificio = ?
+          AND idServico = ?
+          AND andar = ?
+          AND sala = ?
+        LIMIT 1
+    ");
+
+    $stmtVerifica->execute([
+        $idEdificio,
+        $idServico,
+        $andar,
+        $sala
+    ]);
+
+    if ($stmtVerifica->fetch(PDO::FETCH_OBJ)) {
+        $_SESSION['validation_errors'] = ['Localização já existente.'];
+        header('Location: inserir_localizacao.php');
+        exit;
+    }
+
     $sql = "
         INSERT INTO localizacao
         (
@@ -67,13 +90,13 @@ try {
         $sala
     ]);
 
-    definir_mensagem('success', 'Localizacao inserida com sucesso.');
+    definir_mensagem('success', 'Localização inserida com sucesso.');
 
     header('Location: localizacoes.php');
     exit;
 
 } catch (PDOException $e) {
-    $_SESSION['validation_errors'] = ['Erro ao inserir localizacao.'];
+    $_SESSION['validation_errors'] = ['Erro ao inserir localização.'];
     header('Location: inserir_localizacao.php');
     exit;
 }

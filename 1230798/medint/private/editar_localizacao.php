@@ -45,7 +45,7 @@ try {
                 $id
             ]);
 
-            definir_mensagem('success', 'Localizacao atualizada com sucesso.');
+            definir_mensagem('success', 'Localização atualizada com sucesso.');
 
             header('Location: localizacoes.php');
             exit;
@@ -85,7 +85,7 @@ try {
     ")->fetchAll(PDO::FETCH_OBJ);
 
 } catch (PDOException $e) {
-    $erro = 'Erro ao carregar localizacao.';
+    $erro = 'Erro ao carregar localização.';
     $localizacao = null;
     $edificios = [];
     $servicos = [];
@@ -100,7 +100,7 @@ include __DIR__ . '/includes/header_priv.php';
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">
             <i class="bi bi-pencil-square me-2 text-primary"></i>
-            Editar Localizacao
+            Editar Localização
         </h2>
 
         <a href="localizacoes.php" class="btn btn-outline-secondary">
@@ -124,9 +124,9 @@ include __DIR__ . '/includes/header_priv.php';
                 <div class="row g-3">
 
                     <div class="col-md-6">
-                        <label class="form-label">Edificio</label>
+                        <label class="form-label">Edifício*</label>
                         <select name="idEdificio" class="form-select" required>
-                            <option value="">Selecione o edificio</option>
+                            <option value="">Selecione o edifício</option>
 
                             <?php foreach ($edificios as $edificio): ?>
                                 <option
@@ -139,9 +139,9 @@ include __DIR__ . '/includes/header_priv.php';
                     </div>
 
                     <div class="col-md-6">
-                        <label class="form-label">Servico</label>
+                        <label class="form-label">Serviço*</label>
                         <select name="idServico" class="form-select" required>
-                            <option value="">Selecione o servico</option>
+                            <option value="">Selecione o serviço</option>
 
                             <?php foreach ($servicos as $servico): ?>
                                 <option
@@ -154,7 +154,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Andar</label>
+                        <label class="form-label">Andar*</label>
                         <input
                             type="number"
                             name="andar"
@@ -164,7 +164,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </div>
 
                     <div class="col-md-4">
-                        <label class="form-label">Sala</label>
+                        <label class="form-label">Sala*</label>
                         <input
                             type="text"
                             name="sala"
@@ -182,7 +182,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                     <button type="submit" class="btn btn-primary">
                         <i class="bi bi-check2-square me-1"></i>
-                        Guardar Alteracoes
+                        Guardar Alterações
                     </button>
                 </div>
 

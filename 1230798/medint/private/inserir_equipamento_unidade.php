@@ -134,13 +134,13 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-3">
-                    <label class="form-label">Nº Série</label>
+                    <label class="form-label">Nº Série*</label>
                     <input type="text" name="numSerie" class="form-control" maxlength="50" required>
                 </div>
 
             </div>
 
-            <h5 class="mt-3 mb-3">Localização e Fornecedor</h5>
+            <h5 class="mt-3 mb-3">Localização</h5>
 
             <div class="row g-3 mb-4">
                 <div class="col-md-6">

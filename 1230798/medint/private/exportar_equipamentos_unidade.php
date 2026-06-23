@@ -115,12 +115,12 @@ $output = fopen('php://output', 'w');
 fprintf($output, chr(0xEF) . chr(0xBB) . chr(0xBF));
 
 fputcsv($output, [
-    'Codigo',
+    'Código',
     'Nome',
     'Marca',
     'Modelo',
-    'Numero Serie',
-    'Localizacao',
+    'Número Série',
+    'Localização',
     'Estado',
     'Criticidade'
 ], ';');

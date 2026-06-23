@@ -5,9 +5,9 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$perfilAtual = strtolower($_SESSION['perfil'] ?? '');
+$perfilAtual = strtolower(trim($_SESSION['perfil'] ?? ''));
 
-if ($perfilAtual === 'tecnico') {
+if ($perfilAtual === 'tecnico' || $perfilAtual === 'técnico') {
     definir_mensagem('warning', 'Não tem permissão para adicionar equipamentos.');
     header('Location: lista_equipamentos.php');
     exit;
@@ -73,7 +73,7 @@ include __DIR__ . '/includes/header_priv.php';
 
             <div class="row g-3">
 
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <label class="form-label">Designação*</label>
                     <input type="text"
                            name="descricao"
@@ -124,7 +124,7 @@ include __DIR__ . '/includes/header_priv.php';
                     </select>
                 </div>
 
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <label class="form-label">Modelo*</label>
                     <input type="text"
                            name="modelo"
@@ -132,7 +132,7 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">Anos de Garantia*</label>
                     <input type="number"
                            name="anosGarantia"
@@ -141,7 +141,7 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <label class="form-label">Criticidade*</label>
                     <select name="criticidade" class="form-select" required>
                         <option value="">Selecione</option>
@@ -153,7 +153,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-2">
-                    <label class="form-label">É componente?</label>
+                    <label class="form-label">É componente?*</label>
                     <select name="componente" class="form-select" required>
                         <option value="0">Não</option>
                         <option value="1">Sim</option>

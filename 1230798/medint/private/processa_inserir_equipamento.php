@@ -5,9 +5,9 @@ require_once __DIR__ . '/includes/funcoes.php';
 
 redirect_if_not_logged();
 
-$perfilAtual = strtolower($_SESSION['perfil'] ?? '');
+$perfilAtual = strtolower(trim($_SESSION['perfil'] ?? ''));
 
-if ($perfilAtual === 'tecnico') {
+if ($perfilAtual === 'tecnico' || $perfilAtual === 'técnico') {
     definir_mensagem('warning', 'Não tem permissão para adicionar equipamentos.');
     header('Location: lista_equipamentos.php');
     exit;
@@ -142,8 +142,8 @@ try {
     $stmtEquipamento->execute([
         $descricao,
         $idTipo,
-        $idMarca,
         $idFabricante,
+        $idMarca,
         $modelo,
         $anosGarantia,
         $criticidade,

@@ -57,13 +57,13 @@ try {
     ");
     $stmt->execute([$id]);
 
-    definir_mensagem('success', 'Localizacao apagada com sucesso.');
+    definir_mensagem('success', 'Localização apagada com sucesso.');
 
     header('Location: localizacoes.php');
     exit;
 
 } catch (PDOException $e) {
-    definir_mensagem('danger', 'Erro ao apagar localizacao.');
+    definir_mensagem('danger', 'Erro ao apagar localização.');
 
     header('Location: localizacoes.php');
     exit;

@@ -43,7 +43,7 @@ include __DIR__ . '/includes/header_priv.php';
 
     <h2 class="mb-4">
         <i class="bi bi-plus-circle me-2 text-primary"></i>
-        Inserir Localizacao
+        Inserir Localização
     </h2>
 
     <div class="card p-4 shadow-sm">
@@ -61,9 +61,9 @@ include __DIR__ . '/includes/header_priv.php';
             <div class="row g-3">
 
                 <div class="col-md-6">
-                    <label class="form-label">Edificio</label>
+                    <label class="form-label">Edifício*</label>
                     <select name="idEdificio" class="form-select" required>
-                        <option value="">Selecione o edificio</option>
+                        <option value="">Selecione o edifício</option>
 
                         <?php foreach ($edificios as $edificio): ?>
                             <option value="<?= htmlspecialchars($edificio->id) ?>">
@@ -74,9 +74,9 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Servico</label>
+                    <label class="form-label">Serviço*</label>
                     <select name="idServico" class="form-select" required>
-                        <option value="">Selecione o servico</option>
+                        <option value="">Selecione o serviço</option>
 
                         <?php foreach ($servicos as $servico): ?>
                             <option value="<?= htmlspecialchars($servico->id) ?>">
@@ -87,12 +87,12 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Andar</label>
+                    <label class="form-label">Andar*</label>
                     <input type="number" name="andar" class="form-control" required>
                 </div>
 
                 <div class="col-md-4">
-                    <label class="form-label">Sala</label>
+                    <label class="form-label">Sala*</label>
                     <input type="text" name="sala" class="form-control" required>
                 </div>
 
@@ -104,7 +104,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </a>
 
                 <button type="submit" class="btn btn-primary">
-                    <i class="bi bi-plus-circle me-1"></i> Inserir Localizacao
+                    <i class="bi bi-plus-circle me-1"></i> Inserir Localização
                 </button>
             </div>
 

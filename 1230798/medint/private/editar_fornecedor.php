@@ -118,7 +118,7 @@ include __DIR__ . '/includes/header_priv.php';
             <div class="row g-3">
 
                 <div class="col-md-6">
-                    <label class="form-label">Nome</label>
+                    <label class="form-label">Nome*</label>
                     <input type="text"
                            class="form-control"
                            name="nome"
@@ -127,7 +127,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">NIF</label>
+                    <label class="form-label">NIF*</label>
                     <input type="text"
                            class="form-control"
                            name="nif"
@@ -136,7 +136,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Email</label>
+                    <label class="form-label">Email*</label>
                     <input type="email"
                            class="form-control"
                            name="email"
@@ -145,7 +145,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label">Telefone</label>
+                    <label class="form-label">Telefone*</label>
                     <input type="text"
                            class="form-control"
                            name="telefone"

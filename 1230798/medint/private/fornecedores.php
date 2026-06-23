@@ -36,7 +36,7 @@ include __DIR__ . '/includes/header_priv.php';
 <body>
 
   <!-- CONTEÚDO -->
-  <div class="container py-4">
+  <div class="container py-5" style="padding-top: 100px;">
 
     <!-- TÍTULO + BOTÃO -->
     <div class="d-flex justify-content-between align-items-center mb-4">

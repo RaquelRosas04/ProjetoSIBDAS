@@ -4,7 +4,7 @@ define('APP_NAME', 'MedInt');
 define('APP_VERSION', '1.0.0');
 define('APP_COPYRIGHT', '© 2025 ISEP');
 define('AUTHOR', 'Raquel Rosas');
-define('BASE_URL', '/1230798'); // SRC-Nota pode ter que ser altero qd for publicado
+define('BASE_URL', '/sibdas/1230798/medint'); // SRC-Nota pode ter que ser altero qd for publicado
 
 //base de d<dos
 define('MYSQL_HOST', 'vsgate-s1.dei.isep.ipp.pt'); 

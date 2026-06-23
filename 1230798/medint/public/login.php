@@ -88,9 +88,7 @@ unset($_SESSION['server_error']);
           Entrar
         </button>
 
-        <div class="text-center">
-          <small class="text-muted">Esqueceu-se da palavra-passe?</small>
-        </div>
+
 
       </form>
 

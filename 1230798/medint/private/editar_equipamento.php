@@ -306,8 +306,8 @@ include __DIR__ . '/includes/header_priv.php';
 
             <div class="row g-3">
 
-                <div class="col-md-5">
-                    <label class="form-label">Designação</label>
+                <div class="col-md-6">
+                    <label class="form-label">Designação*</label>
                     <input type="text"
                            name="descricao"
                            class="form-control"
@@ -315,8 +315,8 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Tipo / Categoria</label>
+                <div class="col-md-3">
+                    <label class="form-label">Tipo / Categoria*</label>
                     <select name="idTipo" class="form-select" required>
                         <option value="">Selecione</option>
 
@@ -334,7 +334,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                         <label class="form-label">Fabricante</label>
 
-                        <select name="idfabricante" class="form-select" >
+                        <select name="idfabricante" class="form-select">
                             <option value="">Selecione</option>
                             <option value="">Sem fabricante / Não aplicável</option>
                             <?php foreach ($fabricantes as $fabricante): ?>
@@ -350,7 +350,7 @@ include __DIR__ . '/includes/header_priv.php';
 
 
                 <div class="col-md-3">
-                    <label class="form-label">Marca</label>
+                    <label class="form-label">Marca*</label>
                     <select name="idMarca" class="form-select" required>
                         <option value="">Selecione</option>
 
@@ -364,8 +364,8 @@ include __DIR__ . '/includes/header_priv.php';
                     </select>
                 </div>
 
-                <div class="col-md-4">
-                    <label class="form-label">Modelo</label>
+                <div class="col-md-3">
+                    <label class="form-label">Modelo*</label>
                     <input type="text"
                            name="modelo"
                            class="form-control"
@@ -374,7 +374,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-2">
-                    <label class="form-label">Anos de Garantia</label>
+                    <label class="form-label">Anos de Garantia*</label>
                     <input type="number"
                            name="anosGarantia"
                            class="form-control"
@@ -383,8 +383,8 @@ include __DIR__ . '/includes/header_priv.php';
                            required>
                 </div>
 
-                <div class="col-md-3">
-                    <label class="form-label">Criticidade</label>
+                <div class="col-md-2">
+                    <label class="form-label">Criticidade*</label>
                     <select name="criticidade" class="form-select" required>
                         <option value="">Selecione</option>
 
@@ -407,7 +407,7 @@ include __DIR__ . '/includes/header_priv.php';
                 </div>
 
                 <div class="col-md-2">
-                    <label class="form-label">É componente?</label>
+                    <label class="form-label">É componente?*</label>
                     <select name="componente" class="form-select" required>
                         <option value="0" <?= $equipamento->componente == 0 ? 'selected' : '' ?>>
                             Não

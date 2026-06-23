@@ -2,11 +2,11 @@
 <?php include 'includes/header_priv.php'; ?>
 <?require_once __DIR__ . '/../../includes/db_connect.php';?>
 
-    <body>
-        <div class="container py-4">
+    <body> 
+        <div class="container py-5" style="padding-top: 100px;">
 
-            <div class="admin-header">
-                <h2><i class="bi bi-gear me-2"></i>Gestão de Conteúdos</h2>
+            <div class="mb-4">
+                <h2><i class="bi bi-gear me-2 text-primary"></i>Gestão de Conteúdos</h2>
             </div>
 
             <!-- SOBRE -->

@@ -29,7 +29,7 @@ try {
 
     $erro = '';
 } catch (PDOException $e) {
-    $erro = 'Erro ao carregar localizacoes.';
+    $erro = 'Erro ao carregar localizações.';
     $localizacoes = [];
 }
 
@@ -37,12 +37,12 @@ include __DIR__ . '/includes/header_priv.php';
 
 ?>
 
-<div class="container py-4">
+<div class="container py-5" style="padding-top: 100px;">
 
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">
             <i class="bi bi-geo-alt me-2 text-primary"></i>
-            Localizacoes
+            Localizações
         </h2>
 
         <a href="inserir_localizacao.php" class="btn btn-primary">
@@ -110,7 +110,7 @@ include __DIR__ . '/includes/header_priv.php';
 
                     <tr>
                         <td colspan="5" class="text-center text-muted">
-                            Nao existem localizacoes registadas.
+                            Não existem localizações registadas.
                         </td>
                     </tr>
 
@@ -163,7 +163,7 @@ include __DIR__ . '/includes/header_priv.php';
             </div>
 
             <div class="modal-body">
-                Tem a certeza que deseja apagar esta localizacao?
+                Tem a certeza que deseja apagar esta localização?
             </div>
 
             <div class="modal-footer">
